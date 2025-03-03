@@ -12,14 +12,7 @@ import re
 import sys
 from urllib.parse import quote
 
-DIVIDER_REGEX = re.compile(r"""^[|\-\s]*$""")
-SPECIAL_CHAR_REGEX = re.compile(r"""[^A-Za-z0-9 ]""")
-FILE_HEADER = """---
-cssClass: "wide-table"
----
-
-# Outline
-"""
+from markdown-novel-tools.constants import DIVIDE_REGEX, FILE_HEADER, SPECIAL_CHAR_REGEX
 
 
 class Table:

@@ -41,3 +41,7 @@ htmlcov/
 # Vim
 *.swp
 *.swo
+
+# Pyenv
+
+.python-version
