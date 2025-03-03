@@ -37,6 +37,7 @@ setup(
     package_dir={"": "src"},
     entry_points={
         "console_scripts": [
+            "parse_beats = markdown-novel-tools.outline:parse_beats",
         ]
     },
     zip_safe=False,
