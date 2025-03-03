@@ -15,18 +15,7 @@ import time
 import yaml
 
 from markdown-novel-tools.constants import ALPHANUM_RE, MANUSCRIPT_RE, TIMEZONE, DEBUG
-
-
-def round(f):
-    """round float f to 1 decimal place"""
-    return f"{f:.1f}"
-
-
-def unwikilink(string, remove=("[[", "]]", "#")):
-    """Remove the [[ ]] from a string. Also # for tags."""
-    for repl in remove:
-        string = string.replace(repl, "")
-    return string
+from markdown-novel-tools.utils import round_to_one_decimal, unwikilink
 
 
 class MarkdownFile():
@@ -36,6 +25,7 @@ class MarkdownFile():
     pov = None
     characters = None
     yaml = ""
+    parsed_yaml = None
     error = None
 
     def __init__(self, path, contents, hack_yaml):
@@ -84,19 +74,19 @@ class MarkdownFile():
 
         if self.book_num and self.yaml:
             try:
-                parsed = yaml.safe_load(self.yaml)
+                self.parsed_yaml = yaml.safe_load(self.yaml)
             except Exception as e:
                 print(str(e))
                 self.error = f"### {self.path} yaml is broken.\n{str(e)}\n"
                 return
-            if parsed.get("POV"):
-                self.pov = parsed["POV"]
-            for char in sorted(parsed.get("Characters", []) or []):
+            if self.parsed_yaml.get("POV"):
+                self.pov = self.parsed_yaml["POV"]
+            for char in sorted(self.parsed_yaml.get("Characters", []) or []):
                 if self.characters is None:
                     self.characters = []
                 self.characters.append(char)
-            if parsed.get("tags", []) in (["scene-reference"], []):
-                print(f"{self.path} yaml is missing tags: {parsed.get('tags')}!")
+            if self.parsed_yaml.get("tags", []) in (["scene-reference"], []):
+                print(f"{self.path} yaml is missing tags: {self.parsed_yaml.get('tags')}!")
 
 
 class Book():
@@ -162,8 +152,8 @@ class Book():
             total["manuscript"] += scene["manuscript words"]
             total["total"] += scene["total words"]
             populated_scene_count += 1
-        average["populated manuscript words"] = round(total["manuscript"] / populated_scene_count)
-        average["populated total words"] = round(total["total"] / populated_scene_count)
+        average["populated manuscript words"] = round_to_one_decimal(total["manuscript"] / populated_scene_count)
+        average["populated total words"] = round_to_one_decimal(total["total"] / populated_scene_count)
         average["num scenes"] = f"{populated_scene_count} / {len(self.scenes)}"
         return average
 
@@ -181,8 +171,8 @@ class Book():
             total["manuscript"] += chapter["manuscript words"]
             total["total"] += chapter["total words"]
             populated_chapter_count += 1
-        average["populated manuscript words"] = round(total["manuscript"] / populated_chapter_count)
-        average["populated total words"] = round(total["total"] / populated_chapter_count)
+        average["populated manuscript words"] = round_to_one_decimal(total["manuscript"] / populated_chapter_count)
+        average["populated total words"] = round_to_one_decimal(total["total"] / populated_chapter_count)
         average["num chapters"] = f"{populated_chapter_count} / {len(self.chapters)}"
         return average
 
@@ -194,13 +184,13 @@ class Book():
             num_populated_chapters = len(stats["populated chapters"])
             if stats["populated scenes"]:
                 stats["scene_average"] = {
-                    "manuscript": round(stats["manuscript words"] / stats["populated scenes"]),
-                    "total": round(stats["total words"] / stats["populated scenes"]),
+                    "manuscript": round_to_one_decimal(stats["manuscript words"] / stats["populated scenes"]),
+                    "total": round_to_one_decimal(stats["total words"] / stats["populated scenes"]),
                 }
             if num_populated_chapters:
                 stats["chapter_average"] = {
-                    "manuscript": round(stats["manuscript words"] / num_populated_chapters),
-                    "total": round(stats["total words"] / num_populated_chapters),
+                    "manuscript": round_to_one_decimal(stats["manuscript words"] / num_populated_chapters),
+                    "total": round_to_one_decimal(stats["total words"] / num_populated_chapters),
                 }
         return povs
 
@@ -217,8 +207,14 @@ class Book():
         }
 
 
-def update_stats(path, contents, books, stats, hack_yaml=False):
-    md_file = MarkdownFile(path, contents, hack_yaml)
+def get_markdown_file(path, hack_yaml=False):
+    with open(path) as fh:
+        contents = fh.read()
+    return MarkdownFile(path, contents, hack_yaml)
+
+
+def update_stats(path, books, stats, hack_yaml=False):
+    md_file = get_markdown_file(path, hack_yaml)
     stats["total"]["files"] += 1
     stats["total"]["words"] += md_file.total_words
     if md_file.is_manuscript:
@@ -258,9 +254,7 @@ def walk_current_dir():
         for file_ in sorted(files):
             if file_.endswith(".md"):
                 path = os.path.join(root, file_)
-                with open(path) as fh:
-                    contents = fh.read()
-                error = update_stats(path, contents, books, stats)
+                error = update_stats(path, books, stats)
                 if error:
                     errors += error
         for skip in (".git", ".obsidian", "_output"):
@@ -307,7 +301,8 @@ def walk_previous_revision(current_books, current_stats):
     {current_stats["total"]["words"] - stats["total"]["words"]} total words"""
 
 
-if __name__ == "__main__":
+def stats():
+    """ Get the stats for the manuscript """
     artifact_dir = Path("_output")
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)

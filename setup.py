@@ -38,6 +38,7 @@ setup(
     entry_points={
         "console_scripts": [
             "parse_beats = markdown-novel-tools.outline:parse_beats",
+            "stats = markdown-novel-tools.scene:stats",
         ]
     },
     zip_safe=False,
