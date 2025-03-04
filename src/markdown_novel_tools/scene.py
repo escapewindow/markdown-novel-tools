@@ -225,9 +225,23 @@ class Book:
 
 
 def get_markdown_file(path, hack_yaml=False):
+    """Create a MarkdownFile from `path`."""
     with open(path) as fh:
         contents = fh.read()
     return MarkdownFile(path, contents, hack_yaml)
+
+
+def get_summary(markdown_file):
+    """Take the parsed_yaml of markdown_file and format the summary in yaml."""
+    if not markdown_file or not markdown_file.parsed_yaml:
+        raise KeyError("No parsed yaml in get_summary!")
+    if not markdown_file.parsed_yaml.get("Summary"):
+        raise KeyError("No 'Summary' in get_summary parsed_yaml!")
+    return yaml.dump(
+        markdown_file.parsed_yaml["Summary"],
+        default_flow_style=False,
+        width=float("inf"),
+    )
 
 
 def update_stats(path, books, stats, hack_yaml=False):

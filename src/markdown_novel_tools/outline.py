@@ -318,7 +318,7 @@ def parse_beats():
     if table:
         stdout, stderr = get_beats(table, args)
         if stdout:
-            print(stdout)
+            print(stdout, end="")
         if stderr:
             print(stderr, file=sys.stderr)
     else:
