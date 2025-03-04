@@ -159,7 +159,7 @@ class Table:
                 print(output)
 
 
-def parse_args(args):
+def parse_beats_args(args):
     """Parse commandline args."""
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -309,7 +309,7 @@ def do_parse_file(fh, args):
 
 def parse_beats():
     """Main function."""
-    args = parse_args(sys.argv[1:])
+    args = parse_beats_args(sys.argv[1:])
 
     with open(args.path, encoding="utf-8") as fh:
         table = do_parse_file(fh, args)
