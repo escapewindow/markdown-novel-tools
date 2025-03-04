@@ -14,7 +14,7 @@ import yaml
 from git import InvalidGitRepositoryError, Repo
 
 from markdown_novel_tools.constants import ALPHANUM_RE, DEBUG, MANUSCRIPT_FILENAME_RE, TIMEZONE
-from markdown_novel_tools.utils import round_to_one_decimal, unwikilink
+from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikilink
 
 
 class MarkdownFile:
