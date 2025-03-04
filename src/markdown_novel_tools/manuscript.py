@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 """Manuscript - cross-outline and -scene."""
 
+from copy import deepcopy
 from difflib import unified_diff
 from glob import glob
+from io import StringIO
 import os
 from pathlib import Path
 import sys
@@ -36,13 +38,17 @@ def diff_yaml(outline_yaml, scene_yaml, verbose=False):
 
 
 def summary_tool():
-    """Work on summaries in both the outline and scene(s)."""
+    """Work on summaries in both the outline and scene(s).
+
+    TODO:
+        - frontmatter schema
+    """
     outline_argv = ["-c", "2", "-f", "01.01", "-y", "outline/Book 1 outline/scenes.md"]
     args = parse_beats_args(outline_argv)
     with open(args.path, encoding="utf-8") as fh:
         table = do_parse_file(fh, args)
     if table:
-        stdout, stderr = get_beats(table, args)
+        outline_summary, _ = get_beats(table, args)
 
     files = glob("manuscript/Book 1/1_01_01*")
     if len(files) < 1:
@@ -53,6 +59,10 @@ def summary_tool():
     # Diff summaries
     markdown_file = get_markdown_file(files[0])
     scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
-    diff_yaml(stdout, scene_summary)
+    diff_yaml(outline_summary, scene_summary)
 
-
+    outline_yaml = deepcopy(markdown_file.parsed_yaml)
+    outline_yaml["Summary"] = yaml.safe_load(StringIO(outline_summary))
+    outline_frontmatter = yaml_string(outline_yaml)
+    print(f"---\n{outline_frontmatter}\n---\n{markdown_file.yaml}")
+    diff_yaml(outline_frontmatter, markdown_file.yaml)

@@ -9,6 +9,14 @@ import yaml
 from markdown_novel_tools.constants import TIMEZONE
 
 
+# Don't print `null` for None in yaml strings
+def represent_none(self, _):
+    return self.represent_scalar('tag:yaml.org,2002:null', '')
+
+
+yaml.add_representer(type(None), represent_none)
+
+
 def local_time(timestamp):
     utc_tz = pytz.utc
     local_tz = pytz.timezone(TIMEZONE)
@@ -31,8 +39,10 @@ def unwikilink(string, remove=("[[", "]]", "#")):
 
 def yaml_string(yaml_object):
     """Return a yaml formatted string from the yaml object."""
+
     return yaml.dump(
         yaml_object,
         default_flow_style=False,
         width=float("inf"),
+        sort_keys=False,
     )
