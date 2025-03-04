@@ -146,6 +146,7 @@ class Table:
     def get_yaml(self, _filter=None):
         """Print all the appropriate lines in yaml format."""
         widths = dict(zip(list(self.line_obj._fields), self.max_width))
+        yaml_output = ""
         for k, v in sorted(self.parsed_lines.items()):
             if _filter and set(split_by_char(k, "/")).isdisjoint(set(_filter)):
                 continue
@@ -156,7 +157,8 @@ class Table:
                 if line.Beat:
                     output = f"{output} {line.Beat}"
                 output = f"{output})"
-                return output
+                yaml_output = f"{yaml_output}\n{output}"
+        return yaml_output
 
 
 def parse_beats_args(args):
@@ -252,12 +254,11 @@ def get_beats(table, args):
         stdout += f"{FILE_HEADER}\n"
 
     if args.yaml:
-        table.print_yaml(_filter=args.filter)
+        stdout = f"{stdout}{table.get_yaml(_filter=args.filter)}\n"
     else:
-        table.print_markdown(_filter=args.filter, multi_table=args.multi_table_output)
+        stdout = f"{stdout}{table.get_markdown(_filter=args.filter, multi_table=args.multi_table_output)}\n"
 
     if args.stats:
-        stderr = f"{stderr}\n"
         if table.column_values:
             values = set()
             if args.filter:
@@ -317,9 +318,9 @@ def parse_beats():
     if table:
         stdout, stderr = get_beats(table, args)
         if stdout:
-            print(stdout)
+            print(stdout.strip())
         if stderr:
-            print(file=stderr, stderr)
+            print(stderr, file=sys.stderr)
     else:
         print("No table found!", file=sys.stderr)
         sys.exit(1)
