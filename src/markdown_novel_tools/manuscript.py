@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Manuscript - cross-outline and -scene."""
+# TODO frontmatter schema
 
 from copy import deepcopy
 from difflib import unified_diff
@@ -38,11 +39,13 @@ def diff_yaml(outline_yaml, scene_yaml, verbose=False):
 
 
 def summary_tool():
-    """Work on summaries in both the outline and scene(s).
+    """Work on summaries in both the outline and scene(s)."""
 
-    TODO:
-        - frontmatter schema
-    """
+    # TODO proper argparse
+    #  - create base parser
+    #    - base parser_check
+    #  - add summary args
+    #    - summary parser_check
     outline_argv = ["-c", "2", "-f", "01.01", "-y", "outline/Book 1 outline/scenes.md"]
     args = parse_beats_args(outline_argv)
     with open(args.path, encoding="utf-8") as fh:
@@ -66,3 +69,6 @@ def summary_tool():
     outline_frontmatter = yaml_string(outline_yaml)
     print(f"---\n{outline_frontmatter}\n---\n{markdown_file.yaml}")
     diff_yaml(outline_frontmatter, markdown_file.yaml)
+
+    # TODO replace summary; diff scene
+    # TODO overwrite scene
