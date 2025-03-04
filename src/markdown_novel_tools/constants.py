@@ -15,5 +15,6 @@ cssClass: "wide-table"
 
 # Outline
 """
-MANUSCRIPT_RE = re.compile(r"""^(?P<book_num>\d+)_(?P<chapter_num>\d+)_(?P<scene_num>\d+) - """)
+OUTLINE_SCENE_RE = re.compile(r"""^((?P<book_num>\d*)\.)?(?P<chapter_num>\d+)\.(?P<scene_num>\d+)$""")
+MANUSCRIPT_FILENAME_RE = re.compile(r"""^(?P<book_num>\d+)_(?P<chapter_num>\d+)_(?P<scene_num>\d+) - """)
 SPECIAL_CHAR_REGEX = re.compile(r"""[^A-Za-z0-9 ]""")
