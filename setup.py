@@ -10,7 +10,7 @@ project_dir = Path(os.path.abspath(os.path.dirname(__file__)))
 os.chdir(project_dir)
 
 # Using CalVer https://calver.org/
-VERSION = datetime.date.today().strftime("%y.%m.%d")
+VERSION = datetime.date.today().strftime("0.%y.%m.%d")
 
 tests_require = [
     "flake8",
