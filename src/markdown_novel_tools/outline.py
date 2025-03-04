@@ -115,7 +115,7 @@ class Table:
         """Return the table header and divider line"""
         return f'{header}\n{re.sub(r"""[^+|]""", "-", header)}'
 
-    def print_markdown(self, _filter=None, multi_table=False):
+    def get_markdown(self, _filter=None, multi_table=False):
         """Print all the appropriate lines."""
         widths = dict(zip(list(self.line_obj._fields), self.max_width))
         header = "|"
@@ -141,9 +141,9 @@ class Table:
                     body = f"{body}{output}\n"
                 else:
                     body = f"{body}{line}\n"
-        print(f"{toc}{body}", end="")
+        return f"{toc}{body}"
 
-    def print_yaml(self, _filter=None):
+    def get_yaml(self, _filter=None):
         """Print all the appropriate lines in yaml format."""
         widths = dict(zip(list(self.line_obj._fields), self.max_width))
         for k, v in sorted(self.parsed_lines.items()):
@@ -156,7 +156,7 @@ class Table:
                 if line.Beat:
                     output = f"{output} {line.Beat}"
                 output = f"{output})"
-                print(output)
+                return output
 
 
 def parse_beats_args(args):
@@ -244,10 +244,12 @@ def split_by_char(var, char="/"):
         raise TypeError(f"split_by_char: Unknown var type {type(var)}!")
 
 
-def do_print(table, args):
-    """Print the output."""
+def get_beats(table, args):
+    """Return the output."""
+    stdout = ""
+    stderr = ""
     if args.file_headers:
-        print(FILE_HEADER)
+        stdout += f"{FILE_HEADER}\n"
 
     if args.yaml:
         table.print_yaml(_filter=args.filter)
@@ -255,7 +257,7 @@ def do_print(table, args):
         table.print_markdown(_filter=args.filter, multi_table=args.multi_table_output)
 
     if args.stats:
-        print(file=sys.stderr)
+        stderr = f"{stderr}\n"
         if table.column_values:
             values = set()
             if args.filter:
@@ -264,11 +266,9 @@ def do_print(table, args):
                 values = list(values)
             else:
                 values = table.column_values
-            print(
-                f"Num values: {len(values)} {sorted(values)}",
-                file=sys.stderr,
-            )
-        print(f"Num beats: {table.line_count}", file=sys.stderr)
+            stderr = f"{stderr}Num values: {len(values)} {sorted(values)}"
+        stderr = f"{stderr}\nNum beats: {table.line_count}"
+    return stdout, stderr
 
 
 def do_parse_file(fh, args):
@@ -315,7 +315,11 @@ def parse_beats():
         table = do_parse_file(fh, args)
 
     if table:
-        do_print(table, args)
+        stdout, stderr = get_beats(table, args)
+        if stdout:
+            print(stdout)
+        if stderr:
+            print(file=stderr, stderr)
     else:
         print("No table found!", file=sys.stderr)
         sys.exit(1)
