@@ -1,11 +1,10 @@
+"""manuscript-novel-tools setup.py."""
+
 import datetime
-import json
 import os
 from pathlib import Path
-import sys
 
 from setuptools import setup
-from setuptools.command.test import test as TestCommand
 
 project_dir = Path(os.path.abspath(os.path.dirname(__file__)))
 

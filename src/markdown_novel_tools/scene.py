@@ -1,20 +1,21 @@
 #!/usr/bin/env python3
-""" Deal with frontmatter of scenes. """
+"""Deal with frontmatter of scenes."""
 
-from copy import deepcopy
 import datetime
-from git import Repo, InvalidGitRepositoryError
 import json
 import os
-from pathlib import Path
-import pytz
 import re
 import shutil
 import sys
 import time
-import yaml
+from copy import deepcopy
+from pathlib import Path
 
-from markdown_novel_tools.constants import ALPHANUM_RE, MANUSCRIPT_RE, TIMEZONE, DEBUG
+import pytz
+import yaml
+from git import InvalidGitRepositoryError, Repo
+
+from markdown_novel_tools.constants import ALPHANUM_RE, DEBUG, MANUSCRIPT_RE, TIMEZONE
 from markdown_novel_tools.utils import round_to_one_decimal, unwikilink
 
 
@@ -86,9 +87,7 @@ class MarkdownFile:
                     self.characters = []
                 self.characters.append(char)
             if self.parsed_yaml.get("tags", []) in (["scene-reference"], []):
-                print(
-                    f"{self.path} yaml is missing tags: {self.parsed_yaml.get('tags')}!"
-                )
+                print(f"{self.path} yaml is missing tags: {self.parsed_yaml.get('tags')}!")
 
 
 class Book:
@@ -203,18 +202,14 @@ class Book:
                     "manuscript": round_to_one_decimal(
                         stats["manuscript words"] / stats["populated scenes"]
                     ),
-                    "total": round_to_one_decimal(
-                        stats["total words"] / stats["populated scenes"]
-                    ),
+                    "total": round_to_one_decimal(stats["total words"] / stats["populated scenes"]),
                 }
             if num_populated_chapters:
                 stats["chapter_average"] = {
                     "manuscript": round_to_one_decimal(
                         stats["manuscript words"] / num_populated_chapters
                     ),
-                    "total": round_to_one_decimal(
-                        stats["total words"] / num_populated_chapters
-                    ),
+                    "total": round_to_one_decimal(stats["total words"] / num_populated_chapters),
                 }
         return povs
 

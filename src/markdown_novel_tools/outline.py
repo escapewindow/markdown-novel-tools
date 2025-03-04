@@ -6,17 +6,13 @@ Currently assumes that all tables in a file are formatted the same.
 """
 
 import argparse
-from collections import namedtuple
-from itertools import zip_longest
 import re
 import sys
+from collections import namedtuple
+from itertools import zip_longest
 from urllib.parse import quote
 
-from markdown_novel_tools.constants import (
-    DIVIDER_REGEX,
-    FILE_HEADER,
-    SPECIAL_CHAR_REGEX,
-)
+from markdown_novel_tools.constants import DIVIDER_REGEX, FILE_HEADER, SPECIAL_CHAR_REGEX
 
 
 class Table:
@@ -49,9 +45,7 @@ class Table:
             if field not in self.line_obj._fields:
                 error_msg += f"{column_name}: {field} is not a valid field!\n"
         if error_msg:
-            print(
-                f"{error_msg}Valid fields are {self.line_obj._fields}", file=sys.stderr
-            )
+            print(f"{error_msg}Valid fields are {self.line_obj._fields}", file=sys.stderr)
             sys.exit(1)
 
     def verify_header(self, line, line_num):
@@ -157,11 +151,7 @@ class Table:
                 continue
             for line in v:
                 # TODO play nicely with order, stop hardcoding. Add a --format argparse option?
-                output = (
-                    line.Description.replace("[[", "")
-                    .replace("]]", "")
-                    .replace(":", " -")
-                )
+                output = line.Description.replace("[[", "").replace("]]", "").replace(":", " -")
                 output = f"- {output} ({line.Arc}"
                 if line.Beat:
                     output = f"{output} {line.Beat}"
@@ -195,9 +185,7 @@ def parse_args(args):
         type=int,
         help="Specify which table number, starting from 1, to parse. Default: parse all the tables.",
     )
-    parser.add_argument(
-        "-s", "--stats", action="store_true", help="Display stats at the end."
-    )
+    parser.add_argument("-s", "--stats", action="store_true", help="Display stats at the end.")
     parser.add_argument(
         "-y",
         "--yaml",
