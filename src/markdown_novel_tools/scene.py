@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Deal with frontmatter of scenes."""
 
-import datetime
 import json
 import os
 import re
@@ -11,7 +10,6 @@ import time
 from copy import deepcopy
 from pathlib import Path
 
-import pytz
 import yaml
 from git import InvalidGitRepositoryError, Repo
 
@@ -280,14 +278,6 @@ def walk_current_dir():
             if skip in dirs:
                 dirs.remove(skip)
     return books, stats, errors
-
-
-def local_time(timestamp):
-    utc_tz = pytz.utc
-    local_tz = pytz.timezone(TIMEZONE)
-    utc_dt = datetime.datetime.fromtimestamp(timestamp, utc_tz)
-    local_dt = utc_dt.astimezone(local_tz)
-    return local_dt
 
 
 def walk_previous_revision(current_books, current_stats):
