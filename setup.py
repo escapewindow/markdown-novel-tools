@@ -7,6 +7,7 @@ from pathlib import Path
 from setuptools import setup
 
 project_dir = Path(os.path.abspath(os.path.dirname(__file__)))
+os.chdir(project_dir)
 
 # Using CalVer https://calver.org/
 VERSION = datetime.date.today().strftime("%y.%m.%d")
