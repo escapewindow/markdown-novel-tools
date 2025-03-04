@@ -38,7 +38,7 @@ def diff_yaml(outline_yaml, scene_yaml, verbose=False):
         print("Matches.")
 
 
-def summary_tool():
+def frontmatter_tool():
     """Work on summaries in both the outline and scene(s)."""
 
     # TODO proper argparse
