@@ -12,7 +12,7 @@ import re
 import sys
 from urllib.parse import quote
 
-from markdown-novel-tools.constants import DIVIDE_REGEX, FILE_HEADER, SPECIAL_CHAR_REGEX
+from markdown_novel_tools.constants import DIVIDE_REGEX, FILE_HEADER, SPECIAL_CHAR_REGEX
 
 
 class Table:

@@ -14,8 +14,8 @@ import sys
 import time
 import yaml
 
-from markdown-novel-tools.constants import ALPHANUM_RE, MANUSCRIPT_RE, TIMEZONE, DEBUG
-from markdown-novel-tools.utils import round_to_one_decimal, unwikilink
+from markdown_novel_tools.constants import ALPHANUM_RE, MANUSCRIPT_RE, TIMEZONE, DEBUG
+from markdown_novel_tools.utils import round_to_one_decimal, unwikilink
 
 
 class MarkdownFile():
@@ -196,7 +196,7 @@ class Book():
 
     def stats(self):
         return {
-            "book": i,
+            "book": self.book_num,
             "manuscript_words": self.manuscript_words,
             "total_words": self.total_words,
             "scene_average": self.scene_average,
@@ -246,7 +246,7 @@ def walk_current_dir():
     books, stats = init_books_stats()
     errors = ""
 
-    path = Path(__file__).parent.parent
+    path = Path(os.getcwd())
 
     for root, dirs, files in os.walk(path):
         if DEBUG:
@@ -273,7 +273,7 @@ def local_time(timestamp):
 
 def walk_previous_revision(current_books, current_stats):
     try:
-        repo = Repo(Path(__file__).parent.parent)
+        repo = Repo(Path(os.getcwd()))
     except InvalidGitRepositoryError:
         return "Not a valid git repo."
     time_fmt = "%Y%m%d"
@@ -293,7 +293,7 @@ def walk_previous_revision(current_books, current_stats):
     for blob in previous_commit.tree.traverse():
         if blob.name.endswith(".md"):
             contents = blob.data_stream.read().decode("utf-8")
-            update_stats(blob.path, contents, books, stats, hack_yaml=True)
+            update_stats(blob.path, books, stats, hack_yaml=True)
     return f"""Today:
     {current_stats["manuscript"]["files"] - stats["manuscript"]["files"]} manuscript files
     {current_stats["manuscript"]["words"] - stats["manuscript"]["words"]} manuscript words

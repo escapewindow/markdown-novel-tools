@@ -43,5 +43,7 @@ htmlcov/
 *.swo
 
 # Pyenv
-
 .python-version
+
+# script output
+_output

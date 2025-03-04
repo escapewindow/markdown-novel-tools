@@ -26,19 +26,19 @@ with open(project_dir / "README.md") as fh:
 
 
 setup(
-    name="markdown-novel-tools",
+    name="markdown_novel_tools",
     version=VERSION,
     description="Markdown Novel Tools",
     long_description=long_description,
     author="Aki Sasaki",
     author_email="aki@escapewindow.com",
     url="https://github.com/escapewindow/markdown-novel-tools",
-    packages=["markdown-novel-tools"],
+    packages=["markdown_novel_tools"],
     package_dir={"": "src"},
     entry_points={
         "console_scripts": [
-            "parse_beats = markdown-novel-tools.outline:parse_beats",
-            "stats = markdown-novel-tools.scene:stats",
+            "parse_beats = markdown_novel_tools.outline:parse_beats",
+            "stats = markdown_novel_tools.scene:stats",
         ]
     },
     zip_safe=False,
@@ -46,11 +46,11 @@ setup(
     install_requires=install_requires,
     tests_require=tests_require,
     python_requires=">=3.7",
-    classifiers=(
+    classifiers=[
         "Intended Audience :: Other Audience",
         "Natural Language :: English",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
-    ),
+    ],
 )
