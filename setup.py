@@ -39,6 +39,7 @@ setup(
         "console_scripts": [
             "parse_beats = markdown_novel_tools.outline:parse_beats",
             "manuscript_stats = markdown_novel_tools.scene:stats",
+            "summary_tool = markdown_novel_tools.manuscript:summary_tool",
         ]
     },
     zip_safe=False,

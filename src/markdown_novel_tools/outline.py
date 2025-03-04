@@ -156,8 +156,8 @@ class Table:
                 output = f"- {output} ({line.Arc}"
                 if line.Beat:
                     output = f"{output} {line.Beat}"
-                output = f"{output})"
-                yaml_output = f"{yaml_output}\n{output}"
+                output = f"{output})\n"
+                yaml_output = f"{yaml_output}{output}"
         return yaml_output
 
 
@@ -254,9 +254,9 @@ def get_beats(table, args):
         stdout += f"{FILE_HEADER}\n"
 
     if args.yaml:
-        stdout = f"{stdout}{table.get_yaml(_filter=args.filter)}\n"
+        stdout = f"{stdout}{table.get_yaml(_filter=args.filter)}"
     else:
-        stdout = f"{stdout}{table.get_markdown(_filter=args.filter, multi_table=args.multi_table_output)}\n"
+        stdout = f"{stdout}{table.get_markdown(_filter=args.filter, multi_table=args.multi_table_output)}"
 
     if args.stats:
         if table.column_values:
@@ -267,8 +267,8 @@ def get_beats(table, args):
                 values = list(values)
             else:
                 values = table.column_values
-            stderr = f"{stderr}Num values: {len(values)} {sorted(values)}"
-        stderr = f"{stderr}\nNum beats: {table.line_count}"
+            stderr = f"{stderr}Num values: {len(values)} {sorted(values)}\n"
+        stderr = f"{stderr}Num beats: {table.line_count}"
     return stdout, stderr
 
 
@@ -318,7 +318,7 @@ def parse_beats():
     if table:
         stdout, stderr = get_beats(table, args)
         if stdout:
-            print(stdout.strip())
+            print(stdout)
         if stderr:
             print(stderr, file=sys.stderr)
     else:
