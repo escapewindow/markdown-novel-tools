@@ -4,6 +4,7 @@
 import datetime
 
 import pytz
+import yaml
 
 from markdown_novel_tools.constants import TIMEZONE
 
@@ -26,3 +27,12 @@ def unwikilink(string, remove=("[[", "]]", "#")):
     for repl in remove:
         string = string.replace(repl, "")
     return string
+
+
+def yaml_string(yaml_object):
+    """Return a yaml formatted string from the yaml object."""
+    return yaml.dump(
+        yaml_object,
+        default_flow_style=False,
+        width=float("inf"),
+    )

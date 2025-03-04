@@ -12,7 +12,27 @@ import yaml
 
 from markdown_novel_tools.constants import OUTLINE_SCENE_RE
 from markdown_novel_tools.outline import do_parse_file, get_beats, parse_beats_args
-from markdown_novel_tools.scene import get_markdown_file, get_summary
+from markdown_novel_tools.scene import get_markdown_file
+from markdown_novel_tools.utils import yaml_string
+
+
+def diff_yaml(outline_yaml, scene_yaml, verbose=False):
+    """Diff outline and scene yaml strings."""
+    if verbose:
+        print(outline_yaml, end="")
+
+    d = "\n".join(
+        unified_diff(
+            outline_yaml.splitlines(),
+            scene_yaml.splitlines(),
+            "Outline",
+            "Scene",
+        )
+    )
+    if d:
+        print(f"Diff!\n{d}")
+    else:
+        print("Matches.")
 
 
 def summary_tool():
@@ -29,22 +49,10 @@ def summary_tool():
         raise OSError("Unable to find a matching scene!")
     if len(files) > 1:
         raise OSError(f"Found too many matching scenes: {files}!")
-    markdown_file = get_markdown_file(files[0])
-    scene_summary = get_summary(markdown_file)
 
-    if stdout:
-        print(stdout, end="")
-    if stderr:
-        print(stderr, file=sys.stderr)
-    d = "\n".join(
-        unified_diff(
-            stdout.splitlines(),
-            scene_summary.splitlines(),
-            "Outline",
-            "Scene",
-        )
-    )
-    if d:
-        print(f"Diff!\n{d}")
-    else:
-        print("Matches.")
+    # Diff summaries
+    markdown_file = get_markdown_file(files[0])
+    scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
+    diff_yaml(stdout, scene_summary)
+
+
