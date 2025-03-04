@@ -12,7 +12,11 @@ import re
 import sys
 from urllib.parse import quote
 
-from markdown_novel_tools.constants import DIVIDER_REGEX, FILE_HEADER, SPECIAL_CHAR_REGEX
+from markdown_novel_tools.constants import (
+    DIVIDER_REGEX,
+    FILE_HEADER,
+    SPECIAL_CHAR_REGEX,
+)
 
 
 class Table:
@@ -113,7 +117,6 @@ class Table:
         anchor = re.sub("-+", "-", anchor)
         return anchor
 
-
     def table_header(self, header):
         """Return the table header and divider line"""
         return f'{header}\n{re.sub(r"""[^+|]""", "-", header)}'
@@ -154,8 +157,12 @@ class Table:
                 continue
             for line in v:
                 # TODO play nicely with order, stop hardcoding. Add a --format argparse option?
-                output = line.Description.replace('[[', '').replace(']]', '').replace(':', ' -')
-                output = (f"- {output} ({line.Arc}")
+                output = (
+                    line.Description.replace("[[", "")
+                    .replace("]]", "")
+                    .replace(":", " -")
+                )
+                output = f"- {output} ({line.Arc}"
                 if line.Beat:
                     output = f"{output} {line.Beat}"
                 output = f"{output})"
@@ -174,7 +181,7 @@ def parse_args(args):
     parser.add_argument(
         "-f",
         "--filter",
-        nargs='+',
+        nargs="+",
         help="Only print the lines where the column matches this value.",
     )
     parser.add_argument(
@@ -192,11 +199,12 @@ def parse_args(args):
         "-s", "--stats", action="store_true", help="Display stats at the end."
     )
     parser.add_argument(
-        "-y", "--yaml", action="store_true", help="Print in yaml header mode, rather than markdown table."
+        "-y",
+        "--yaml",
+        action="store_true",
+        help="Print in yaml header mode, rather than markdown table.",
     )
-    parser.add_argument(
-        "--split-column", help="Split column by commas."
-    )
+    parser.add_argument("--split-column", help="Split column by commas.")
     parser.add_argument(
         "--file-headers",
         "--fh",
@@ -228,7 +236,7 @@ def get_line_parts(line, split_column=None):
     """Split a markdown table by pipes, return the list and their widths"""
     line = line.strip()
     parts = []
-    for i,part in enumerate(line.strip("|").split("|")):
+    for i, part in enumerate(line.strip("|").split("|")):
         part = part.strip()
         if split_column and i in split_column:
             part = [x.strip() for x in part.split(",")]
@@ -290,7 +298,12 @@ def do_parse_file(fh, args):
                 if args.table is not None and table_num != args.table:
                     continue
                 if table is None:
-                    table = Table(line, column=args.column, order=args.order, split_column=args.split_column)
+                    table = Table(
+                        line,
+                        column=args.column,
+                        order=args.order,
+                        split_column=args.split_column,
+                    )
                 else:
                     table.verify_header(line, line_num)
             continue

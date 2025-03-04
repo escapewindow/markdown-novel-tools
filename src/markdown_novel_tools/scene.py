@@ -18,7 +18,7 @@ from markdown_novel_tools.constants import ALPHANUM_RE, MANUSCRIPT_RE, TIMEZONE,
 from markdown_novel_tools.utils import round_to_one_decimal, unwikilink
 
 
-class MarkdownFile():
+class MarkdownFile:
     total_words = 0
     manuscript_words = 0
     book_num = None
@@ -50,7 +50,7 @@ class MarkdownFile():
 
     def count_words(self, contents):
         """Count the words in a markdown file, skipping the header and any
-           symbol-only lines.
+        symbol-only lines.
 
         """
         in_comment = False
@@ -86,10 +86,12 @@ class MarkdownFile():
                     self.characters = []
                 self.characters.append(char)
             if self.parsed_yaml.get("tags", []) in (["scene-reference"], []):
-                print(f"{self.path} yaml is missing tags: {self.parsed_yaml.get('tags')}!")
+                print(
+                    f"{self.path} yaml is missing tags: {self.parsed_yaml.get('tags')}!"
+                )
 
 
-class Book():
+class Book:
     manuscript_words = 0
     total_words = 0
     chapters = {}
@@ -104,23 +106,29 @@ class Book():
             "manuscript words": scene.manuscript_words,
             "total words": scene.total_words,
         }
-        self.chapters.setdefault(scene.chapter_num, {
-            "manuscript words": 0,
-            "total words": 0,
-        })
+        self.chapters.setdefault(
+            scene.chapter_num,
+            {
+                "manuscript words": 0,
+                "total words": 0,
+            },
+        )
         self.chapters[scene.chapter_num]["manuscript words"] += scene.manuscript_words
         self.chapters[scene.chapter_num]["total words"] += scene.total_words
         self.manuscript_words += scene.manuscript_words
         self.total_words += scene.total_words
         if scene.pov:
-            self.povs.setdefault(scene.pov, {
-                "scenes": 0,
-                "chapters": [],
-                "populated scenes": 0,
-                "populated chapters": [],
-                "manuscript words": 0,
-                "total words": 0,
-            })
+            self.povs.setdefault(
+                scene.pov,
+                {
+                    "scenes": 0,
+                    "chapters": [],
+                    "populated scenes": 0,
+                    "populated chapters": [],
+                    "manuscript words": 0,
+                    "total words": 0,
+                },
+            )
             self.povs[scene.pov]["scenes"] += 1
             if scene.chapter_num not in self.povs[scene.pov]["chapters"]:
                 self.povs[scene.pov]["chapters"].append(scene.chapter_num)
@@ -152,8 +160,12 @@ class Book():
             total["manuscript"] += scene["manuscript words"]
             total["total"] += scene["total words"]
             populated_scene_count += 1
-        average["populated manuscript words"] = round_to_one_decimal(total["manuscript"] / populated_scene_count)
-        average["populated total words"] = round_to_one_decimal(total["total"] / populated_scene_count)
+        average["populated manuscript words"] = round_to_one_decimal(
+            total["manuscript"] / populated_scene_count
+        )
+        average["populated total words"] = round_to_one_decimal(
+            total["total"] / populated_scene_count
+        )
         average["num scenes"] = f"{populated_scene_count} / {len(self.scenes)}"
         return average
 
@@ -171,8 +183,12 @@ class Book():
             total["manuscript"] += chapter["manuscript words"]
             total["total"] += chapter["total words"]
             populated_chapter_count += 1
-        average["populated manuscript words"] = round_to_one_decimal(total["manuscript"] / populated_chapter_count)
-        average["populated total words"] = round_to_one_decimal(total["total"] / populated_chapter_count)
+        average["populated manuscript words"] = round_to_one_decimal(
+            total["manuscript"] / populated_chapter_count
+        )
+        average["populated total words"] = round_to_one_decimal(
+            total["total"] / populated_chapter_count
+        )
         average["num chapters"] = f"{populated_chapter_count} / {len(self.chapters)}"
         return average
 
@@ -184,13 +200,21 @@ class Book():
             num_populated_chapters = len(stats["populated chapters"])
             if stats["populated scenes"]:
                 stats["scene_average"] = {
-                    "manuscript": round_to_one_decimal(stats["manuscript words"] / stats["populated scenes"]),
-                    "total": round_to_one_decimal(stats["total words"] / stats["populated scenes"]),
+                    "manuscript": round_to_one_decimal(
+                        stats["manuscript words"] / stats["populated scenes"]
+                    ),
+                    "total": round_to_one_decimal(
+                        stats["total words"] / stats["populated scenes"]
+                    ),
                 }
             if num_populated_chapters:
                 stats["chapter_average"] = {
-                    "manuscript": round_to_one_decimal(stats["manuscript words"] / num_populated_chapters),
-                    "total": round_to_one_decimal(stats["total words"] / num_populated_chapters),
+                    "manuscript": round_to_one_decimal(
+                        stats["manuscript words"] / num_populated_chapters
+                    ),
+                    "total": round_to_one_decimal(
+                        stats["total words"] / num_populated_chapters
+                    ),
                 }
         return povs
 
@@ -302,7 +326,7 @@ def walk_previous_revision(current_books, current_stats):
 
 
 def stats():
-    """ Get the stats for the manuscript """
+    """Get the stats for the manuscript"""
     artifact_dir = Path("_output")
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)
