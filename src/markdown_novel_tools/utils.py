@@ -5,6 +5,8 @@ import datetime
 
 import pytz
 
+from markdown_novel_tools.constants import TIMEZONE
+
 
 def local_time(timestamp):
     utc_tz = pytz.utc
