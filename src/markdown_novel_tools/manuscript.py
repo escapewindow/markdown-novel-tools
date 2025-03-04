@@ -2,16 +2,15 @@
 """Manuscript - cross-outline and -scene."""
 # TODO frontmatter schema
 
+import os
+import sys
 from copy import deepcopy
 from difflib import unified_diff
 from glob import glob
 from io import StringIO
-import os
 from pathlib import Path
-import sys
 
 import yaml
-
 
 from markdown_novel_tools.constants import OUTLINE_SCENE_RE
 from markdown_novel_tools.outline import do_parse_file, get_beats, parse_beats_args
