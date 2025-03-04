@@ -50,7 +50,7 @@
   - [ ] move from individual scripts to subcommands?
 
 # Tests
-- [ ] add github action on push to main
+- [x] add github action on push to main
 - [ ] 100% test coverage
 
 # Documentation
