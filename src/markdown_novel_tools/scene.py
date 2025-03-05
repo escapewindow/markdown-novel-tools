@@ -3,13 +3,13 @@
 
 import json
 import os
-from pprint import pprint
 import re
 import shutil
 import sys
 import time
 from copy import deepcopy
 from pathlib import Path
+from pprint import pprint
 
 import yaml
 from git import InvalidGitRepositoryError, Repo
