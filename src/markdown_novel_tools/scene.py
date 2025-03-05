@@ -3,6 +3,7 @@
 
 import json
 import os
+from pprint import pprint
 import re
 import shutil
 import sys
@@ -45,7 +46,7 @@ class MarkdownFile:
         self.count_words(contents)
 
         if DEBUG:
-            print(f"{vars(self)}")
+            pprint(vars(self))
 
     def count_words(self, contents):
         """Count the words in a markdown file, skipping the header and any
@@ -224,15 +225,8 @@ class Book:
         }
 
 
-def get_markdown_file(path, hack_yaml=False):
-    """Create a MarkdownFile from `path`."""
-    with open(path) as fh:
-        contents = fh.read()
-    return MarkdownFile(path, contents, hack_yaml)
-
-
-def update_stats(path, books, stats, hack_yaml=False):
-    md_file = get_markdown_file(path, hack_yaml)
+def update_stats(path, contents, books, stats, hack_yaml=False):
+    md_file = MarkdownFile(path, contents, hack_yaml)
     stats["total"]["files"] += 1
     stats["total"]["words"] += md_file.total_words
     if md_file.is_manuscript:
@@ -272,7 +266,9 @@ def walk_current_dir():
         for file_ in sorted(files):
             if file_.endswith(".md"):
                 path = os.path.join(root, file_)
-                error = update_stats(path, books, stats)
+                with open(path) as fh:
+                    contents = fh.read()
+                error = update_stats(path, contents, books, stats)
                 if error:
                     errors += error
         for skip in (".git", ".obsidian", "_output"):
@@ -303,7 +299,7 @@ def walk_previous_revision(current_books, current_stats):
     for blob in previous_commit.tree.traverse():
         if blob.name.endswith(".md"):
             contents = blob.data_stream.read().decode("utf-8")
-            update_stats(blob.path, books, stats, hack_yaml=True)
+            update_stats(blob.path, contents, books, stats, hack_yaml=True)
     return f"""Today:
     {current_stats["manuscript"]["files"] - stats["manuscript"]["files"]} manuscript files
     {current_stats["manuscript"]["words"] - stats["manuscript"]["words"]} manuscript words
