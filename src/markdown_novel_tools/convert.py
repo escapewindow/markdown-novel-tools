@@ -22,7 +22,7 @@ import pytz
 from git import InvalidGitRepositoryError, Repo
 from num2words import num2words
 
-from markdown_novel_tools import ALPHANUM_RE, MANUSCRIPT_RE, TIMEZONE
+from markdown_novel_tools.constants import ALPHANUM_RE, MANUSCRIPT_RE, TIMEZONE
 
 
 def unwikilink(string):
@@ -169,7 +169,7 @@ def munge_metadata(path, artifact_dir):
 
 
 def get_git_revision():
-    repo = Repo(Path(__file__).parent.parent)
+    repo = Repo(Path(os.getcwd()))
     rev = str(repo.head.commit)[0:12]
     if repo.is_dirty():
         rev = f"{rev}+"
