@@ -164,6 +164,7 @@ class Table:
             for line in v:
                 # TODO play nicely with order, stop hardcoding. Add a --format argparse option?
                 output = line.Description.replace("[[", "").replace("]]", "").replace(":", " -")
+                # TODO prettify - instead of (Arc1,Arc2 Beat1,Beat2), do (Arc1 Beat1, Arc2 Beat2)
                 output = f"- {output} ({line.Arc}"
                 if line.Beat:
                     output = f"{output} {line.Beat}"
