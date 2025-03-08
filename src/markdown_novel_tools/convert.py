@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-""" Convert an obsidian markdown file to text.
+"""Convert an obsidian markdown file to text.
 
 I'm using a custom script because the various Obsidian community pandoc
 plugins and the various existing pandoc formats aren't working for me.
