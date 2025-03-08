@@ -225,6 +225,14 @@ class Book:
         }
 
 
+def get_markdown_file(path, contents=None, hack_yaml=False):
+    """Get the markdown file"""
+    if contents is None:
+        with open(path) as fh:
+            contents = fh.read()
+    return MarkdownFile(path, contents, hack_yaml)
+
+
 def update_stats(path, contents, books, stats, hack_yaml=False):
     md_file = MarkdownFile(path, contents, hack_yaml)
     stats["total"]["files"] += 1

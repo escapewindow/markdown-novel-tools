@@ -21,20 +21,24 @@
 
 # Manuscript
 - [ ] manuscript frontmatter schema
-  - [ ] script to check/fix
+  - [ ] script to check
+  - [ ] script to fix
+- [ ] script to query scene frontmatter - unhardcode
 - [ ] diff scene summary and outline summary
-  - [ ] script to check/fix
+  - [ ] script to check - unhardcode
+  - [ ] script to fix
 - [ ] function to walk the entire manuscript
 
 # Conversion
-- [ ] conversion script in repo
-  - [ ] copy convert.py in, add to console scripts
+- [x] conversion script in repo
+  - [x] copy convert.py in, add to console scripts
 - [x] epub support
+  - [ ] example / custom css instead of hardcoding
   - [ ] cover, filename format in config
 - [x] markdown support
 - [x] pdf support
   - [ ] example / custom css instead of hardcoding
-  - [ ] allow for splitting manuscript into chunks, to avoid githug git-lfs issues after annotating by hand
+  - [x] allow for splitting manuscript into chunks, to avoid githug git-lfs issues after annotating by hand
 - [x] odt manuscript submission format
   - [ ] data dir with reference.odt etc?
 - [ ] docx manuscript submission format

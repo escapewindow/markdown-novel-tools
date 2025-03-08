@@ -9,6 +9,7 @@ from difflib import unified_diff
 from glob import glob
 from io import StringIO
 from pathlib import Path
+from pprint import pprint
 
 import yaml
 
@@ -55,15 +56,12 @@ def today():
     print(f"{count} commits today.")
 
 
-def frontmatter_tool():
-    """Work on summaries in both the outline and scene(s)."""
+def diff_frontmatter():
+    """Diff frontmatter.
 
-    # TODO proper argparse
-    #  - create base parser
-    #    - base parser_check
-    #  - add summary args
-    #    - summary parser_check
-    outline_argv = ["-c", "2", "-f", "01.01", "-y", "outline/Book 1 outline/scenes.md"]
+    TODO parse args, stop hardcoding
+    """
+    outline_argv = ["-c", "Scene", "-f", "01.01", "-y", "outline/Book 1 outline/scenes.md"]
     args = parse_beats_args(outline_argv)
     with open(args.path, encoding="utf-8") as fh:
         table = do_parse_file(fh, args)
@@ -86,6 +84,38 @@ def frontmatter_tool():
     outline_frontmatter = yaml_string(outline_yaml)
     print(f"---\n{outline_frontmatter}\n---\n{markdown_file.yaml}")
     diff_yaml(outline_frontmatter, markdown_file.yaml)
+
+
+def query_frontmatter():
+    """Query frontmatter.
+
+    TODO parse args, stop hardcoding
+    """
+    files = glob("manuscript/Book 1/1_01_01*")
+    if len(files) < 1:
+        raise OSError("Unable to find a matching scene!")
+    if len(files) > 1:
+        raise OSError(f"Found too many matching scenes: {files}!")
+    query_field = "Summary"
+
+    # Diff summaries
+    markdown_file = get_markdown_file(files[0])
+    print(yaml_string(markdown_file.parsed_yaml[query_field]), end="")
+
+
+def frontmatter_tool():
+    """Work on summaries in both the outline and scene(s)."""
+
+    # TODO proper argparse
+    #  - create base parser
+    #    - base parser_check
+    #  - add summary args
+    #    - summary parser_check
+
+    if len(sys.argv) < 1 or sys.argv[1] == "diff":
+        return diff_frontmatter()
+    elif sys.argv[1] == "query":
+        return query_frontmatter()
 
     # TODO replace summary; diff scene
     # TODO overwrite scene
