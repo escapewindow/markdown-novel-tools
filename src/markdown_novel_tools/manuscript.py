@@ -37,6 +37,24 @@ def diff_yaml(outline_yaml, scene_yaml, verbose=False):
         print("Matches.")
 
 
+def today():
+    """Print the number of git commits in cwd today."""
+    path = Path(os.getcwd())
+    repo = Repo(path)
+    time_fmt = "%Y%m%d"
+    today = local_time(time.time()).strftime(time_fmt)
+    current_commit = repo.head.commit
+    current_commit_date = local_time(current_commit.committed_date).strftime(time_fmt)
+    count = 0
+    for rev in repo.iter_commits(repo.head.ref):
+        if local_time(rev.committed_date).strftime(time_fmt) != today:
+            previous_commit = rev
+            break
+        count += 1
+
+    print(f"{count} commits today.")
+
+
 def frontmatter_tool():
     """Work on summaries in both the outline and scene(s)."""
 
