@@ -26,7 +26,6 @@ class Table:
         """Init Table object."""
         parts = get_line_parts(line)
         self.line_obj = namedtuple("Line", parts)
-        self.column = column
         self.max_width = [len(x) for x in parts]
         self.split_column = split_column
         self.order = self.line_obj._fields
@@ -35,8 +34,23 @@ class Table:
             self.order = tuple(order)
         if split_column is not None:
             for i, val in enumerate(split_column):
-                split_column[i] = int(val)
+                split_column[i] = self.get_column(val)
             self.split_column = tuple(split_column)
+        self.column = self.get_column(column)
+
+    def get_column(self, column):
+        """Get the column name, given either an int or a column name"""
+        if column is None:
+            return column
+        try:
+            column = int(column)
+            if column < len(self.order):
+                return column
+            raise IndexError(f"{column} is out of range in {self.order}")
+        except ValueError:
+            if column in self.order:
+                return self.order.index(column)
+            raise (f"{column} is not a column name or index: {self.order}")
 
     def verify_field_names(self, fields, column_name):
         """Verify the fields in `order` are valid column names."""
@@ -63,10 +77,7 @@ class Table:
             sys.exit(1)
 
     def add_line(self, line):
-        """Add a line or lines, depending on split_column.
-
-        TODO: fix widths in split_column
-        """
+        """Add a line or lines, depending on split_column."""
         orig_parts = get_line_parts(line, self.split_column)
         if self.split_column:
             splits = {}
@@ -167,7 +178,6 @@ def parse_beats_args(args):
     parser.add_argument(
         "-c",
         "--column",
-        type=int,
         help="Which column to sort by, if any. First column is 0, 2nd is 1, etc.",
     )
     parser.add_argument(
