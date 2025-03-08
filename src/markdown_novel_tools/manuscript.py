@@ -5,6 +5,7 @@
 import os
 import subprocess
 import sys
+import time
 from copy import deepcopy
 from difflib import unified_diff
 from glob import glob
@@ -13,11 +14,12 @@ from pathlib import Path
 from pprint import pprint
 
 import yaml
+from git import Repo
 
 from markdown_novel_tools.constants import MANUSCRIPT_RE, OUTLINE_SCENE_RE
 from markdown_novel_tools.outline import do_parse_file, get_beats, parse_beats_args
 from markdown_novel_tools.scene import get_markdown_file
-from markdown_novel_tools.utils import yaml_string
+from markdown_novel_tools.utils import local_time, yaml_string
 
 
 def diff_yaml(from_yaml, to_yaml, from_name="from", to_name="to", verbose=False):
