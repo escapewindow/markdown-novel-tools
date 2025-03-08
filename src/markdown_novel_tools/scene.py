@@ -14,7 +14,7 @@ from pprint import pprint
 import yaml
 from git import InvalidGitRepositoryError, Repo
 
-from markdown_novel_tools.constants import ALPHANUM_RE, DEBUG, MANUSCRIPT_FILENAME_RE
+from markdown_novel_tools.constants import ALPHANUM_RE, DEBUG, MANUSCRIPT_RE
 from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikilink
 
 
@@ -35,7 +35,7 @@ class MarkdownFile:
         self.hack_yaml = hack_yaml
 
         if self.is_manuscript:
-            m = MANUSCRIPT_FILENAME_RE.match(self.title)
+            m = MANUSCRIPT_RE.match(self.title)
             if m:
                 for attr in ("book_num", "chapter_num", "scene_num"):
                     setattr(self, attr, m[attr])
