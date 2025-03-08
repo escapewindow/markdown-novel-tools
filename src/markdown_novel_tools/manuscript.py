@@ -3,6 +3,7 @@
 # TODO frontmatter schema
 
 import os
+import subprocess
 import sys
 from copy import deepcopy
 from difflib import unified_diff
@@ -13,29 +14,26 @@ from pprint import pprint
 
 import yaml
 
-from markdown_novel_tools.constants import OUTLINE_SCENE_RE
+from markdown_novel_tools.constants import MANUSCRIPT_RE, OUTLINE_SCENE_RE
 from markdown_novel_tools.outline import do_parse_file, get_beats, parse_beats_args
 from markdown_novel_tools.scene import get_markdown_file
 from markdown_novel_tools.utils import yaml_string
 
 
-def diff_yaml(outline_yaml, scene_yaml, verbose=False):
+def diff_yaml(from_yaml, to_yaml, from_name="from", to_name="to", verbose=False):
     """Diff outline and scene yaml strings."""
     if verbose:
-        print(outline_yaml, end="")
+        print(from_yaml, end="")
+        print(to_yaml, end="")
 
-    d = "\n".join(
-        unified_diff(
-            outline_yaml.splitlines(),
-            scene_yaml.splitlines(),
-            "Outline",
-            "Scene",
-        )
-    )
-    if d:
-        print(f"Diff!\n{d}")
-    else:
-        print("Matches.")
+    diff = ""
+    for line in unified_diff(
+        from_yaml.splitlines(), to_yaml.splitlines(), fromfile=from_name, tofile=to_name
+    ):
+        diff = f"{diff}{line.rstrip()}\n"
+
+    if diff:
+        print(diff)
 
 
 def today():
@@ -61,26 +59,42 @@ def diff_frontmatter():
 
     TODO parse args, stop hardcoding
     """
-    outline_argv = ["-c", "Scene", "-f", "01.01", "-y", "outline/Book 1 outline/scenes.md"]
-    args = parse_beats_args(outline_argv)
-    with open(args.path, encoding="utf-8") as fh:
-        table = do_parse_file(fh, args)
-    if table:
-        outline_summary, _ = get_beats(table, args)
 
-    files = glob("manuscript/Book 1/1_01_01*")
+    files = sorted(glob("manuscript/Book 1/*"))
+    table = None
 
     # Diff summaries
-    for path in files:
-        markdown_file = get_markdown_file(path)
-        scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
-        diff_yaml(outline_summary, scene_summary)
+    for _path in files:
+        m = MANUSCRIPT_RE.match(os.path.basename(_path))
+        if not m:
+            continue
 
-        outline_yaml = deepcopy(markdown_file.parsed_yaml)
-        outline_yaml["Summary"] = yaml.safe_load(StringIO(outline_summary))
-        outline_frontmatter = yaml_string(outline_yaml)
-        print(f"---\n{outline_frontmatter}\n---\n{markdown_file.yaml}")
-        diff_yaml(outline_frontmatter, markdown_file.yaml)
+        outline_argv = [
+            "-c",
+            "2",
+            "-f",
+            f"{m['chapter_num']}.{m['scene_num']}",
+            "-y",
+            "outline/Book 1 outline/scenes.md",
+        ]
+        args = parse_beats_args(outline_argv)
+        if not table:
+            with open(args.path, encoding="utf-8") as fh:
+                table = do_parse_file(fh, args)
+
+        outline_summary, _ = get_beats(table, args)
+
+        markdown_file = get_markdown_file(_path)
+        scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
+
+        base_filename = os.path.basename(_path).strip(".md")
+        diff_yaml(
+            scene_summary,
+            outline_summary,
+            from_name=f"{base_filename} scene",
+            to_name=f"{base_filename} outline",
+            verbose=False,
+        )
 
 
 def query_frontmatter():
@@ -88,7 +102,7 @@ def query_frontmatter():
 
     TODO parse args, stop hardcoding
     """
-    files = glob("manuscript/Book 1/1_01_01*")
+    files = sorted(glob("manuscript/Book 1/1_01_01*"))
     if len(files) < 1:
         raise OSError("Unable to find a matching scene!")
     if len(files) > 1:
