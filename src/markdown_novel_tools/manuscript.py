@@ -69,21 +69,18 @@ def diff_frontmatter():
         outline_summary, _ = get_beats(table, args)
 
     files = glob("manuscript/Book 1/1_01_01*")
-    if len(files) < 1:
-        raise OSError("Unable to find a matching scene!")
-    if len(files) > 1:
-        raise OSError(f"Found too many matching scenes: {files}!")
 
     # Diff summaries
-    markdown_file = get_markdown_file(files[0])
-    scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
-    diff_yaml(outline_summary, scene_summary)
+    for path in files:
+        markdown_file = get_markdown_file(path)
+        scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
+        diff_yaml(outline_summary, scene_summary)
 
-    outline_yaml = deepcopy(markdown_file.parsed_yaml)
-    outline_yaml["Summary"] = yaml.safe_load(StringIO(outline_summary))
-    outline_frontmatter = yaml_string(outline_yaml)
-    print(f"---\n{outline_frontmatter}\n---\n{markdown_file.yaml}")
-    diff_yaml(outline_frontmatter, markdown_file.yaml)
+        outline_yaml = deepcopy(markdown_file.parsed_yaml)
+        outline_yaml["Summary"] = yaml.safe_load(StringIO(outline_summary))
+        outline_frontmatter = yaml_string(outline_yaml)
+        print(f"---\n{outline_frontmatter}\n---\n{markdown_file.yaml}")
+        diff_yaml(outline_frontmatter, markdown_file.yaml)
 
 
 def query_frontmatter():
