@@ -2,6 +2,8 @@
 """markdown-novel-tools utils."""
 
 import datetime
+import os
+from pathlib import Path
 
 import pytz
 import yaml
@@ -15,6 +17,23 @@ def represent_none(self, _):
 
 
 yaml.add_representer(type(None), represent_none)
+
+
+def find_markdown_files(base_path):
+    """Return a list of markdown files in base_path."""
+
+    if os.path.isfile(base_path):
+        return [base_path]
+
+    root = Path(base_path)
+    file_paths = []
+
+    for root, dirs, files in os.walk(root):
+        for file_ in sorted(files):
+            if file_.endswith(".md"):
+                path = os.path.join(root, file_)
+                file_paths.append(path)
+    return file_paths
 
 
 def local_time(timestamp):

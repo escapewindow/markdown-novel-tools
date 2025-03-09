@@ -1,25 +1,19 @@
 #!/usr/bin/env python3
 """Manuscript - cross-outline and -scene."""
-# TODO frontmatter schema
 
+import argparse
 import os
-import subprocess
-import sys
 import time
-from copy import deepcopy
 from difflib import unified_diff
 from glob import glob
-from io import StringIO
 from pathlib import Path
-from pprint import pprint
 
-import yaml
 from git import Repo
 
-from markdown_novel_tools.constants import MANUSCRIPT_RE, OUTLINE_SCENE_RE
+from markdown_novel_tools.constants import MANUSCRIPT_RE
 from markdown_novel_tools.outline import do_parse_file, get_beats, parse_beats_args
 from markdown_novel_tools.scene import get_markdown_file
-from markdown_novel_tools.utils import local_time, yaml_string
+from markdown_novel_tools.utils import find_markdown_files, local_time, yaml_string
 
 
 def diff_yaml(from_yaml, to_yaml, from_name="from", to_name="to", verbose=False):
@@ -34,8 +28,7 @@ def diff_yaml(from_yaml, to_yaml, from_name="from", to_name="to", verbose=False)
     ):
         diff = f"{diff}{line.rstrip()}\n"
 
-    if diff:
-        print(diff)
+    return diff
 
 
 def today():
@@ -49,14 +42,14 @@ def today():
     count = 0
     for rev in repo.iter_commits(repo.head.ref):
         if local_time(rev.committed_date).strftime(time_fmt) != today:
-            previous_commit = rev
             break
         count += 1
 
     print(f"{count} commits today.")
 
 
-def diff_frontmatter():
+# Frontmatter {{{1
+def diff_frontmatter(args):
     """Diff frontmatter.
 
     TODO parse args, stop hardcoding
@@ -73,7 +66,7 @@ def diff_frontmatter():
 
         outline_argv = [
             "-c",
-            "2",
+            "Scene",
             "-f",
             f"{m['chapter_num']}.{m['scene_num']}",
             "-y",
@@ -90,45 +83,57 @@ def diff_frontmatter():
         scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
 
         base_filename = os.path.basename(_path).strip(".md")
-        diff_yaml(
+        diff = diff_yaml(
             scene_summary,
             outline_summary,
             from_name=f"{base_filename} scene",
             to_name=f"{base_filename} outline",
             verbose=False,
         )
+        if diff:
+            print(diff)
 
 
-def query_frontmatter():
-    """Query frontmatter.
-
-    TODO parse args, stop hardcoding
-    """
-    files = sorted(glob("manuscript/Book 1/1_01_01*"))
-    if len(files) < 1:
-        raise OSError("Unable to find a matching scene!")
-    if len(files) > 1:
-        raise OSError(f"Found too many matching scenes: {files}!")
-    query_field = "Summary"
+def query_frontmatter(args):
+    """Query frontmatter."""
+    files = find_markdown_files(args.path)
 
     # Diff summaries
     markdown_file = get_markdown_file(files[0])
-    print(yaml_string(markdown_file.parsed_yaml[query_field]), end="")
+    if args.field:
+        print(yaml_string(markdown_file.parsed_yaml[args.field]), end="")
+    else:
+        print(yaml_string(markdown_file.parsed_yaml), end="")
+
+
+def frontmatter_parser():
+    """Return a parser for the frontmatter tool."""
+    parser = argparse.ArgumentParser(prog="frontmatter")
+    parser.add_argument("-v", "--verbose", help="Verbose logging.")
+    subparsers = parser.add_subparsers()
+
+    # frontmatter query
+    query_parser = subparsers.add_parser("query")
+    query_parser.add_argument("-p", "--path", default="manuscript")
+    query_parser.add_argument("-f", "--field")
+    query_parser.set_defaults(func=query_frontmatter)
+
+    diff_parser = subparsers.add_parser("diff")
+    diff_parser.add_argument(
+        "-o", "--outline", default="outline/Book 1 outline/scenes.md"
+    )  # TODO unhardcode
+    diff_parser.add_argument("path", default="manuscript/Book 1/")  # TODO unhardcode
+    diff_parser.set_defaults(func=diff_frontmatter)
+
+    # TODO frontmatter schema. `frontmatter check`?
+    # TODO replace summary. `frontmatter update`?
+    # TODO overwrite scene.
+
+    return parser
 
 
 def frontmatter_tool():
     """Work on summaries in both the outline and scene(s)."""
 
-    # TODO proper argparse
-    #  - create base parser
-    #    - base parser_check
-    #  - add summary args
-    #    - summary parser_check
-
-    if len(sys.argv) < 1 or sys.argv[1] == "diff":
-        return diff_frontmatter()
-    elif sys.argv[1] == "query":
-        return query_frontmatter()
-
-    # TODO replace summary; diff scene
-    # TODO overwrite scene
+    parser = frontmatter_parser()
+    parser.parse_args()

@@ -47,3 +47,6 @@ htmlcov/
 
 # script output
 _output
+
+# Misc
+.DS_Store

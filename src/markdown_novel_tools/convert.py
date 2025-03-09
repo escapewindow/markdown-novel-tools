@@ -23,6 +23,7 @@ from git import InvalidGitRepositoryError, Repo
 from num2words import num2words
 
 from markdown_novel_tools.constants import ALPHANUM_RE, MANUSCRIPT_RE, TIMEZONE
+from markdown_novel_tools.utils import find_markdown_files
 
 
 def unwikilink(string):
@@ -72,23 +73,6 @@ def parse_args(args):
             print(f"`{format}` format requires `imagemagick`! Exiting...", file=sys.stderr)
             sys.exit(1)
     return parsed_args
-
-
-def walk_dir(base_path):
-    """Return a list of markdown files in base_path."""
-
-    if os.path.isfile(base_path):
-        return [base_path]
-
-    root = Path(base_path)
-    file_paths = []
-
-    for root, dirs, files in os.walk(root):
-        for file_ in sorted(files):
-            if file_.endswith(".md"):
-                path = os.path.join(root, file_)
-                file_paths.append(path)
-    return file_paths
 
 
 def _header_helper(title, heading_link, style="chapter-only"):
@@ -194,7 +178,7 @@ def convert_chapter(args):
         metadata = fh.read()
 
     for base_path in args.filename:
-        for path in walk_dir(base_path):
+        for path in find_markdown_files(base_path):
             m = MANUSCRIPT_RE.match(os.path.basename(path))
             if not m:
                 print(f"skipping {path}")
@@ -262,7 +246,7 @@ def convert_full(args):
         contents += metadata
 
     for base_path in file_sources:
-        for path in walk_dir(base_path):
+        for path in find_markdown_files(base_path):
             heading_num += 1
             header, toc_link = get_header_and_toc(path, args.format, heading_num)
             contents += header
