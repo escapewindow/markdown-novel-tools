@@ -65,14 +65,10 @@ def diff_frontmatter(args):
             with open(args.outline, encoding="utf-8") as fh:
                 table = do_parse_file(fh, column="Scene")
 
-        outline_summary = table.get_yaml(_filter=f"{m['chapter_num']}.{m['scene_num']}")
-        print(outline_summary)
-        print("***")
+        outline_summary = table.get_yaml(_filter=[f"{m['chapter_num']}.{m['scene_num']}"])
 
         markdown_file = get_markdown_file(_path)
         scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
-        print(scene_summary)
-        print("***")
 
         base_filename = os.path.basename(_path).strip(".md")
         diff = diff_yaml(
@@ -83,7 +79,7 @@ def diff_frontmatter(args):
             verbose=False,
         )
         if diff:
-            print(diff)
+            print(diff, end="")
 
 
 def query_frontmatter(args):

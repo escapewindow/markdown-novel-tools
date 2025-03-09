@@ -283,7 +283,7 @@ def get_beats(table, args):
     return stdout, stderr
 
 
-def do_parse_file(fh, args):
+def do_parse_file(fh, **kwargs):
     """Parse the given filehandle's table(s)."""
     in_table = False
     table_num = 0
@@ -295,14 +295,14 @@ def do_parse_file(fh, args):
             if line.startswith("|"):
                 in_table = True
                 table_num += 1
-                if args.table is not None and table_num != args.table:
+                if kwargs.get("table") is not None and table_num != args.get("table"):
                     continue
                 if table is None:
                     table = Table(
                         line,
-                        column=args.column,
-                        order=args.order,
-                        split_column=args.split_column,
+                        column=kwargs.get("column"),
+                        order=kwargs.get("order"),
+                        split_column=kwargs.get("split_column"),
                     )
                 else:
                     table.verify_header(line, line_num)
@@ -310,7 +310,7 @@ def do_parse_file(fh, args):
         if not line.startswith("|"):
             in_table = False
             continue
-        if args.table is not None and table_num != args.table:
+        if kwargs.get("table") is not None and table_num != kwargs.get("table"):
             continue
         if DIVIDER_REGEX.match(line):
             continue
@@ -324,7 +324,7 @@ def parse_beats():
     args = parse_beats_args(sys.argv[1:])
 
     with open(args.path, encoding="utf-8") as fh:
-        table = do_parse_file(fh, args)
+        table = do_parse_file(fh, **args)
 
     if table:
         stdout, stderr = get_beats(table, args)
