@@ -9,6 +9,7 @@ from difflib import unified_diff
 from glob import glob
 from pathlib import Path
 
+import yaml
 from git import Repo
 
 from markdown_novel_tools.constants import MANUSCRIPT_RE
@@ -50,21 +51,22 @@ def today():
 
 
 # Frontmatter {{{1
-def diff_frontmatter(args):
+def _do_diff(_path, scene_summary, outline_summary):
+    """frontmatter diff helper."""
+
+
+def frontmatter_diff(args):
     """Diff frontmatter."""
 
     files = find_markdown_files(args.path)
-    table = None
+    with open(args.outline, encoding="utf-8") as fh:
+        table = do_parse_file(fh, column="Scene")
 
     # Diff summaries
     for _path in files:
         m = MANUSCRIPT_RE.match(os.path.basename(_path))
         if not m:
             continue
-
-        if not table:
-            with open(args.outline, encoding="utf-8") as fh:
-                table = do_parse_file(fh, column="Scene")
 
         outline_summary = table.get_yaml(_filter=[f"{m['chapter_num']}.{m['scene_num']}"])
 
@@ -83,7 +85,50 @@ def diff_frontmatter(args):
             print(diff, end="")
 
 
-def query_frontmatter(args):
+def frontmatter_update(args):
+    """Overwrite frontmatter with formatted output after replacing the summary."""
+
+    files = find_markdown_files(args.path)
+    with open(args.outline, encoding="utf-8") as fh:
+        table = do_parse_file(fh, column="Scene")
+
+    # Update summaries
+    for _path in files:
+        m = MANUSCRIPT_RE.match(os.path.basename(_path))
+        if not m:
+            continue
+
+        outline_summary = yaml.safe_load(
+            table.get_yaml(_filter=[f"{m['chapter_num']}.{m['scene_num']}"])
+        )
+
+        markdown_file = get_markdown_file(_path)
+        if markdown_file.parsed_yaml["Summary"] == outline_summary:
+            continue
+        markdown_file.parsed_yaml["Summary"] = outline_summary
+        new_yaml = yaml_string(markdown_file.parsed_yaml).rstrip()
+
+        if args.noop:
+            base_filename = re.sub("\.md$", "", os.path.basename(_path))
+            diff = diff_yaml(
+                markdown_file.yaml,
+                new_yaml,
+                from_name=f"{base_filename} orig frontmatter",
+                to_name=f"{base_filename} new frontmatter",
+            )
+            if diff:
+                print(diff, end="")
+        else:
+            with open(_path, "w") as fh:
+                fh.write(
+                    f"""---
+    {yaml_string(markdown_file.parsed_yaml).rstrip()}
+    ---
+    {markdown_file.body}"""
+                )
+
+
+def frontmatter_query(args):
     """Query frontmatter."""
     files = find_markdown_files(args.path)
 
@@ -106,18 +151,24 @@ def frontmatter_parser():
     query_parser = subparsers.add_parser("query")
     query_parser.add_argument("-f", "--field")
     query_parser.add_argument("path", nargs="+")
-    query_parser.set_defaults(func=query_frontmatter)
+    query_parser.set_defaults(func=frontmatter_query)
 
     diff_parser = subparsers.add_parser("diff")
     diff_parser.add_argument(
         "-o", "--outline", default="outline/Book 1 outline/scenes.md"
     )  # TODO unhardcode
     diff_parser.add_argument("path", nargs="+")
-    diff_parser.set_defaults(func=diff_frontmatter)
+    diff_parser.set_defaults(func=frontmatter_diff)
 
-    # TODO frontmatter schema. `frontmatter check`?
-    # TODO replace summary. `frontmatter update`?
-    # TODO overwrite scene.
+    # TODO frontmatter schema. `frontmatter check`? Or is this part of update, and if we use -n we just get the schema check?
+    # frontmatter update
+    update_parser = subparsers.add_parser("update")
+    update_parser.add_argument(
+        "-o", "--outline", default="outline/Book 1 outline/scenes.md"
+    )  # TODO unhardcode
+    update_parser.add_argument("-n", "--noop", action="store_true")
+    update_parser.add_argument("path", nargs="+")
+    update_parser.set_defaults(func=frontmatter_update)
 
     return parser
 

@@ -43,17 +43,18 @@ class MarkdownFile:
         if DEBUG:
             print(f"{path}: ", end="")
 
-        self.count_words(contents)
+        self.yaml, self.body = self.get_frontmatter_and_body(contents)
+        self.count_words(self.body)
+        self.parse_yaml()
 
         if DEBUG:
             pprint(vars(self))
 
-    def count_words(self, contents):
-        """Count the words in a markdown file, skipping the header and any
-        symbol-only lines.
-
-        """
+    def get_frontmatter_and_body(self, contents):
+        """Get the frontmatter and body of a markdown file."""
         in_comment = False
+        frontmatter = ""
+        body = ""
 
         for line in contents.splitlines():
             if line == "---":
@@ -61,17 +62,28 @@ class MarkdownFile:
                 continue
             if in_comment:
                 if self.hack_yaml:
-                    self.yaml += f"{unwikilink(line)}\n"
+                    frontmatter = f"{frontmatter}{unwikilink(line)}\n"
                 else:
-                    self.yaml += f"{line}\n"
+                    frontmatter = f"{frontmatter}{line}\n"
+            else:
+                body = f"{body}{line}\n"
+        return frontmatter, body
+
+    def count_words(self, body):
+        """Count the words in a markdown file, skipping the header and any
+        symbol-only lines.
+
+        """
+        for line in body.splitlines():
             for word in line.split():
                 if ALPHANUM_RE.search(word):
                     self.total_words += 1
-                    if self.is_manuscript and not in_comment:
+                    if self.is_manuscript:
                         self.manuscript_words += 1
                 elif DEBUG:
                     print(f"skipping {word}")
 
+    def parse_yaml(self):
         if self.book_num and self.yaml:
             try:
                 self.parsed_yaml = yaml.safe_load(self.yaml)

@@ -20,15 +20,13 @@
   - [ ] script to check/fix outline file(s)
 
 # Manuscript
-- [ ] manuscript frontmatter schema
-  - [ ] script to check
-  - [ ] script to fix
 - [x] script to query scene frontmatter
   - [ ] if querying, e.g. tags, allow for returning a set of all tags, rather than a list of tags per scene
 - [x] diff scene summary and outline summary
   - [x] script to check - unhardcode
-- [ ] script to replace frontmatter with outline + standard-formatted yaml
-  - [ ] just replace scene summary with outline's
+- [x] script to replace frontmatter with outline + standard-formatted yaml
+  - [ ] verify frontmatter schema
+  - [ ] fix frontmatter schema
 - [x] function to walk the entire manuscript
 
 # Conversion
