@@ -3,6 +3,7 @@
 
 import argparse
 import os
+import re
 import time
 from difflib import unified_diff
 from glob import glob
@@ -70,7 +71,7 @@ def diff_frontmatter(args):
         markdown_file = get_markdown_file(_path)
         scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
 
-        base_filename = os.path.basename(_path).strip(".md")
+        base_filename = re.sub("\.md$", "", os.path.basename(_path))
         diff = diff_yaml(
             scene_summary,
             outline_summary,
@@ -87,11 +88,12 @@ def query_frontmatter(args):
     files = find_markdown_files(args.path)
 
     # Diff summaries
-    markdown_file = get_markdown_file(files[0])
-    if args.field:
-        print(yaml_string(markdown_file.parsed_yaml[args.field]), end="")
-    else:
-        print(yaml_string(markdown_file.parsed_yaml), end="")
+    for path in files:
+        markdown_file = get_markdown_file(path)
+        if args.field:
+            print(yaml_string(markdown_file.parsed_yaml[args.field]), end="")
+        else:
+            print(yaml_string(markdown_file.parsed_yaml), end="")
 
 
 def frontmatter_parser():
@@ -102,15 +104,15 @@ def frontmatter_parser():
 
     # frontmatter query
     query_parser = subparsers.add_parser("query")
-    query_parser.add_argument("-p", "--path", default="manuscript")
     query_parser.add_argument("-f", "--field")
+    query_parser.add_argument("path", nargs="+")
     query_parser.set_defaults(func=query_frontmatter)
 
     diff_parser = subparsers.add_parser("diff")
     diff_parser.add_argument(
         "-o", "--outline", default="outline/Book 1 outline/scenes.md"
     )  # TODO unhardcode
-    diff_parser.add_argument("path", default="manuscript/Book 1/")  # TODO unhardcode
+    diff_parser.add_argument("path", nargs="+")
     diff_parser.set_defaults(func=diff_frontmatter)
 
     # TODO frontmatter schema. `frontmatter check`?

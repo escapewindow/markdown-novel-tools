@@ -19,20 +19,24 @@ def represent_none(self, _):
 yaml.add_representer(type(None), represent_none)
 
 
-def find_markdown_files(base_path):
+def find_markdown_files(paths):
     """Return a list of markdown files in base_path."""
 
-    if os.path.isfile(base_path):
-        return [base_path]
+    if isinstance(paths, str):
+        paths = [paths]
 
-    root = Path(base_path)
     file_paths = []
+    for base_path in paths:
+        if os.path.isfile(base_path):
+            file_paths.append(base_path)
+            continue
+        root = Path(base_path)
 
-    for root, dirs, files in os.walk(root):
-        for file_ in sorted(files):
-            if file_.endswith(".md"):
-                path = os.path.join(root, file_)
-                file_paths.append(path)
+        for root, dirs, files in os.walk(root):
+            for file_ in sorted(files):
+                if file_.endswith(".md"):
+                    path = os.path.join(root, file_)
+                    file_paths.append(path)
     return file_paths
 
 
