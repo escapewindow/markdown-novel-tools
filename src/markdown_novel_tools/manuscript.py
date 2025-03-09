@@ -11,7 +11,7 @@ from pathlib import Path
 from git import Repo
 
 from markdown_novel_tools.constants import MANUSCRIPT_RE
-from markdown_novel_tools.outline import do_parse_file, get_beats, parse_beats_args
+from markdown_novel_tools.outline import do_parse_file
 from markdown_novel_tools.scene import get_markdown_file
 from markdown_novel_tools.utils import find_markdown_files, local_time, yaml_string
 
@@ -50,12 +50,9 @@ def today():
 
 # Frontmatter {{{1
 def diff_frontmatter(args):
-    """Diff frontmatter.
+    """Diff frontmatter."""
 
-    TODO parse args, stop hardcoding
-    """
-
-    files = sorted(glob("manuscript/Book 1/*"))
+    files = find_markdown_files(args.path)
     table = None
 
     # Diff summaries
@@ -64,23 +61,18 @@ def diff_frontmatter(args):
         if not m:
             continue
 
-        outline_argv = [
-            "-c",
-            "Scene",
-            "-f",
-            f"{m['chapter_num']}.{m['scene_num']}",
-            "-y",
-            "outline/Book 1 outline/scenes.md",
-        ]
-        args = parse_beats_args(outline_argv)
         if not table:
-            with open(args.path, encoding="utf-8") as fh:
-                table = do_parse_file(fh, args)
+            with open(args.outline, encoding="utf-8") as fh:
+                table = do_parse_file(fh, column="Scene")
 
-        outline_summary, _ = get_beats(table, args)
+        outline_summary = table.get_yaml(_filter=f"{m['chapter_num']}.{m['scene_num']}")
+        print(outline_summary)
+        print("***")
 
         markdown_file = get_markdown_file(_path)
         scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
+        print(scene_summary)
+        print("***")
 
         base_filename = os.path.basename(_path).strip(".md")
         diff = diff_yaml(
@@ -136,4 +128,5 @@ def frontmatter_tool():
     """Work on summaries in both the outline and scene(s)."""
 
     parser = frontmatter_parser()
-    parser.parse_args()
+    args = parser.parse_args()
+    args.func(args)
