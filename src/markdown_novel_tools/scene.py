@@ -81,7 +81,7 @@ class MarkdownFile:
                 return
             if self.parsed_yaml.get("POV"):
                 self.pov = self.parsed_yaml["POV"]
-            for char in sorted(self.parsed_yaml.get("Characters", []) or []):
+            for char in self.parsed_yaml.get("Characters", []):
                 if self.characters is None:
                     self.characters = []
                 self.characters.append(char)
@@ -137,12 +137,12 @@ class Book:
                 if scene.chapter_num not in self.povs[scene.pov]["populated chapters"]:
                     self.povs[scene.pov]["populated chapters"].append(scene.chapter_num)
         if scene.characters:
-            self.scenes[scene.title]["characters"] = sorted(scene.characters)
-            # Chapter chars; make sure this is sorted and unique
+            self.scenes[scene.title]["characters"] = scene.characters
+            # Chapter chars; make sure this is unique
             chap = self.chapters[scene.chapter_num]
             chap.setdefault("characters", [])
             chap["characters"].extend(scene.characters)
-            chap["characters"] = sorted(list(set(chap["characters"])))
+            chap["characters"] = list(set(chap["characters"]))
 
     @property
     def scene_average(self):
