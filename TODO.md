@@ -23,11 +23,13 @@
 - [ ] manuscript frontmatter schema
   - [ ] script to check
   - [ ] script to fix
-- [ ] script to query scene frontmatter - unhardcode
-- [ ] diff scene summary and outline summary
-  - [ ] script to check - unhardcode
-  - [ ] script to fix
-- [ ] function to walk the entire manuscript
+- [x] script to query scene frontmatter
+  - [ ] if querying, e.g. tags, allow for returning a set of all tags, rather than a list of tags per scene
+- [x] diff scene summary and outline summary
+  - [x] script to check - unhardcode
+- [ ] script to replace frontmatter with outline + standard-formatted yaml
+  - [ ] just replace scene summary with outline's
+- [x] function to walk the entire manuscript
 
 # Conversion
 - [x] conversion script in repo
@@ -42,7 +44,6 @@
 - [x] odt manuscript submission format
   - [ ] data dir with reference.odt etc?
 - [ ] docx manuscript submission format
-- [ ] stop hardcoding frontmatter paths / order
 
 # Config
 - [ ] config file
@@ -50,8 +51,9 @@
   - [ ] example config
   - [ ] --config-path arg
   - [ ] search in pwd, base git dir, $XDG_CONFIG_HOME/md-novel, $HOME
-- [ ] shared argparse parser  
-  - [ ] move from individual scripts to subcommands?
+  - [ ] get rid of all hardcodes - move to config?
+- [x] move `frontmatter` from individual scripts to subcommands?
+- [ ] move `novel` from individual scripts to subcommands?
 
 # Tests
 - [x] add github action on push to main
