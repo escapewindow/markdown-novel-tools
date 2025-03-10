@@ -324,7 +324,7 @@ def parse_beats():
     args = parse_beats_args(sys.argv[1:])
 
     with open(args.path, encoding="utf-8") as fh:
-        table = do_parse_file(fh, **args)
+        table = do_parse_file(fh, **vars(args))
 
     if table:
         stdout, stderr = get_beats(table, args)

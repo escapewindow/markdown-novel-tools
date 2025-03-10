@@ -18,6 +18,7 @@ from markdown_novel_tools.constants import ALPHANUM_RE, DEBUG, MANUSCRIPT_RE
 from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikilink
 
 
+# MarkdownFile {{{1
 class MarkdownFile:
     total_words = 0
     manuscript_words = 0
@@ -101,6 +102,7 @@ class MarkdownFile:
                 print(f"{self.path} yaml is missing tags: {self.parsed_yaml.get('tags')}!")
 
 
+# Book {{{1
 class Book:
     manuscript_words = 0
     total_words = 0
@@ -237,6 +239,7 @@ class Book:
         }
 
 
+# Functions {{{1
 def get_markdown_file(path, contents=None, hack_yaml=False):
     """Get the markdown file"""
     if contents is None:
