@@ -25,8 +25,9 @@
 - [x] diff scene summary and outline summary
   - [x] script to check - unhardcode
 - [x] script to replace frontmatter with outline + standard-formatted yaml
-  - [ ] verify frontmatter schema
-  - [ ] fix frontmatter schema
+- [x] verify frontmatter schema
+- [ ] fix frontmatter schema
+  - [ ] including key order
 - [x] function to walk the entire manuscript
 
 # Conversion
