@@ -8,6 +8,7 @@ import time
 from difflib import unified_diff
 from glob import glob
 from pathlib import Path
+from pprint import pprint
 
 import yaml
 from git import Repo
@@ -119,12 +120,12 @@ def frontmatter_update(args):
             if diff:
                 print(diff, end="")
         else:
-            with open(_path, "w") as fh:
+            with open(_path, "w", encoding="utf-8") as fh:
                 fh.write(
                     f"""---
-    {yaml_string(markdown_file.parsed_yaml).rstrip()}
-    ---
-    {markdown_file.body}"""
+{yaml_string(markdown_file.parsed_yaml).rstrip()}
+---
+{markdown_file.body}"""
                 )
 
 

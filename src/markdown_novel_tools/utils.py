@@ -68,4 +68,5 @@ def yaml_string(yaml_object):
         default_flow_style=False,
         width=float("inf"),
         sort_keys=False,
+        allow_unicode=True,
     )

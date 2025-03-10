@@ -240,7 +240,7 @@ class Book:
 def get_markdown_file(path, contents=None, hack_yaml=False):
     """Get the markdown file"""
     if contents is None:
-        with open(path) as fh:
+        with open(path, encoding="utf-8") as fh:
             contents = fh.read()
     return MarkdownFile(path, contents, hack_yaml)
 
@@ -286,7 +286,7 @@ def walk_current_dir():
         for file_ in sorted(files):
             if file_.endswith(".md"):
                 path = os.path.join(root, file_)
-                with open(path) as fh:
+                with open(path, encoding="utf-8") as fh:
                     contents = fh.read()
                 error = update_stats(path, contents, books, stats)
                 if error:
@@ -337,7 +337,7 @@ def stats():
     for i, book in books.items():
         book_stats = book.stats()
         path = artifact_dir / f"book{i}.json"
-        with open(path, "w") as fh:
+        with open(path, "w", encoding="utf-8") as fh:
             json.dump(book_stats, fh, indent=4)
         print(json.dumps(book_stats, indent=4))
 
@@ -348,7 +348,7 @@ Total words: {stats['total']['words']}
 
 {walk_previous_revision(books, stats)}"""
     print(summary)
-    with open(artifact_dir / "summary.txt", "w") as fh:
+    with open(artifact_dir / "summary.txt", "w", encoding="utf-8") as fh:
         print(summary, file=fh)
 
     if errors:

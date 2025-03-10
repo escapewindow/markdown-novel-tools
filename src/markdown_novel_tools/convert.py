@@ -142,7 +142,7 @@ def munge_metadata(path, artifact_dir):
     if not os.path.exists(path):
         print(f"{path} doesn't exist!")
         sys.exit(1)
-    with open(path) as fh:
+    with open(path, encoding="utf-8") as fh:
         for line in fh:
             if line.startswith("cover-image:"):
                 orig_image = line.replace("cover-image:", "").strip()
@@ -174,7 +174,7 @@ def convert_chapter(args):
     artifact_dir = Path(args.artifact_dir)
     chapters = {}
     metadata_path = Path("skeleton/Book 1 Metadata.txt")  # TODO unhardcode
-    with open(metadata_path) as fh:
+    with open(metadata_path, encoding="utf-8") as fh:
         metadata = fh.read()
 
     for base_path in args.filename:
@@ -187,7 +187,7 @@ def convert_chapter(args):
             chapters.setdefault(
                 chapter_num, f"{metadata}\n\n# Chapter {chapter_num} - {m['POV']}\n\n"
             )
-            with open(path) as fh:
+            with open(path, encoding="utf-8") as fh:
                 simplified_contents = simplify_markdown(
                     fh.read(), ignore_blank_lines=ignore_blank_lines
                 )
@@ -206,7 +206,7 @@ def convert_chapter(args):
         chapter_basestr = f"book1-{datestr}-{subtitle}{revstr}-chapter{chapter_num}"
         chapter_md = artifact_dir / f"{chapter_basestr}.md"
         chapter_pdf = artifact_dir / f"{chapter_basestr}.pdf"
-        with open(chapter_md, "w") as fh:
+        with open(chapter_md, "w", encoding="utf-8") as fh:
             fh.write(chapters[chapter_num])
         cmd = [
             "pandoc",
@@ -252,7 +252,7 @@ def convert_full(args):
             contents += header
             if toc_link:
                 toc += toc_link
-            with open(path) as fh:
+            with open(path, encoding="utf-8") as fh:
                 simplified_contents = simplify_markdown(
                     fh.read(), ignore_blank_lines=ignore_blank_lines
                 )
@@ -272,7 +272,7 @@ def convert_full(args):
         subtitle = f"{args.subtitle}-"
     output_basestr = f"book1-{datestr}-{subtitle}{revstr}"
     output_md = artifact_dir / f"{output_basestr}.md"
-    with open(output_md, "w") as fh:
+    with open(output_md, "w", encoding="utf-8") as fh:
         fh.write(contents)
 
     if args.format == "pdf":

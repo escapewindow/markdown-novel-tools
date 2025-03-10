@@ -17,10 +17,10 @@ tests_require = [
     "pytest",
 ]
 
-with open(project_dir / "requirements.txt") as f:
+with open(project_dir / "requirements.txt", encoding="utf-8") as f:
     install_requires = f.readlines()
 
-with open(project_dir / "README.md") as fh:
+with open(project_dir / "README.md", encoding="utf-8") as fh:
     long_description = fh.read()
 
 
