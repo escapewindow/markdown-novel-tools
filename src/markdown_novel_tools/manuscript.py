@@ -4,6 +4,7 @@
 import argparse
 import os
 import re
+import sys
 import time
 from difflib import unified_diff
 from glob import glob
@@ -11,7 +12,9 @@ from pathlib import Path
 from pprint import pprint
 
 import yaml
+from exceptiongroup import BaseExceptionGroup, catch
 from git import Repo
+from schema import SchemaError
 
 from markdown_novel_tools.constants import MANUSCRIPT_RE
 from markdown_novel_tools.outline import do_parse_file
@@ -55,10 +58,27 @@ def today():
 def frontmatter_check(args):
     """Check frontmatter schema."""
 
+    errors = ""
+
+    def schema_error(excgroup: BaseExceptionGroup) -> None:
+        nonlocal errors
+        for exc in excgroup.exceptions:
+            errors = f"""{errors}
+            str {str(exc).encode('utf-8').decode('utf-8')}
+            autos {str(exc.autos)}
+            errors {str(exc.errors)}
+            """
+            print(repr(exc))
+
     files = find_markdown_files(args.path)
     for path in files:
         markdown_file = get_markdown_file(path)
-        FRONTMATTER_SCHEMA.validate(markdown_file.parsed_yaml)
+        with catch({SchemaError: schema_error}):
+            FRONTMATTER_SCHEMA.validate(markdown_file.parsed_yaml)
+    if errors:
+        print(errors, file=sys.stderr)
+        if args.strict:
+            sys.exit(1)
 
 
 def frontmatter_diff(args):
@@ -79,7 +99,7 @@ def frontmatter_diff(args):
         markdown_file = get_markdown_file(path)
         scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
 
-        base_filename = re.sub("\.md$", "", os.path.basename(path))
+        base_filename = re.sub(r"\.md$", "", os.path.basename(path))
         diff = diff_yaml(
             scene_summary,
             outline_summary,
@@ -115,7 +135,7 @@ def frontmatter_update(args):
         new_yaml = yaml_string(markdown_file.parsed_yaml).rstrip()
 
         if args.noop:
-            base_filename = re.sub("\.md$", "", os.path.basename(path))
+            base_filename = re.sub(r"\.md$", "", os.path.basename(path))
             diff = diff_yaml(
                 markdown_file.yaml,
                 new_yaml,
@@ -155,6 +175,7 @@ def frontmatter_parser():
 
     # frontmatter check
     check_parser = subparsers.add_parser("check")
+    check_parser.add_argument("-s", "--strict", action="store_true")
     check_parser.add_argument("path", nargs="+")
     check_parser.set_defaults(func=frontmatter_check)
 

@@ -1,3 +1,4 @@
+exceptiongroup
 GitPython
 md2pdf
 num2words

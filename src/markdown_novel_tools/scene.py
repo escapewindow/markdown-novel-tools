@@ -13,7 +13,7 @@ from pprint import pprint
 
 import yaml
 from git import InvalidGitRepositoryError, Repo
-from schema import And, Or, Schema, Use
+from schema import And, Optional, Or, Schema, Use
 
 from markdown_novel_tools.constants import ALPHANUM_RE, DEBUG, MANUSCRIPT_RE
 from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikilink
@@ -34,10 +34,15 @@ FRONTMATTER_SCHEMA = Schema(
         "Characters": And(list, len),
         "POV": And(str, len),
         "Hook": And(str, len),
-        "Scene": Schema({"Goal": str, "Conflict": str, "Setback": str}),
-        "Sequel": Schema({"Reaction": str, "Dilemma": str, "Decision": str}),
+        "Scene": Schema(
+            {"Goal": Or(list, str), "Conflict": Or(list, str), "Setback": Or(list, str)}
+        ),
+        "Sequel": Schema(
+            {"Reaction": Or(list, str), "Dilemma": Or(list, str), "Decision": Or(list, str)}
+        ),
         "Cliffhanger": And(str, len),
         "Summary": And(list, len),
+        Optional("Ideas / thoughts / todo"): Or(list, None),
     }
 )
 
