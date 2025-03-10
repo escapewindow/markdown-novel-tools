@@ -12,39 +12,54 @@ from pathlib import Path
 from pprint import pprint
 
 import yaml
+from cerberus import Validator
 from git import InvalidGitRepositoryError, Repo
-from schema import And, Optional, Or, Schema, Use
 
 from markdown_novel_tools.constants import ALPHANUM_RE, DEBUG, MANUSCRIPT_RE
 from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikilink
 
-
 # Schema {{{1
-def scene_sequel_verify(_dict, expected_keys):
-    """Helper function to test more complex schemas"""
-    pass
-
-
-FRONTMATTER_SCHEMA = Schema(
-    {
-        "Title": And(str, len),
-        "tags": list,
-        "aliases": list,
-        "Locations": And(list, len),
-        "Characters": And(list, len),
-        "POV": And(str, len),
-        "Hook": And(str, len),
-        "Scene": Schema(
-            {"Goal": Or(list, str), "Conflict": Or(list, str), "Setback": Or(list, str)}
-        ),
-        "Sequel": Schema(
-            {"Reaction": Or(list, str), "Dilemma": Or(list, str), "Decision": Or(list, str)}
-        ),
-        "Cliffhanger": And(str, len),
-        "Summary": And(list, len),
-        Optional("Ideas / thoughts / todo"): Or(list, None),
-    }
-)
+FRONTMATTER_SCHEMA = {
+    "Title": {"type": "string", "empty": False, "required": True},
+    "tags": {"type": "list", "schema": {"type": "string"}, "required": True},
+    "aliases": {"type": "list", "schema": {"type": "string"}, "required": True},
+    "Locations": {"type": "list", "schema": {"type": "string", "empty": False}, "required": True},
+    "Characters": {"type": "list", "schema": {"type": "string", "empty": False}, "required": True},
+    "POV": {"type": "string", "empty": False, "required": True},
+    "Hook": {"type": "string", "empty": False, "required": True},
+    "Scene": {
+        "type": "dict",
+        "schema": {
+            "Goal": {"type": ["list", "string"], "empty": False, "required": True},
+            "Conflict": {"type": ["list", "string"], "empty": False, "required": True},
+            "Setback": {"type": ["list", "string"], "empty": False, "required": True},
+        },
+        "empty": False,
+        "required": True,
+    },
+    "Sequel": {
+        "type": "dict",
+        "schema": {
+            "Reaction": {"type": ["list", "string"], "empty": False, "required": True},
+            "Dilemma": {"type": ["list", "string"], "empty": False, "required": True},
+            "Decision": {"type": ["list", "string"], "empty": False, "required": True},
+        },
+        "empty": False,
+        "required": True,
+    },
+    "Cliffhanger": {"type": "string", "required": True},
+    "Summary": {
+        "type": "list",
+        "schema": {"type": "string", "empty": False, "required": True},
+        "required": True,
+    },
+    "Ideas / thoughts / todo": {
+        "type": "list",
+        "schema": {"type": "string"},
+        "nullable": True,
+    },
+}
+FRONTMATTER_VALIDATOR = Validator(FRONTMATTER_SCHEMA)
 
 
 # MarkdownFile {{{1

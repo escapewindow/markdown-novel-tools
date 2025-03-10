@@ -14,11 +14,10 @@ from pprint import pprint
 import yaml
 from exceptiongroup import BaseExceptionGroup, catch
 from git import Repo
-from schema import SchemaError
 
 from markdown_novel_tools.constants import MANUSCRIPT_RE
 from markdown_novel_tools.outline import do_parse_file
-from markdown_novel_tools.scene import FRONTMATTER_SCHEMA, get_markdown_file
+from markdown_novel_tools.scene import FRONTMATTER_VALIDATOR, get_markdown_file
 from markdown_novel_tools.utils import find_markdown_files, local_time, yaml_string
 
 
@@ -58,27 +57,14 @@ def today():
 def frontmatter_check(args):
     """Check frontmatter schema."""
 
-    errors = ""
-
-    def schema_error(excgroup: BaseExceptionGroup) -> None:
-        nonlocal errors
-        for exc in excgroup.exceptions:
-            errors = f"""{errors}
-            str {str(exc).encode('utf-8').decode('utf-8')}
-            autos {str(exc.autos)}
-            errors {str(exc.errors)}
-            """
-            print(repr(exc))
-
     files = find_markdown_files(args.path)
     for path in files:
         markdown_file = get_markdown_file(path)
-        with catch({SchemaError: schema_error}):
-            FRONTMATTER_SCHEMA.validate(markdown_file.parsed_yaml)
-    if errors:
-        print(errors, file=sys.stderr)
-        if args.strict:
-            sys.exit(1)
+        FRONTMATTER_VALIDATOR.validate(markdown_file.parsed_yaml)
+        if FRONTMATTER_VALIDATOR.errors:
+            print(f"{os.path.basename(path)}\n{FRONTMATTER_VALIDATOR.errors}", file=sys.stderr)
+            if args.strict:
+                sys.exit(1)
 
 
 def frontmatter_diff(args):
