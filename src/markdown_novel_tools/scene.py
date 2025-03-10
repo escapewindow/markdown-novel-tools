@@ -122,8 +122,6 @@ class MarkdownFile:
                 if self.characters is None:
                     self.characters = []
                 self.characters.append(char)
-            if self.parsed_yaml.get("tags", []) in (["scene-reference"], []):
-                print(f"{self.path} yaml is missing tags: {self.parsed_yaml.get('tags')}!")
 
 
 # Book {{{1
