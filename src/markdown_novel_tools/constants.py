@@ -3,8 +3,6 @@
 
 import re
 
-from schema import And, Or, Schema, Use
-
 # TODO unhardcode
 TIMEZONE = "US/Mountain"
 DEBUG = 0
@@ -27,20 +25,3 @@ MANUSCRIPT_RE = re.compile(
     r"""^(?P<book_num>\d+)[-_](?P<chapter_num>\d+)[-_](?P<scene_num>\d+) - (?P<POV>\S+)"""
 )
 SPECIAL_CHAR_REGEX = re.compile(r"""[^A-Za-z0-9 ]""")
-
-# Schema {{{1
-FRONTMATTER_SCHEMA = Schema(
-    {
-        "Title": And(str, len),
-        "tags": list,
-        "aliases": list,
-        "Locations": And(list, len),
-        "Characters": And(list, len),
-        "POV": And(str, len),
-        "Hook": And(str, len),
-        "Scene": And(dict, lambda n: n.keys() == ["Goal", "Conflict", "Setback"]),
-        "Sequel": And(dict, lambda n: n.keys() == ["Reaction", "Dilemma", "Decision"]),
-        "Cliffhanger": And(str, len),
-        "Summary": (list, len),
-    }
-)

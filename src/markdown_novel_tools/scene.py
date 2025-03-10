@@ -13,9 +13,33 @@ from pprint import pprint
 
 import yaml
 from git import InvalidGitRepositoryError, Repo
+from schema import And, Or, Schema, Use
 
 from markdown_novel_tools.constants import ALPHANUM_RE, DEBUG, MANUSCRIPT_RE
 from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikilink
+
+
+# Schema {{{1
+def scene_sequel_verify(_dict, expected_keys):
+    """Helper function to test more complex schemas"""
+    pass
+
+
+FRONTMATTER_SCHEMA = Schema(
+    {
+        "Title": And(str, len),
+        "tags": list,
+        "aliases": list,
+        "Locations": And(list, len),
+        "Characters": And(list, len),
+        "POV": And(str, len),
+        "Hook": And(str, len),
+        "Scene": Schema({"Goal": str, "Conflict": str, "Setback": str}),
+        "Sequel": Schema({"Reaction": str, "Dilemma": str, "Decision": str}),
+        "Cliffhanger": And(str, len),
+        "Summary": And(list, len),
+    }
+)
 
 
 # MarkdownFile {{{1

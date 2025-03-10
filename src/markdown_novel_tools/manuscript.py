@@ -15,7 +15,7 @@ from git import Repo
 
 from markdown_novel_tools.constants import MANUSCRIPT_RE
 from markdown_novel_tools.outline import do_parse_file
-from markdown_novel_tools.scene import get_markdown_file
+from markdown_novel_tools.scene import FRONTMATTER_SCHEMA, get_markdown_file
 from markdown_novel_tools.utils import find_markdown_files, local_time, yaml_string
 
 
@@ -52,8 +52,13 @@ def today():
 
 
 # Frontmatter {{{1
-def _do_diff(_path, scene_summary, outline_summary):
-    """frontmatter diff helper."""
+def frontmatter_check(args):
+    """Check frontmatter schema."""
+
+    files = find_markdown_files(args.path)
+    for path in files:
+        markdown_file = get_markdown_file(path)
+        FRONTMATTER_SCHEMA.validate(markdown_file.parsed_yaml)
 
 
 def frontmatter_diff(args):
@@ -64,17 +69,17 @@ def frontmatter_diff(args):
         table = do_parse_file(fh, column="Scene")
 
     # Diff summaries
-    for _path in files:
-        m = MANUSCRIPT_RE.match(os.path.basename(_path))
+    for path in files:
+        m = MANUSCRIPT_RE.match(os.path.basename(path))
         if not m:
             continue
 
         outline_summary = table.get_yaml(_filter=[f"{m['chapter_num']}.{m['scene_num']}"])
 
-        markdown_file = get_markdown_file(_path)
+        markdown_file = get_markdown_file(path)
         scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
 
-        base_filename = re.sub("\.md$", "", os.path.basename(_path))
+        base_filename = re.sub("\.md$", "", os.path.basename(path))
         diff = diff_yaml(
             scene_summary,
             outline_summary,
@@ -94,8 +99,8 @@ def frontmatter_update(args):
         table = do_parse_file(fh, column="Scene")
 
     # Update summaries
-    for _path in files:
-        m = MANUSCRIPT_RE.match(os.path.basename(_path))
+    for path in files:
+        m = MANUSCRIPT_RE.match(os.path.basename(path))
         if not m:
             continue
 
@@ -103,14 +108,14 @@ def frontmatter_update(args):
             table.get_yaml(_filter=[f"{m['chapter_num']}.{m['scene_num']}"])
         )
 
-        markdown_file = get_markdown_file(_path)
+        markdown_file = get_markdown_file(path)
         if markdown_file.parsed_yaml["Summary"] == outline_summary:
             continue
         markdown_file.parsed_yaml["Summary"] = outline_summary
         new_yaml = yaml_string(markdown_file.parsed_yaml).rstrip()
 
         if args.noop:
-            base_filename = re.sub("\.md$", "", os.path.basename(_path))
+            base_filename = re.sub("\.md$", "", os.path.basename(path))
             diff = diff_yaml(
                 markdown_file.yaml,
                 new_yaml,
@@ -120,7 +125,7 @@ def frontmatter_update(args):
             if diff:
                 print(diff, end="")
         else:
-            with open(_path, "w", encoding="utf-8") as fh:
+            with open(path, "w", encoding="utf-8") as fh:
                 fh.write(
                     f"""---
 {yaml_string(markdown_file.parsed_yaml).rstrip()}
@@ -148,12 +153,12 @@ def frontmatter_parser():
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
     subparsers = parser.add_subparsers()
 
-    # frontmatter query
-    query_parser = subparsers.add_parser("query")
-    query_parser.add_argument("-f", "--field")
-    query_parser.add_argument("path", nargs="+")
-    query_parser.set_defaults(func=frontmatter_query)
+    # frontmatter check
+    check_parser = subparsers.add_parser("check")
+    check_parser.add_argument("path", nargs="+")
+    check_parser.set_defaults(func=frontmatter_check)
 
+    # frontmatter diff
     diff_parser = subparsers.add_parser("diff")
     diff_parser.add_argument(
         "-o", "--outline", default="outline/Book 1 outline/scenes.md"
@@ -161,7 +166,12 @@ def frontmatter_parser():
     diff_parser.add_argument("path", nargs="+")
     diff_parser.set_defaults(func=frontmatter_diff)
 
-    # TODO frontmatter schema. `frontmatter check`? Or is this part of update, and if we use -n we just get the schema check?
+    # frontmatter query
+    query_parser = subparsers.add_parser("query")
+    query_parser.add_argument("-f", "--field")
+    query_parser.add_argument("path", nargs="+")
+    query_parser.set_defaults(func=frontmatter_query)
+
     # frontmatter update
     update_parser = subparsers.add_parser("update")
     update_parser.add_argument(
