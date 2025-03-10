@@ -1,4 +1,4 @@
-cerberos
+cerberus
 GitPython
 md2pdf
 num2words

@@ -3,3 +3,4 @@ isort
 pylint
 pytest
 pytest-cov
+tox
