@@ -44,7 +44,7 @@ setup(
     zip_safe=False,
     license="MPL 2.0",
     install_requires=install_requires,
-    tests_require=tests_require,
+    tests_require=tests_requires,
     python_requires=">=3.7",
     classifiers=[
         "Intended Audience :: Other Audience",

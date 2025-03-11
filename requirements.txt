@@ -1,3 +1,4 @@
 cerberus
 GitPython
+pytz
 PyYAML
