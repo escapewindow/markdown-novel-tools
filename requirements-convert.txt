@@ -1,0 +1,4 @@
+-r requirements.txt
+md2pdf
+num2words
+pytz

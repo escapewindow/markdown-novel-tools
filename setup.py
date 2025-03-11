@@ -11,11 +11,8 @@ os.chdir(project_dir)
 
 VERSION = "0.1"
 
-tests_require = [
-    "flake8",
-    "flake8_docstrings",
-    "pytest",
-]
+with open(project_dir / "requirements-test.txt", encoding="utf-8") as f:
+    tests_requires = f.readlines()
 
 with open(project_dir / "requirements.txt", encoding="utf-8") as f:
     install_requires = f.readlines()
