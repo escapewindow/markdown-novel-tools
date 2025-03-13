@@ -4,12 +4,14 @@
 import argparse
 import os
 import re
+import subprocess
 import sys
 import time
 from difflib import unified_diff
 from glob import glob
 from pathlib import Path
 from pprint import pprint
+from shutil import which
 
 import yaml
 from exceptiongroup import BaseExceptionGroup, catch
@@ -19,6 +21,16 @@ from markdown_novel_tools.constants import MANUSCRIPT_RE
 from markdown_novel_tools.outline import do_parse_file
 from markdown_novel_tools.scene import FRONTMATTER_VALIDATOR, get_markdown_file
 from markdown_novel_tools.utils import find_markdown_files, local_time, yaml_string
+
+
+def output_diff(diff):
+    """Output diff, using `diff-so-fancy` if it exists."""
+    if not diff:
+        return
+    if which("diff-so-fancy"):
+        subprocess.run(["diff-so-fancy"], input=diff.encode("utf-8"))
+    else:
+        print(diff, end="")
 
 
 def diff_yaml(from_yaml, to_yaml, from_name="from", to_name="to", verbose=False):
@@ -93,8 +105,7 @@ def frontmatter_diff(args):
             to_name=f"{base_filename} outline",
             verbose=False,
         )
-        if diff:
-            print(diff, end="")
+        output_diff(diff)
 
 
 def frontmatter_update(args):
@@ -128,8 +139,7 @@ def frontmatter_update(args):
                 from_name=f"{base_filename} orig frontmatter",
                 to_name=f"{base_filename} new frontmatter",
             )
-            if diff:
-                print(diff, end="")
+            output_diff(diff)
         else:
             with open(path, "w", encoding="utf-8") as fh:
                 fh.write(
@@ -147,6 +157,7 @@ def frontmatter_query(args):
     # Diff summaries
     for path in files:
         markdown_file = get_markdown_file(path)
+        print(path)
         if args.field:
             print(yaml_string(markdown_file.parsed_yaml[args.field]), end="")
         else:
