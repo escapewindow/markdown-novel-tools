@@ -7,23 +7,18 @@ plugins and the various existing pandoc formats aren't working for me.
 """
 
 import argparse
-import datetime
 import os
 import re
 import shutil
 import subprocess
 import sys
-import tempfile
 import time
 from pathlib import Path
-from pprint import pprint
 
-import pytz
-from git import InvalidGitRepositoryError, Repo
 from num2words import num2words
 
-from markdown_novel_tools.constants import ALPHANUM_RE, MANUSCRIPT_RE, TIMEZONE
-from markdown_novel_tools.utils import find_markdown_files, local_time
+from markdown_novel_tools.constants import ALPHANUM_RE, MANUSCRIPT_RE
+from markdown_novel_tools.utils import find_markdown_files, get_git_revision, local_time
 
 
 def unwikilink(string):
@@ -32,6 +27,7 @@ def unwikilink(string):
 
 
 def simplify_markdown(contents, ignore_blank_lines=True):
+    """Simplify the markdown - remove frontmatter, unwikilink."""
     in_meta = False
     simplified_contents = ""
     for line in contents.splitlines():
@@ -64,13 +60,15 @@ def parse_args(args):
     parser.add_argument("--artifact-dir", default="_output")
     parser.add_argument("filename", nargs="+")
     parsed_args = parser.parse_args(args)
-    if format in ("pdf", "epub", "docx", "odt", "chapter-pdf"):
+    if parsed_args.format in ("pdf", "epub", "docx", "odt", "chapter-pdf"):
         if not shutil.which("pandoc"):
-            print(f"`{format}` format requires `pandoc`! Exiting...", file=sys.stderr)
+            print(f"`{parsed_args.format}` format requires `pandoc`! Exiting...", file=sys.stderr)
             sys.exit(1)
-    if format == "epub":
+    if parsed_args.format == "epub":
         if not shutil.which("magick"):
-            print(f"`{format}` format requires `imagemagick`! Exiting...", file=sys.stderr)
+            print(
+                f"`{parsed_args.format}` format requires `imagemagick`! Exiting...", file=sys.stderr
+            )
             sys.exit(1)
     return parsed_args
 
@@ -80,7 +78,7 @@ def _header_helper(title, heading_link, style="chapter-only"):
     toc_link = f"- [{title}](#{heading_link})\n"
     allowed_styles = ("chapter-only", "chapter-and-scene")
     if style not in allowed_styles:
-        raise (f"_header_helper: {style} not in {allowed_styles}!")
+        raise ValueError(f"_header_helper: {style} not in {allowed_styles}!")
     m = MANUSCRIPT_RE.match(title)
     if m and style == "chapter-only":
         info = {}
@@ -112,24 +110,25 @@ def _doc_header_helper(title):
     return header
 
 
-def get_header_and_toc(path, format, heading_num):
+def get_header_and_toc(path, format_, heading_num):
+    """Get the header and table of contents for the converted file."""
     title = (
         os.path.basename(path).replace(".md", "").replace("_", "-").replace("Book 1 ", "")
     )  # TODO regex
     heading_link = f"heading-{heading_num}"
     header = ""
-    if format == "pdf":
+    if format_ == "pdf":
         header, toc_link = _header_helper(title, heading_link, style="chapter-and-scene")
-    elif format == "epub":
+    elif format_ == "epub":
         header, toc_link = _header_helper(title, heading_link, style="chapter-only")
-    elif format in ("docx", "odt"):
+    elif format_ in ("docx", "odt"):
         header = _doc_header_helper(title)
         toc_link = ""
-    elif format in ("text"):
+    elif format_ in ("text"):
         header = f"# {title}\n\n"
         toc_link = ""
     else:
-        raise Exception(f"Unknown format {format}!")
+        raise ValueError(f"Unknown format {format_}!")
     return header, toc_link
 
 
@@ -152,16 +151,8 @@ def munge_metadata(path, artifact_dir):
     return (contents, orig_image, new_image)
 
 
-def get_git_revision():
-    repo = Repo(Path(os.getcwd()))
-    rev = str(repo.head.commit)[0:12]
-    if repo.is_dirty():
-        rev = f"{rev}+"
-    return rev
-
-
 def convert_chapter(args):
-    contents = ""
+    """Convert a single chapter."""
     ignore_blank_lines = False
     artifact_dir = Path(args.artifact_dir)
     chapters = {}
@@ -213,6 +204,7 @@ def convert_chapter(args):
 
 
 def convert_full(args):
+    """Convert the full manuscript."""
     contents = ""
     toc = "# Table of Contents\n\n"
     heading_num = 0
@@ -350,6 +342,7 @@ def convert_full(args):
 
 
 def convert():
+    """Convert manuscript from markdown to other file formats."""
     args = parse_args(sys.argv[1:])
     if args.format in ("chapter-pdf",):
         convert_chapter(args)

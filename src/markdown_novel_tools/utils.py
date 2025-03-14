@@ -10,6 +10,7 @@ from shutil import which
 
 import pytz
 import yaml
+from git import Repo
 
 from markdown_novel_tools.constants import TIMEZONE
 
@@ -88,6 +89,15 @@ def find_markdown_files(paths):
                     path = os.path.join(root, file_)
                     file_paths.append(path)
     return file_paths
+
+
+def get_git_revision():
+    """Get the git revision of a repo."""
+    repo = Repo(Path(os.getcwd()))
+    rev = str(repo.head.commit)[0:12]
+    if repo.is_dirty():
+        rev = f"{rev}+"
+    return rev
 
 
 def local_time(timestamp):

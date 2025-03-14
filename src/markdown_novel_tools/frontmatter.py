@@ -4,29 +4,14 @@
 import argparse
 import os
 import re
-import subprocess
 import sys
-import time
-from difflib import unified_diff
-from glob import glob
-from pathlib import Path
-from pprint import pprint
-from shutil import which
 
 import yaml
-from exceptiongroup import BaseExceptionGroup, catch
-from git import Repo
 
 from markdown_novel_tools.constants import MANUSCRIPT_RE
 from markdown_novel_tools.outline import do_parse_file
 from markdown_novel_tools.scene import FRONTMATTER_VALIDATOR, get_markdown_file
-from markdown_novel_tools.utils import (
-    diff_yaml,
-    find_markdown_files,
-    local_time,
-    output_diff,
-    yaml_string,
-)
+from markdown_novel_tools.utils import diff_yaml, find_markdown_files, output_diff, yaml_string
 
 
 # Frontmatter {{{1
