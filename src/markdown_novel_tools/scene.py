@@ -63,16 +63,17 @@ FRONTMATTER_VALIDATOR = Validator(FRONTMATTER_SCHEMA)
 class MarkdownFile:
     """Object for a markdown file."""
 
-    manuscript_info = {
-        "manuscript_words": 0,
-        "total_words": 0,
-    }
+    manuscript_info = None
     yaml = ""
     parsed_yaml = None
     error = None
 
     def __init__(self, path, contents, hack_yaml):
         self.path = Path(path)
+        self.manuscript_info = {
+            "manuscript_words": 0,
+            "total_words": 0,
+        }
         self.is_manuscript = "manuscript" in self.path.parts
         self.manuscript_info["title"] = re.sub(r"""\.md$""", "", os.path.basename(path))
         self.hack_yaml = hack_yaml
@@ -162,17 +163,16 @@ class Book:
             "manuscript words": scene.manuscript_info["manuscript_words"],
             "total words": scene.manuscript_info["total_words"],
         }
+        chapter_num = scene.manuscript_info["chapter_num"]
         self.chapters.setdefault(
-            scene.chapter_num,
+            chapter_num,
             {
                 "manuscript words": 0,
                 "total words": 0,
             },
         )
-        self.chapters[scene.chapter_num]["manuscript words"] += scene.manuscript_info[
-            "manuscript_words"
-        ]
-        self.chapters[scene.chapter_num]["total words"] += scene.manuscript_info["total_words"]
+        self.chapters[chapter_num]["manuscript words"] += scene.manuscript_info["manuscript_words"]
+        self.chapters[chapter_num]["total words"] += scene.manuscript_info["total_words"]
         self.manuscript_words += scene.manuscript_info["manuscript_words"]
         self.total_words += scene.manuscript_info["total_words"]
         pov = scene.manuscript_info.get("pov")
@@ -189,19 +189,19 @@ class Book:
                 },
             )
             self.povs[pov]["scenes"] += 1
-            if scene.chapter_num not in self.povs[pov]["chapters"]:
-                self.povs[pov]["chapters"].append(scene.chapter_num)
+            if chapter_num not in self.povs[pov]["chapters"]:
+                self.povs[pov]["chapters"].append(chapter_num)
             self.povs[pov]["manuscript words"] += scene.manuscript_info["manuscript_words"]
             self.povs[pov]["total words"] += scene.manuscript_info["total_words"]
             if scene.manuscript_info["manuscript_words"]:
                 self.povs[pov]["populated scenes"] += 1
-                if scene.chapter_num not in self.povs[pov]["populated chapters"]:
-                    self.povs[pov]["populated chapters"].append(scene.chapter_num)
+                if chapter_num not in self.povs[pov]["populated chapters"]:
+                    self.povs[pov]["populated chapters"].append(chapter_num)
         characters = scene.manuscript_info.get("characters")
         if characters:
             self.scenes[scene.manuscript_info["title"]]["characters"] = characters
             # Chapter chars; make sure this is unique
-            chap = self.chapters[scene.chapter_num]
+            chap = self.chapters[chapter_num]
             chap.setdefault("characters", [])
             chap["characters"].extend(characters)
             chap["characters"] = list(set(chap["characters"]))
@@ -338,7 +338,7 @@ def walk_current_dir():
     books, stats = init_books_stats()
     errors = ""
 
-    path = Path(os.getcwd())
+    path = os.getcwd()
 
     for root, dirs, files in os.walk(path):
         if DEBUG:

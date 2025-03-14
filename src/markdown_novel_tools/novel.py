@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 from markdown_novel_tools.outline import parse_beats
-from markdown_novel_tools.scene import walk_current_dir
+from markdown_novel_tools.scene import walk_current_dir, walk_previous_revision
 
 
 def novel_beats(args):
@@ -36,7 +36,7 @@ def novel_replace(args):
     pass
 
 
-def novel_stats():
+def novel_stats(args):
     """Get the stats for the manuscript"""
     artifact_dir = Path("_output")
     if not os.path.exists(artifact_dir):
@@ -141,8 +141,6 @@ def novel_parser():
 
     # novel stats
     stats_parser = subparsers.add_parser("stats")
-    stats_parser.add_argument("-f", "--field")
-    stats_parser.add_argument("path", nargs="+")
     stats_parser.set_defaults(func=novel_stats)
 
     # novel today
