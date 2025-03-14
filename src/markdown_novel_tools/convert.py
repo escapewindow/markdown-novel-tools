@@ -6,10 +6,8 @@ plugins and the various existing pandoc formats aren't working for me.
 
 """
 
-import argparse
 import os
 import re
-import shutil
 import subprocess
 import sys
 import time
@@ -160,12 +158,12 @@ def convert_chapter(args):
     if args.subtitle:
         subtitle = f"{args.subtitle}-"
 
-    for chapter_num in chapters.keys():
+    for chapter_num, contents in chapters.items():
         chapter_basestr = f"book1-{datestr}-{subtitle}{revstr}-chapter{chapter_num}"
         chapter_md = artifact_dir / f"{chapter_basestr}.md"
         chapter_pdf = artifact_dir / f"{chapter_basestr}.pdf"
         with open(chapter_md, "w", encoding="utf-8") as fh:
-            fh.write(chapters[chapter_num])
+            fh.write(contents)
         cmd = [
             "pandoc",
             chapter_md,

@@ -73,12 +73,12 @@ class MarkdownFile:
         self.manuscript_info = {
             "manuscript_words": 0,
             "total_words": 0,
+            "is_manuscript": "manuscript" in self.path.parts,
         }
-        self.is_manuscript = "manuscript" in self.path.parts
         self.manuscript_info["title"] = re.sub(r"""\.md$""", "", os.path.basename(path))
         self.hack_yaml = hack_yaml
 
-        if self.is_manuscript:
+        if self.manuscript_info["is_manuscript"]:
             m = MANUSCRIPT_RE.match(self.manuscript_info["title"])
             if m:
                 for attr in ("book_num", "chapter_num", "scene_num"):
@@ -122,7 +122,7 @@ class MarkdownFile:
             for word in line.split():
                 if ALPHANUM_RE.search(word):
                     self.manuscript_info["total_words"] += 1
-                    if self.is_manuscript:
+                    if self.manuscript_info["is_manuscript"]:
                         self.manuscript_info["manuscript_words"] += 1
                 elif DEBUG:
                     print(f"skipping {word}")
@@ -305,7 +305,7 @@ def update_stats(path, contents, books, stats, hack_yaml=False):
     md_file = MarkdownFile(path, contents, hack_yaml)
     stats["total"]["files"] += 1
     stats["total"]["words"] += md_file.manuscript_info["total_words"]
-    if md_file.is_manuscript:
+    if md_file.manuscript_info["is_manuscript"]:
         stats["manuscript"]["files"] += 1
         stats["manuscript"]["words"] += md_file.manuscript_info["manuscript_words"]
     book_num = md_file.manuscript_info.get("book_num")
