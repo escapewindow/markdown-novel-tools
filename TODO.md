@@ -52,7 +52,7 @@
   - [ ] search in pwd, base git dir, $XDG_CONFIG_HOME/md-novel, $HOME
   - [ ] get rid of all hardcodes - move to config?
 - [x] move `frontmatter` from individual scripts to subcommands?
-- [ ] move `novel` from individual scripts to subcommands?
+- [x] move `novel` from individual scripts to subcommands?
 
 # Tests
 - [x] add github action on push to main
