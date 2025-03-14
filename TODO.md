@@ -21,7 +21,7 @@
 
 # Manuscript
 - [x] script to query scene frontmatter
-  - [ ] if querying, e.g. tags, allow for returning a set of all tags, rather than a list of tags per scene
+  - [x] if querying, e.g. tags, allow for returning a set of all tags, rather than a list of tags per scene
 - [x] diff scene summary and outline summary
   - [x] script to check - unhardcode
 - [x] script to replace frontmatter with outline + standard-formatted yaml

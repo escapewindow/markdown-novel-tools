@@ -101,16 +101,37 @@ def frontmatter_update(args):
 
 def frontmatter_query(args):
     """Query frontmatter."""
+    if args.sort and (not args.aggregate or not args.field):
+        raise SyntaxError("`--aggregate` and `--field` must both be specified with `--sort`!")
+    if args.aggregate and not args.field:
+        raise SyntaxError("`--field` must be specified with `--aggregate`!")
+
     files = find_markdown_files(args.path)
 
+    aggregate = set()
     # Diff summaries
     for path in files:
         markdown_file = get_markdown_file(path)
-        print(path)
         if args.field:
-            print(yaml_string(markdown_file.parsed_yaml[args.field]), end="")
+            value = markdown_file.parsed_yaml[args.field]
+            if args.aggregate:
+                if isinstance(value, list):
+                    aggregate.update(value)
+                else:
+                    aggregate.add(value)
+            else:
+                print(path)
+                print(yaml_string(value), end="")
         else:
+            print(path)
             print(yaml_string(markdown_file.parsed_yaml), end="")
+    if aggregate:
+        output = f"{args.field}:\n"
+        if args.sort:
+            aggregate = sorted(aggregate)
+        for item in aggregate:
+            output = f"{output}- {item}\n"
+        print(output, end="")
 
 
 def frontmatter_parser():
@@ -136,6 +157,18 @@ def frontmatter_parser():
     # frontmatter query
     query_parser = subparsers.add_parser("query")
     query_parser.add_argument("-f", "--field")
+    query_parser.add_argument(
+        "-a",
+        "--aggregate",
+        action="store_true",
+        help="Print a unique list of values. Must be used with `--field`.",
+    )
+    query_parser.add_argument(
+        "-s",
+        "--sort",
+        action="store_true",
+        help="Sort the unique list of values. Must be used with `--field` and `--aggregate`.",
+    )
     query_parser.add_argument("path", nargs="+")
     query_parser.set_defaults(func=frontmatter_query)
 
