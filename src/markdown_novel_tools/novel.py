@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 from markdown_novel_tools.outline import parse_beats
+from markdown_novel_tools.repo import num_commits_today
 from markdown_novel_tools.scene import walk_current_dir, walk_previous_revision
 
 
@@ -67,7 +68,9 @@ Total words: {stats['total']['words']}
 
 def novel_today(args):
     """Get daily stats."""
-    pass
+    num_commits = num_commits_today()
+
+    print(f"{num_commits} commits today.")
 
 
 def novel_parser():
@@ -145,11 +148,6 @@ def novel_parser():
 
     # novel today
     today_parser = subparsers.add_parser("today")
-    today_parser.add_argument(
-        "-o", "--outline", default="outline/Book 1 outline/scenes.md"
-    )  # TODO unhardcode
-    today_parser.add_argument("-n", "--noop", action="store_true")
-    today_parser.add_argument("path", nargs="+")
     today_parser.set_defaults(func=novel_today)
 
     return parser

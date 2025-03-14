@@ -37,7 +37,6 @@ setup(
             "novel = markdown_novel_tools.novel:novel_tool",
             "novel-convert = markdown_novel_tools.convert:convert",
             "novel-replace = markdown_novel_tools.replace:replace",
-            "novel-today = markdown_novel_tools.repo:today",
         ]
     },
     zip_safe=False,
