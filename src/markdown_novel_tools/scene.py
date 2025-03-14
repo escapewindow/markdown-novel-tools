@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 """Deal with frontmatter of scenes."""
 
-import json
 import os
 import re
-import shutil
-import sys
 import time
 from copy import deepcopy
 from pathlib import Path
@@ -64,11 +61,12 @@ FRONTMATTER_VALIDATOR = Validator(FRONTMATTER_SCHEMA)
 
 # MarkdownFile {{{1
 class MarkdownFile:
-    total_words = 0
-    manuscript_words = 0
-    book_num = None
-    pov = None
-    characters = None
+    """Object for a markdown file."""
+
+    manuscript_info = {
+        "manuscript_words": 0,
+        "total_words": 0,
+    }
     yaml = ""
     parsed_yaml = None
     error = None
@@ -76,14 +74,14 @@ class MarkdownFile:
     def __init__(self, path, contents, hack_yaml):
         self.path = Path(path)
         self.is_manuscript = "manuscript" in self.path.parts
-        self.title = re.sub(r"""\.md$""", "", os.path.basename(path))
+        self.manuscript_info["title"] = re.sub(r"""\.md$""", "", os.path.basename(path))
         self.hack_yaml = hack_yaml
 
         if self.is_manuscript:
-            m = MANUSCRIPT_RE.match(self.title)
+            m = MANUSCRIPT_RE.match(self.manuscript_info["title"])
             if m:
                 for attr in ("book_num", "chapter_num", "scene_num"):
-                    setattr(self, attr, m[attr])
+                    self.manuscript_info[attr] = m[attr]
 
         if DEBUG:
             print(f"{path}: ", end="")
@@ -122,30 +120,33 @@ class MarkdownFile:
         for line in body.splitlines():
             for word in line.split():
                 if ALPHANUM_RE.search(word):
-                    self.total_words += 1
+                    self.manuscript_info["total_words"] += 1
                     if self.is_manuscript:
-                        self.manuscript_words += 1
+                        self.manuscript_info["manuscript_words"] += 1
                 elif DEBUG:
                     print(f"skipping {word}")
 
     def parse_yaml(self):
-        if self.book_num and self.yaml:
+        """Parse the yaml of a scene."""
+        if self.manuscript_info.get("book_num") and self.yaml:
             try:
                 self.parsed_yaml = yaml.safe_load(self.yaml)
-            except Exception as e:
+            except yaml.YAMLError as e:
                 print(str(e))
                 self.error = f"### {self.path} yaml is broken.\n{str(e)}\n"
                 return
             if self.parsed_yaml.get("POV"):
-                self.pov = self.parsed_yaml["POV"]
+                self.manuscript_info["pov"] = self.parsed_yaml["POV"]
             for char in self.parsed_yaml.get("Characters", []):
-                if self.characters is None:
-                    self.characters = []
-                self.characters.append(char)
+                if self.manuscript_info.get("characters") is None:
+                    self.manuscript_info["characters"] = []
+                self.manuscript_info["characters"].append(char)
 
 
 # Book {{{1
 class Book:
+    """Object for a book, specified by the first digit in the manuscript file's name."""
+
     manuscript_words = 0
     total_words = 0
     chapters = {}
@@ -156,9 +157,10 @@ class Book:
         self.book_num = book_num
 
     def add_scene(self, scene):
-        self.scenes[scene.title] = {
-            "manuscript words": scene.manuscript_words,
-            "total words": scene.total_words,
+        """Add a scene to the book, calculating the stats."""
+        self.scenes[scene.manuscript_info["title"]] = {
+            "manuscript words": scene.manuscript_info["manuscript_words"],
+            "total words": scene.manuscript_info["total_words"],
         }
         self.chapters.setdefault(
             scene.chapter_num,
@@ -167,13 +169,16 @@ class Book:
                 "total words": 0,
             },
         )
-        self.chapters[scene.chapter_num]["manuscript words"] += scene.manuscript_words
-        self.chapters[scene.chapter_num]["total words"] += scene.total_words
-        self.manuscript_words += scene.manuscript_words
-        self.total_words += scene.total_words
-        if scene.pov:
+        self.chapters[scene.chapter_num]["manuscript words"] += scene.manuscript_info[
+            "manuscript_words"
+        ]
+        self.chapters[scene.chapter_num]["total words"] += scene.manuscript_info["total_words"]
+        self.manuscript_words += scene.manuscript_info["manuscript_words"]
+        self.total_words += scene.manuscript_info["total_words"]
+        pov = scene.manuscript_info.get("pov")
+        if pov:
             self.povs.setdefault(
-                scene.pov,
+                pov,
                 {
                     "scenes": 0,
                     "chapters": [],
@@ -183,25 +188,27 @@ class Book:
                     "total words": 0,
                 },
             )
-            self.povs[scene.pov]["scenes"] += 1
-            if scene.chapter_num not in self.povs[scene.pov]["chapters"]:
-                self.povs[scene.pov]["chapters"].append(scene.chapter_num)
-            self.povs[scene.pov]["manuscript words"] += scene.manuscript_words
-            self.povs[scene.pov]["total words"] += scene.total_words
-            if scene.manuscript_words:
-                self.povs[scene.pov]["populated scenes"] += 1
-                if scene.chapter_num not in self.povs[scene.pov]["populated chapters"]:
-                    self.povs[scene.pov]["populated chapters"].append(scene.chapter_num)
-        if scene.characters:
-            self.scenes[scene.title]["characters"] = scene.characters
+            self.povs[pov]["scenes"] += 1
+            if scene.chapter_num not in self.povs[pov]["chapters"]:
+                self.povs[pov]["chapters"].append(scene.chapter_num)
+            self.povs[pov]["manuscript words"] += scene.manuscript_info["manuscript_words"]
+            self.povs[pov]["total words"] += scene.manuscript_info["total_words"]
+            if scene.manuscript_info["manuscript_words"]:
+                self.povs[pov]["populated scenes"] += 1
+                if scene.chapter_num not in self.povs[pov]["populated chapters"]:
+                    self.povs[pov]["populated chapters"].append(scene.chapter_num)
+        characters = scene.manuscript_info.get("characters")
+        if characters:
+            self.scenes[scene.manuscript_info["title"]]["characters"] = characters
             # Chapter chars; make sure this is unique
             chap = self.chapters[scene.chapter_num]
             chap.setdefault("characters", [])
-            chap["characters"].extend(scene.characters)
+            chap["characters"].extend(characters)
             chap["characters"] = list(set(chap["characters"]))
 
     @property
     def scene_average(self):
+        """Get the average words per scene."""
         populated_scene_count = 0
         total = {
             "manuscript": 0,
@@ -225,6 +232,7 @@ class Book:
 
     @property
     def chapter_average(self):
+        """Get the average words per chapter."""
         populated_chapter_count = 0
         total = {
             "manuscript": 0,
@@ -248,8 +256,9 @@ class Book:
 
     @property
     def povs_with_average(self):
+        """Get the povs with the chapter and scene average words."""
         povs = deepcopy(self.povs)
-        for pov, stats in povs.items():
+        for _, stats in povs.items():
             stats["num_chapters"] = len(stats["chapters"])
             num_populated_chapters = len(stats["populated chapters"])
             if stats["populated scenes"]:
@@ -269,6 +278,7 @@ class Book:
         return povs
 
     def stats(self):
+        """Get the book stats."""
         return {
             "book": self.book_num,
             "manuscript_words": self.manuscript_words,
@@ -291,20 +301,24 @@ def get_markdown_file(path, contents=None, hack_yaml=False):
 
 
 def update_stats(path, contents, books, stats, hack_yaml=False):
+    """Update the stats with the markdown file at `path`."""
     md_file = MarkdownFile(path, contents, hack_yaml)
     stats["total"]["files"] += 1
-    stats["total"]["words"] += md_file.total_words
+    stats["total"]["words"] += md_file.manuscript_info["total_words"]
     if md_file.is_manuscript:
         stats["manuscript"]["files"] += 1
-        stats["manuscript"]["words"] += md_file.manuscript_words
-    if md_file.book_num is not None:
-        if md_file.book_num not in books:
-            books[md_file.book_num] = Book(md_file.book_num)
-        books[md_file.book_num].add_scene(md_file)
+        stats["manuscript"]["words"] += md_file.manuscript_info["manuscript_words"]
+    book_num = md_file.manuscript_info.get("book_num")
+    if book_num is not None:
+        if book_num not in books:
+            books[book_num] = Book(book_num)
+        books[book_num].add_scene(md_file)
     return md_file.error
 
 
 def init_books_stats():
+    """Get empty books and stats data structures."""
+
     books = {}
     stats = {
         "manuscript": {
@@ -320,6 +334,7 @@ def init_books_stats():
 
 
 def walk_current_dir():
+    """Walk the current directory to find the books, stats, and errors."""
     books, stats = init_books_stats()
     errors = ""
 
@@ -342,7 +357,8 @@ def walk_current_dir():
     return books, stats, errors
 
 
-def walk_previous_revision(current_books, current_stats):
+def walk_previous_revision(current_stats):
+    """Walk the previous day's git revision to determine how much we've changed today."""
     try:
         repo = Repo(Path(os.getcwd()))
     except InvalidGitRepositoryError:
@@ -370,32 +386,3 @@ def walk_previous_revision(current_books, current_stats):
     {current_stats["manuscript"]["words"] - stats["manuscript"]["words"]} manuscript words
     {current_stats["total"]["files"] - stats["total"]["files"]} total files
     {current_stats["total"]["words"] - stats["total"]["words"]} total words"""
-
-
-def stats():
-    """Get the stats for the manuscript"""
-    artifact_dir = Path("_output")
-    if not os.path.exists(artifact_dir):
-        os.mkdir(artifact_dir)
-
-    books, stats, errors = walk_current_dir()
-    for i, book in books.items():
-        book_stats = book.stats()
-        path = artifact_dir / f"book{i}.json"
-        with open(path, "w", encoding="utf-8") as fh:
-            json.dump(book_stats, fh, indent=4)
-        print(json.dumps(book_stats, indent=4))
-
-    summary = f"""Manuscript markdown files: {stats['manuscript']['files']}
-Manuscript words: {stats['manuscript']['words']}
-Total markdown files: {stats['total']['files']}
-Total words: {stats['total']['words']}
-
-{walk_previous_revision(books, stats)}"""
-    print(summary)
-    with open(artifact_dir / "summary.txt", "w", encoding="utf-8") as fh:
-        print(summary, file=fh)
-
-    if errors:
-        print(f"Bustage in one or more files!\n{errors}")
-        sys.exit(len(errors))

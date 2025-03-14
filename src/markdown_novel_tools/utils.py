@@ -114,6 +114,21 @@ def round_to_one_decimal(f):
     return f"{f:.1f}"
 
 
+def split_by_char(var, char="/"):
+    """Split a line by a character."""
+    return_val = None
+    if isinstance(var, str):
+        return_val = var.split(char)
+    elif isinstance(var, (list, tuple)):
+        new_var = []
+        for i in var:
+            new_var.extend(i.split(char))
+        return_val = new_var
+    else:
+        raise TypeError(f"split_by_char: Unknown var type {type(var)}!")
+    return return_val
+
+
 def unwikilink(string, remove=("[[", "]]", "#")):
     """Remove the [[ ]] from a string. Also # for tags."""
     for repl in remove:

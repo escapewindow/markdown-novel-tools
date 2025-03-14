@@ -34,7 +34,7 @@ setup(
     entry_points={
         "console_scripts": [
             "frontmatter = markdown_novel_tools.frontmatter:frontmatter_tool",
-            "novel-beats = markdown_novel_tools.outline:parse_beats",
+            "novel = markdown_novel_tools.novel:novel_tool",
             "novel-convert = markdown_novel_tools.convert:convert",
             "novel-replace = markdown_novel_tools.replace:replace",
             "novel-stats = markdown_novel_tools.scene:stats",

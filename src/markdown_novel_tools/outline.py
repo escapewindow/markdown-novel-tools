@@ -5,7 +5,6 @@ Allows for filtering by and reordering of columns.
 Currently assumes that all tables in a file are formatted the same.
 """
 
-import argparse
 import re
 import sys
 from collections import namedtuple
@@ -13,6 +12,7 @@ from itertools import zip_longest
 from urllib.parse import quote
 
 from markdown_novel_tools.constants import DIVIDER_REGEX, FILE_HEADER, SPECIAL_CHAR_REGEX
+from markdown_novel_tools.utils import split_by_char
 
 
 class Table:
@@ -50,7 +50,8 @@ class Table:
         except ValueError:
             if column in self.order:
                 return self.order.index(column)
-            raise (f"{column} is not a column name or index: {self.order}")
+            print(f"{column} is not a column name or index: {self.order}")
+            raise
 
     def verify_field_names(self, fields, column_name):
         """Verify the fields in `order` are valid column names."""
@@ -156,7 +157,6 @@ class Table:
 
     def get_yaml(self, _filter=None):
         """Print all the appropriate lines in yaml format."""
-        widths = dict(zip(list(self.line_obj._fields), self.max_width))
         yaml_output = ""
         for k, v in sorted(self.parsed_lines.items()):
             if _filter and set(split_by_char(k, "/")).isdisjoint(set(_filter)):
@@ -173,66 +173,6 @@ class Table:
         return yaml_output
 
 
-def parse_beats_args(args):
-    """Parse commandline args."""
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "-c",
-        "--column",
-        help="Which column to sort by, if any. First column is 0, 2nd is 1, etc.",
-    )
-    parser.add_argument(
-        "-f",
-        "--filter",
-        nargs="+",
-        help="Only print the lines where the column matches this value.",
-    )
-    parser.add_argument(
-        "-o",
-        "--order",
-        help="Rearrange the columns. Value is comma delimited, e.g. Arc,Description,Scene,POV",
-    )
-    parser.add_argument(
-        "-t",
-        "--table",
-        type=int,
-        help="Specify which table number, starting from 1, to parse. Default: parse all the tables.",
-    )
-    parser.add_argument("-s", "--stats", action="store_true", help="Display stats at the end.")
-    parser.add_argument(
-        "-y",
-        "--yaml",
-        action="store_true",
-        help="Print in yaml header mode, rather than markdown table.",
-    )
-    parser.add_argument("--split-column", help="Split column by commas.")
-    parser.add_argument(
-        "--file-headers",
-        "--fh",
-        action="store_true",
-        help="Print yaml headers at the start of the output.",
-    )
-    parser.add_argument(
-        "--multi-table-output",
-        "-m",
-        action="store_true",
-        help="When sorting by column, split each value into its own table.",
-    )
-    parser.add_argument("path")
-    parsed_args = parser.parse_args(args)
-    if parsed_args.order:
-        parsed_args.order = parsed_args.order.split(",")
-    if parsed_args.split_column:
-        parsed_args.split_column = parsed_args.split_column.split(",")
-        if parsed_args.order:
-            print("--split-column and --order are incompatible!", file=sys.stderr)
-            sys.exit(1)
-    if parsed_args.filter is not None and parsed_args.column is None:
-        print("Specify column with `-c` when filtering!", file=sys.stderr)
-        sys.exit(1)
-    return parsed_args
-
-
 def get_line_parts(line, split_column=None):
     """Split a markdown table by pipes, return the list and their widths"""
     line = line.strip()
@@ -243,18 +183,6 @@ def get_line_parts(line, split_column=None):
             part = [x.strip() for x in part.split(",")]
         parts.append(part)
     return parts
-
-
-def split_by_char(var, char="/"):
-    if isinstance(var, str):
-        return var.split(char)
-    elif isinstance(var, (list, tuple)):
-        new_var = []
-        for i in var:
-            new_var.extend(i.split(char))
-        return new_var
-    else:
-        raise TypeError(f"split_by_char: Unknown var type {type(var)}!")
 
 
 def get_beats(table, args):
@@ -295,7 +223,7 @@ def do_parse_file(fh, **kwargs):
             if line.startswith("|"):
                 in_table = True
                 table_num += 1
-                if kwargs.get("table") is not None and table_num != args.get("table"):
+                if kwargs.get("table") is not None and table_num != kwargs.get("table"):
                     continue
                 if table is None:
                     table = Table(
@@ -319,10 +247,8 @@ def do_parse_file(fh, **kwargs):
     return table
 
 
-def parse_beats():
+def parse_beats(args):
     """Main function."""
-    args = parse_beats_args(sys.argv[1:])
-
     with open(args.path, encoding="utf-8") as fh:
         table = do_parse_file(fh, **vars(args))
 
