@@ -23,7 +23,7 @@ from git import InvalidGitRepositoryError, Repo
 from num2words import num2words
 
 from markdown_novel_tools.constants import ALPHANUM_RE, MANUSCRIPT_RE, TIMEZONE
-from markdown_novel_tools.utils import find_markdown_files
+from markdown_novel_tools.utils import find_markdown_files, local_time
 
 
 def unwikilink(string):
@@ -158,14 +158,6 @@ def get_git_revision():
     if repo.is_dirty():
         rev = f"{rev}+"
     return rev
-
-
-def local_time(timestamp):
-    utc_tz = pytz.utc
-    local_tz = pytz.timezone(TIMEZONE)
-    utc_dt = datetime.datetime.fromtimestamp(timestamp, utc_tz)
-    local_dt = utc_dt.astimezone(local_tz)
-    return local_dt
 
 
 def convert_chapter(args):

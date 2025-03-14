@@ -15,7 +15,7 @@
 - [ ] script(s) to convert from one source of truth to the other(s)
   - currently arcs, povs, scenes, all-in-one
   - copy from script bin, change from shell script to python
-- [ ] Table object is able to refer to columns by name rather than column number - done?
+- [x] Table object is able to refer to columns by name rather than column number - done?
 - [ ] Table schema
   - [ ] script to check/fix outline file(s)
 

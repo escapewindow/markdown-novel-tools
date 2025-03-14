@@ -20,49 +20,13 @@ from git import Repo
 from markdown_novel_tools.constants import MANUSCRIPT_RE
 from markdown_novel_tools.outline import do_parse_file
 from markdown_novel_tools.scene import FRONTMATTER_VALIDATOR, get_markdown_file
-from markdown_novel_tools.utils import find_markdown_files, local_time, yaml_string
-
-
-def output_diff(diff):
-    """Output diff, using `diff-so-fancy` if it exists."""
-    if not diff:
-        return
-    if which("diff-so-fancy"):
-        subprocess.run(["diff-so-fancy"], input=diff.encode("utf-8"))
-    else:
-        print(diff, end="")
-
-
-def diff_yaml(from_yaml, to_yaml, from_name="from", to_name="to", verbose=False):
-    """Diff outline and scene yaml strings."""
-    if verbose:
-        print(from_yaml, end="")
-        print(to_yaml, end="")
-
-    diff = ""
-    for line in unified_diff(
-        from_yaml.splitlines(), to_yaml.splitlines(), fromfile=from_name, tofile=to_name
-    ):
-        diff = f"{diff}{line.rstrip()}\n"
-
-    return diff
-
-
-def today():
-    """Print the number of git commits in cwd today."""
-    path = Path(os.getcwd())
-    repo = Repo(path)
-    time_fmt = "%Y%m%d"
-    today = local_time(time.time()).strftime(time_fmt)
-    current_commit = repo.head.commit
-    current_commit_date = local_time(current_commit.committed_date).strftime(time_fmt)
-    count = 0
-    for rev in repo.iter_commits(repo.head.ref):
-        if local_time(rev.committed_date).strftime(time_fmt) != today:
-            break
-        count += 1
-
-    print(f"{count} commits today.")
+from markdown_novel_tools.utils import (
+    diff_yaml,
+    find_markdown_files,
+    local_time,
+    output_diff,
+    yaml_string,
+)
 
 
 # Frontmatter {{{1

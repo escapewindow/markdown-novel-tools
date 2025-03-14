@@ -33,12 +33,12 @@ setup(
     package_dir={"": "src"},
     entry_points={
         "console_scripts": [
-            "frontmatter = markdown_novel_tools.manuscript:frontmatter_tool",
+            "frontmatter = markdown_novel_tools.frontmatter:frontmatter_tool",
             "novel-beats = markdown_novel_tools.outline:parse_beats",
             "novel-convert = markdown_novel_tools.convert:convert",
             "novel-replace = markdown_novel_tools.replace:replace",
             "novel-stats = markdown_novel_tools.scene:stats",
-            "novel-today = markdown_novel_tools.manuscript:today",
+            "novel-today = markdown_novel_tools.repo:today",
         ]
     },
     zip_safe=False,
