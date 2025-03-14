@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 from markdown_novel_tools.outline import parse_beats
-from markdown_novel_tools.repo import num_commits_today
+from markdown_novel_tools.repo import num_commits_today, replace
 from markdown_novel_tools.scene import walk_current_dir, walk_previous_revision
 
 
@@ -29,11 +29,6 @@ def novel_beats(args):
 
 def novel_convert(args):
     """Convert a novel to a different file format."""
-    pass
-
-
-def novel_replace(args):
-    """Replace a string in files and filenames in the current directory."""
     pass
 
 
@@ -138,9 +133,10 @@ def novel_parser():
 
     # novel replace
     replace_parser = subparsers.add_parser("replace")
-    replace_parser.add_argument("-f", "--field")
-    replace_parser.add_argument("path", nargs="+")
-    replace_parser.set_defaults(func=novel_replace)
+    replace_parser.add_argument("-l", "--list", action=argparse.BooleanOptionalAction)
+    replace_parser.add_argument("from_")
+    replace_parser.add_argument("to")
+    replace_parser.set_defaults(func=replace)
 
     # novel stats
     stats_parser = subparsers.add_parser("stats")

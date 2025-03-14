@@ -36,7 +36,6 @@ setup(
             "frontmatter = markdown_novel_tools.frontmatter:frontmatter_tool",
             "novel = markdown_novel_tools.novel:novel_tool",
             "novel-convert = markdown_novel_tools.convert:convert",
-            "novel-replace = markdown_novel_tools.replace:replace",
         ]
     },
     zip_safe=False,
