@@ -48,31 +48,6 @@ def simplify_markdown(contents, ignore_blank_lines=True):
     return simplified_contents
 
 
-def parse_args(args):
-    """Parse commandline args."""
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "--format",
-        choices=("pdf", "chapter-pdf", "text", "epub", "docx", "odt"),
-        default="text",
-    )
-    parser.add_argument("--subtitle")
-    parser.add_argument("--artifact-dir", default="_output")
-    parser.add_argument("filename", nargs="+")
-    parsed_args = parser.parse_args(args)
-    if parsed_args.format in ("pdf", "epub", "docx", "odt", "chapter-pdf"):
-        if not shutil.which("pandoc"):
-            print(f"`{parsed_args.format}` format requires `pandoc`! Exiting...", file=sys.stderr)
-            sys.exit(1)
-    if parsed_args.format == "epub":
-        if not shutil.which("magick"):
-            print(
-                f"`{parsed_args.format}` format requires `imagemagick`! Exiting...", file=sys.stderr
-            )
-            sys.exit(1)
-    return parsed_args
-
-
 def _header_helper(title, heading_link, style="chapter-only"):
     header = f"""# {title} {{#{heading_link}}}\n\n"""
     toc_link = f"- [{title}](#{heading_link})\n"
@@ -339,12 +314,3 @@ def convert_full(args):
             ],
             env=env,
         )
-
-
-def convert():
-    """Convert manuscript from markdown to other file formats."""
-    args = parse_args(sys.argv[1:])
-    if args.format in ("chapter-pdf",):
-        convert_chapter(args)
-    else:
-        convert_full(args)

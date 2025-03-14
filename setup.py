@@ -35,7 +35,6 @@ setup(
         "console_scripts": [
             "frontmatter = markdown_novel_tools.frontmatter:frontmatter_tool",
             "novel = markdown_novel_tools.novel:novel_tool",
-            "novel-convert = markdown_novel_tools.convert:convert",
         ]
     },
     zip_safe=False,

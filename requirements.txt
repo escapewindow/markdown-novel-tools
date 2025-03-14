@@ -1,4 +1,5 @@
 cerberus
 GitPython
+num2words
 pytz
 PyYAML

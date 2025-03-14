@@ -4,9 +4,11 @@
 import argparse
 import json
 import os
+import shutil
 import sys
 from pathlib import Path
 
+from markdown_novel_tools.convert import convert_chapter, convert_full
 from markdown_novel_tools.outline import parse_beats
 from markdown_novel_tools.repo import num_commits_today, replace
 from markdown_novel_tools.scene import walk_current_dir, walk_previous_revision
@@ -29,11 +31,23 @@ def novel_beats(args):
 
 def novel_convert(args):
     """Convert a novel to a different file format."""
-    pass
+    if args.format in ("pdf", "epub", "docx", "odt", "chapter-pdf"):
+        if not shutil.which("pandoc"):
+            print(f"`{args.format}` format requires `pandoc`! Exiting...", file=sys.stderr)
+            sys.exit(1)
+    if args.format == "epub":
+        if not shutil.which("magick"):
+            print(f"`{args.format}` format requires `imagemagick`! Exiting...", file=sys.stderr)
+            sys.exit(1)
+    if args.format in ("chapter-pdf",):
+        convert_chapter(args)
+    else:
+        convert_full(args)
 
 
 def novel_stats(args):
     """Get the stats for the manuscript"""
+    # pylint: disable=unused-argument
     artifact_dir = Path("_output")
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)
@@ -63,6 +77,7 @@ Total words: {stats['total']['words']}
 
 def novel_today(args):
     """Get daily stats."""
+    # pylint: disable=unused-argument
     num_commits = num_commits_today()
 
     print(f"{num_commits} commits today.")
@@ -126,9 +141,13 @@ def novel_parser():
     # novel convert
     convert_parser = subparsers.add_parser("convert")
     convert_parser.add_argument(
-        "-o", "--outline", default="outline/Book 1 outline/scenes.md"
-    )  # TODO unhardcode
-    convert_parser.add_argument("path", nargs="+")
+        "--format",
+        choices=("pdf", "chapter-pdf", "text", "epub", "docx", "odt"),
+        default="text",
+    )
+    convert_parser.add_argument("--subtitle")
+    convert_parser.add_argument("--artifact-dir", default="_output")
+    convert_parser.add_argument("filename", nargs="+")
     convert_parser.set_defaults(func=novel_convert)
 
     # novel replace
