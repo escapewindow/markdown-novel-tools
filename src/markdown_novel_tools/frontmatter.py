@@ -98,6 +98,8 @@ def frontmatter_update(args):
 {markdown_file.body}"""
                 )
 
+    frontmatter_check(args)
+
 
 def frontmatter_query(args):
     """Query frontmatter."""
@@ -138,11 +140,11 @@ def frontmatter_parser():
     """Return a parser for the frontmatter tool."""
     parser = argparse.ArgumentParser(prog="frontmatter")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
+    parser.add_argument("-s", "--strict", action="store_true")
     subparsers = parser.add_subparsers()
 
     # frontmatter check
     check_parser = subparsers.add_parser("check")
-    check_parser.add_argument("-s", "--strict", action="store_true")
     check_parser.add_argument("path", nargs="+")
     check_parser.set_defaults(func=frontmatter_check)
 
