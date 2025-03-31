@@ -12,7 +12,7 @@ import yaml
 from cerberus import Validator
 from git import InvalidGitRepositoryError, Repo
 
-from markdown_novel_tools.constants import ALPHANUM_RE, DEBUG, MANUSCRIPT_RE
+from markdown_novel_tools.constants import ALPHANUM_REGEX, DEBUG, MANUSCRIPT_REGEX
 from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikilink
 
 # Schema {{{1
@@ -79,7 +79,7 @@ class MarkdownFile:
         self.hack_yaml = hack_yaml
 
         if self.manuscript_info["is_manuscript"]:
-            m = MANUSCRIPT_RE.match(self.manuscript_info["title"])
+            m = MANUSCRIPT_REGEX.match(self.manuscript_info["title"])
             if m:
                 for attr in ("book_num", "chapter_num", "scene_num"):
                     self.manuscript_info[attr] = m[attr]
@@ -120,7 +120,7 @@ class MarkdownFile:
         """
         for line in body.splitlines():
             for word in line.split():
-                if ALPHANUM_RE.search(word):
+                if ALPHANUM_REGEX.search(word):
                     self.manuscript_info["total_words"] += 1
                     if self.manuscript_info["is_manuscript"]:
                         self.manuscript_info["manuscript_words"] += 1

@@ -9,7 +9,7 @@ import sys
 import yaml
 
 from markdown_novel_tools.config import get_config, get_primary_outline_path
-from markdown_novel_tools.constants import MANUSCRIPT_RE
+from markdown_novel_tools.constants import MANUSCRIPT_REGEX
 from markdown_novel_tools.outline import do_parse_file
 from markdown_novel_tools.scene import FRONTMATTER_VALIDATOR, get_markdown_file
 from markdown_novel_tools.utils import diff_yaml, find_markdown_files, output_diff, yaml_string
@@ -40,10 +40,8 @@ def frontmatter_diff(args):
         table = do_parse_file(fh, column="Scene")
 
     # Diff summaries
-    # TODO should I combine this with the diff in frontmatter_update
-    # to avoid duplicating code?
     for path in files:
-        m = MANUSCRIPT_RE.match(os.path.basename(path))
+        m = MANUSCRIPT_REGEX.match(os.path.basename(path))
         if not m:
             continue
 
@@ -122,7 +120,7 @@ def frontmatter_update(args):
 
     # Update summaries
     for path in files:
-        m = MANUSCRIPT_RE.match(os.path.basename(path))
+        m = MANUSCRIPT_REGEX.match(os.path.basename(path))
         if not m:
             continue
 

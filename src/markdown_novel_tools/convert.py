@@ -15,7 +15,7 @@ from pathlib import Path
 
 from num2words import num2words
 
-from markdown_novel_tools.constants import ALPHANUM_RE, MANUSCRIPT_RE
+from markdown_novel_tools.constants import ALPHANUM_REGEX, MANUSCRIPT_REGEX
 from markdown_novel_tools.utils import find_markdown_files, get_git_revision, local_time
 
 
@@ -38,7 +38,7 @@ def simplify_markdown(contents, ignore_blank_lines=True):
             continue
 
         # Ignore blank lines
-        if ignore_blank_lines and ALPHANUM_RE.search(line) is None:
+        if ignore_blank_lines and ALPHANUM_REGEX.search(line) is None:
             continue
 
         line = unwikilink(line)
@@ -52,7 +52,7 @@ def _header_helper(title, heading_link, style="chapter-only"):
     allowed_styles = ("chapter-only", "chapter-and-scene")
     if style not in allowed_styles:
         raise ValueError(f"_header_helper: {style} not in {allowed_styles}!")
-    m = MANUSCRIPT_RE.match(title)
+    m = MANUSCRIPT_REGEX.match(title)
     if m and style == "chapter-only":
         info = {}
         for attr in ("chapter_num", "scene_num", "POV"):
@@ -68,7 +68,7 @@ def _header_helper(title, heading_link, style="chapter-only"):
 
 
 def _doc_header_helper(title):
-    m = MANUSCRIPT_RE.match(title)
+    m = MANUSCRIPT_REGEX.match(title)
     if m:
         info = {}
         for attr in ("chapter_num", "scene_num", "POV"):
@@ -124,7 +124,7 @@ def munge_metadata(path, artifact_dir):
     return (contents, orig_image, new_image)
 
 
-def convert_chapter(args):
+def convert_chapter(config, args):
     """Convert a single chapter."""
     ignore_blank_lines = False
     artifact_dir = Path(args.artifact_dir)
@@ -135,7 +135,7 @@ def convert_chapter(args):
 
     for base_path in args.filename:
         for path in find_markdown_files(base_path):
-            m = MANUSCRIPT_RE.match(os.path.basename(path))
+            m = MANUSCRIPT_REGEX.match(os.path.basename(path))
             if not m:
                 print(f"skipping {path}")
                 continue
@@ -176,7 +176,7 @@ def convert_chapter(args):
         subprocess.check_call(cmd)
 
 
-def convert_full(args):
+def convert_full(config, args):
     """Convert the full manuscript."""
     contents = ""
     toc = "# Table of Contents\n\n"

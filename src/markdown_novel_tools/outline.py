@@ -11,7 +11,11 @@ from collections import namedtuple
 from itertools import zip_longest
 from urllib.parse import quote
 
-from markdown_novel_tools.constants import DIVIDER_REGEX, FILE_HEADER, SPECIAL_CHAR_REGEX
+from markdown_novel_tools.constants import (
+    OUTLINE_FILE_HEADER,
+    SPECIAL_CHAR_REGEX,
+    TABLE_DIVIDER_REGEX,
+)
 from markdown_novel_tools.utils import split_by_char
 
 
@@ -190,7 +194,7 @@ def get_beats(table, args):
     stdout = ""
     stderr = ""
     if args.file_headers:
-        stdout += f"{FILE_HEADER}\n"
+        stdout += f"{OUTLINE_FILE_HEADER}\n"
 
     if args.yaml:
         stdout = f"{stdout}{table.get_yaml(_filter=args.filter)}"
@@ -240,7 +244,7 @@ def do_parse_file(fh, **kwargs):
             continue
         if kwargs.get("table") is not None and table_num != kwargs.get("table"):
             continue
-        if DIVIDER_REGEX.match(line):
+        if TABLE_DIVIDER_REGEX.match(line):
             continue
         if table is not None:
             table.add_line(line)

@@ -12,8 +12,6 @@ import pytz
 import yaml
 from git import Repo
 
-from markdown_novel_tools.constants import TIMEZONE
-
 
 def represent_none(self, _):
     """Don't print `null` for None in yaml strings."""
@@ -100,10 +98,13 @@ def get_git_revision():
     return rev
 
 
-def local_time(timestamp):
-    """Get the local datetime for a given timestamp."""
+def local_time(timestamp, timezone="US/Mountain"):
+    """Get the local datetime for a given timestamp.
+
+    TODO use config["novel"]["timezone"] everywhere
+    """
     utc_tz = pytz.utc
-    local_tz = pytz.timezone(TIMEZONE)
+    local_tz = pytz.timezone(timezone)
     utc_dt = datetime.datetime.fromtimestamp(timestamp, utc_tz)
     local_dt = utc_dt.astimezone(local_tz)
     return local_dt

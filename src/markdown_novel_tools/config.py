@@ -21,6 +21,8 @@ def get_config_path(args):
         search_path.append(git_root / ".config.toml")
     except InvalidGitRepositoryError:
         pass
+    if "XDG_CONFIG_HOME" in os.environ:
+        search_path.append(Path(os.environ["XDG_CONFIG_HOME"]) / "md-novel" / "novel-config.toml")
     search_path.append(Path(os.environ["HOME"]) / ".novel_config.toml")
     for path in search_path:
         if os.path.exists(path):

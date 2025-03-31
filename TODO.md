@@ -34,12 +34,10 @@
 - [ ] docx manuscript submission format
 
 # Config
-- [ ] config file
-  - [ ] config filename in .gitignore
-  - [ ] example config
-  - [ ] --config-path arg
-  - [ ] search in pwd, base git dir, $XDG_CONFIG_HOME/md-novel, $HOME
-  - [ ] get rid of all hardcodes - move to config?
+- [x] example config
+- [x] --config-path arg
+- [x] search in pwd, base git dir, $XDG_CONFIG_HOME/md-novel, $HOME
+- [ ] get rid of all hardcodes - move to config?
 
 # Tests
 - [x] add github action on push to main

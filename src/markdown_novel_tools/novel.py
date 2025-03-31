@@ -8,6 +8,7 @@ import shutil
 import sys
 from pathlib import Path
 
+from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.convert import convert_chapter, convert_full
 from markdown_novel_tools.outline import parse_beats
 from markdown_novel_tools.repo import num_commits_today, replace
@@ -16,6 +17,10 @@ from markdown_novel_tools.scene import walk_current_dir, walk_previous_revision
 
 def novel_beats(args):
     """Munge novel args, then call parse_beats."""
+    config = get_config(args)
+    if not args.path:
+        args.path = get_primary_outline_path(config)
+
     if args.order:
         args.order = args.order.split(",")
     if args.split_column:
@@ -31,6 +36,7 @@ def novel_beats(args):
 
 def novel_convert(args):
     """Convert a novel to a different file format."""
+    config = get_config(args)
     if args.format in ("pdf", "epub", "docx", "odt", "chapter-pdf"):
         if not shutil.which("pandoc"):
             print(f"`{args.format}` format requires `pandoc`! Exiting...", file=sys.stderr)
@@ -40,9 +46,9 @@ def novel_convert(args):
             print(f"`{args.format}` format requires `imagemagick`! Exiting...", file=sys.stderr)
             sys.exit(1)
     if args.format in ("chapter-pdf",):
-        convert_chapter(args)
+        convert_chapter(config, args)
     else:
-        convert_full(args)
+        convert_full(config, args)
 
 
 def novel_stats(args):
@@ -87,6 +93,9 @@ def novel_parser():
     """Return a parser for the novel tool."""
     parser = argparse.ArgumentParser(prog="novel")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
+    parser.add_argument(
+        "-c", "--config-path", help="Specify the path to the markdown-novel-tools config file."
+    )
     subparsers = parser.add_subparsers()
 
     # novel beats
@@ -135,7 +144,7 @@ def novel_parser():
         action="store_true",
         help="When sorting by column, split each value into its own table.",
     )
-    beats_parser.add_argument("path")
+    beats_parser.add_argument("path", nargs="*")
     beats_parser.set_defaults(func=novel_beats)
 
     # novel convert
