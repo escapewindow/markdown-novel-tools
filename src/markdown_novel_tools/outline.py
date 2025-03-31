@@ -173,7 +173,7 @@ class Table:
                     arc_beats = []
                     for arc_beats_tuple in zip_longest(arcs, beats, fillvalue=""):
                         arc_beats.append(" ".join(arc_beats_tuple).strip())
-                    output = f"- {output} ({", ".join(arc_beats)})\n"
+                    output = f"""- {output} ({", ".join(arc_beats)})\n"""
                 else:
                     output = f"- {output} ({line.Arc})\n"
                 yaml_output = f"{yaml_output}{output}"
