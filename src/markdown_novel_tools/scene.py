@@ -333,12 +333,13 @@ def init_books_stats():
     return books, stats
 
 
-def walk_current_dir():
+def walk_repo_dir():
     """Walk the current directory to find the books, stats, and errors."""
     books, stats = init_books_stats()
     errors = ""
 
-    path = os.getcwd()
+    repo = Repo(Path("."), search_parent_directories=True)
+    path = Path(repo.git.rev_parse("--show-toplevel"))
 
     for root, dirs, files in os.walk(path):
         if DEBUG:
@@ -357,21 +358,23 @@ def walk_current_dir():
     return books, stats, errors
 
 
-def walk_previous_revision(current_stats):
+def walk_previous_revision(config, current_stats):
     """Walk the previous day's git revision to determine how much we've changed today."""
     try:
-        repo = Repo(Path(os.getcwd()))
+        repo = Repo(Path("."), search_parent_directories=True)
     except InvalidGitRepositoryError:
         return "Not a valid git repo."
     time_fmt = "%Y%m%d"
-    today = local_time(time.time()).strftime(time_fmt)
+    today = local_time(time.time(), timezone=config["timezone"]).strftime(time_fmt)
     current_commit = repo.head.commit
-    current_commit_date = local_time(current_commit.committed_date).strftime(time_fmt)
+    current_commit_date = local_time(
+        current_commit.committed_date, timezone=config["timezone"]
+    ).strftime(time_fmt)
     if today != current_commit_date and not repo.is_dirty:
         return "No commits today; skipping daily stats."
     books, stats = init_books_stats()
     for rev in repo.iter_commits(repo.head.ref):
-        if local_time(rev.committed_date).strftime(time_fmt) != today:
+        if local_time(rev.committed_date, timezone=config["timezone"]).strftime(time_fmt) != today:
             previous_commit = rev
             break
     else:

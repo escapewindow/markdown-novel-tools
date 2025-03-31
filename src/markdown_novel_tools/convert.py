@@ -153,7 +153,7 @@ def convert_chapter(args):
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)
     revstr = get_git_revision()
-    datestr = local_time(time.time()).strftime("%Y.%m.%d")
+    datestr = local_time(time.time(), timezone=args.config["timezone"]).strftime("%Y.%m.%d")
     subtitle = ""
     if args.subtitle:
         subtitle = f"{args.subtitle}-"
@@ -218,7 +218,7 @@ def convert_full(args):
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)
     revstr = get_git_revision()
-    datestr = local_time(time.time()).strftime("%Y.%m.%d")
+    datestr = local_time(time.time(), timezone=args.config["timezone"]).strftime("%Y.%m.%d")
     subtitle = ""
     if args.subtitle:
         subtitle = f"{args.subtitle}-"

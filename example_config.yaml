@@ -8,3 +8,5 @@ convert:
     - skeleton/Book 1 Dedication.md
     - skeleton/Book 1 Author's Note.md
     - skeleton/Book 1 Pronunciation Guide.md
+find_files_by_name_cmd: ["fd", "-s", "-F", "-E", "snippets"]
+find_files_by_content_cmd: ["rg", "-F", "-l"]

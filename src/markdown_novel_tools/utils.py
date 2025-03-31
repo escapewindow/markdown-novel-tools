@@ -36,11 +36,11 @@ def diff_yaml(from_yaml, to_yaml, from_name="from", to_name="to", verbose=False)
     return diff
 
 
-def find_files_by_content(_from):
+def find_files_by_content(config, _from):
     """A recursive grep."""
     files = []
     try:
-        output = subprocess.check_output(["rg", "-F", "-l", _from])
+        output = subprocess.check_output(config["find_files_by_content_cmd"] + [_from])
         for i in output.splitlines():
             files.append(i.decode("utf-8"))
     except subprocess.CalledProcessError:
@@ -48,7 +48,7 @@ def find_files_by_content(_from):
     return files
 
 
-def find_files_by_name(_from):
+def find_files_by_name(config, _from):
     """Find files by name.
 
     TODO:
@@ -58,9 +58,7 @@ def find_files_by_name(_from):
     """
     files = []
     try:
-        output = subprocess.check_output(
-            ["fd", "-s", "-F", "-E", "snippets", _from]
-        )  # TODO unhardcode
+        output = subprocess.check_output(config["find_files_by_name_cmd"] + [_from])
         for i in output.splitlines():
             files.append(i.decode("utf-8"))
     except subprocess.CalledProcessError:
@@ -91,7 +89,7 @@ def find_markdown_files(paths):
 
 def get_git_revision():
     """Get the git revision of a repo."""
-    repo = Repo(Path(os.getcwd()))
+    repo = Repo(Path("."), search_parent_directories=True)
     rev = str(repo.head.commit)[0:12]
     if repo.is_dirty():
         rev = f"{rev}+"
@@ -99,10 +97,7 @@ def get_git_revision():
 
 
 def local_time(timestamp, timezone="US/Mountain"):
-    """Get the local datetime for a given timestamp.
-
-    TODO use config["novel"]["timezone"] everywhere
-    """
+    """Get the local datetime for a given timestamp."""
     utc_tz = pytz.utc
     local_tz = pytz.timezone(timezone)
     utc_dt = datetime.datetime.fromtimestamp(timestamp, utc_tz)

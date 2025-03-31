@@ -8,11 +8,13 @@ import shutil
 import sys
 from pathlib import Path
 
+from git import Repo
+
 from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.convert import convert_chapter, convert_full
 from markdown_novel_tools.outline import parse_beats
 from markdown_novel_tools.repo import num_commits_today, replace
-from markdown_novel_tools.scene import walk_current_dir, walk_previous_revision
+from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
 
 
 def novel_beats(args):
@@ -56,7 +58,7 @@ def novel_stats(args):
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)
 
-    books, stats, errors = walk_current_dir()
+    books, stats, errors = walk_repo_dir()
     for i, book in books.items():
         book_stats = book.stats()
         path = artifact_dir / f"book{i}.json"
@@ -69,7 +71,7 @@ Manuscript words: {stats['manuscript']['words']}
 Total markdown files: {stats['total']['files']}
 Total words: {stats['total']['words']}
 
-{walk_previous_revision(stats)}"""
+{walk_previous_revision(args.config, stats)}"""
     print(summary)
     with open(artifact_dir / "summary.txt", "w", encoding="utf-8") as fh:
         print(summary, file=fh)
@@ -82,7 +84,7 @@ Total words: {stats['total']['words']}
 def novel_today(args):
     """Get daily stats."""
     # pylint: disable=unused-argument
-    num_commits = num_commits_today()
+    num_commits = num_commits_today(args.config)
 
     print(f"{num_commits} commits today.")
 
