@@ -28,6 +28,46 @@ def frontmatter_check(args):
                 sys.exit(1)
 
 
+def frontmatter_fix(args):
+    """Fix frontmatter.
+
+    This is a hardcode-heavy function, and is largely here to convert from one schema to another.
+    """
+    files = find_markdown_files(args.path)
+    for path in files:
+        markdown_file = get_markdown_file(path)
+        old = markdown_file.parsed_yaml
+        new = {}
+        for key in (
+            "Title",
+            "tags",
+            "aliases",
+            "Locations",
+            "Characters",
+            "POV",
+            "Hook",
+            "Scene",
+            "Sequel",
+            "Cliffhanger",
+            "Summary",
+        ):
+            new[key] = old.get(key)
+        if "Location" in old:
+            if isinstance(old["Location"], list):
+                new["Locations"] = old["Location"]
+            else:
+                new["Locations"] = [old["Location"]]
+        for key in ("Scene", "Sequel"):
+            if isinstance(new[key], list):
+                new[key] = {}
+                for val in old[key]:
+                    new[key].update(val)
+        if old.get("Ideas / thoughts / todo"):
+            new["Ideas / thoughts / todo"] = old["Ideas / thoughts / todo"]
+        markdown_file.parsed_yaml = new
+        _write_updated_frontmatter(path, markdown_file)
+
+
 def frontmatter_diff(args):
     """Diff frontmatter."""
 
@@ -36,6 +76,8 @@ def frontmatter_diff(args):
         table = do_parse_file(fh, column="Scene")
 
     # Diff summaries
+    # TODO should I combine this with the diff in frontmatter_update
+    # to avoid duplicating code?
     for path in files:
         m = MANUSCRIPT_RE.match(os.path.basename(path))
         if not m:
@@ -55,6 +97,17 @@ def frontmatter_diff(args):
             verbose=False,
         )
         output_diff(diff)
+
+
+def _write_updated_frontmatter(path, markdown_file):
+    """Helper function to update the frontmatter of a markdown file."""
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(
+            f"""---
+{yaml_string(markdown_file.parsed_yaml).rstrip()}
+---
+{markdown_file.body}"""
+        )
 
 
 def frontmatter_update(args):
@@ -90,13 +143,7 @@ def frontmatter_update(args):
             )
             output_diff(diff)
         else:
-            with open(path, "w", encoding="utf-8") as fh:
-                fh.write(
-                    f"""---
-{yaml_string(markdown_file.parsed_yaml).rstrip()}
----
-{markdown_file.body}"""
-                )
+            _write_updated_frontmatter(path, markdown_file)
 
     frontmatter_check(args)
 
@@ -155,6 +202,11 @@ def frontmatter_parser():
     )  # TODO unhardcode
     diff_parser.add_argument("path", nargs="+")
     diff_parser.set_defaults(func=frontmatter_diff)
+
+    # frontmatter fix
+    fix_parser = subparsers.add_parser("fix")
+    fix_parser.add_argument("path", nargs="+")
+    fix_parser.set_defaults(func=frontmatter_fix)
 
     # frontmatter query
     query_parser = subparsers.add_parser("query")

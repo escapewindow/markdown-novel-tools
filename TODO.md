@@ -19,17 +19,6 @@
 - [ ] Table schema
   - [ ] script to check/fix outline file(s)
 
-# Manuscript
-- [x] script to query scene frontmatter
-  - [x] if querying, e.g. tags, allow for returning a set of all tags, rather than a list of tags per scene
-- [x] diff scene summary and outline summary
-  - [x] script to check - unhardcode
-- [x] script to replace frontmatter with outline + standard-formatted yaml
-- [x] verify frontmatter schema
-- [ ] fix frontmatter schema
-  - [ ] including key order
-- [x] function to walk the entire manuscript
-
 # Conversion
 - [x] conversion script in repo
   - [x] copy convert.py in, add to console scripts
@@ -51,8 +40,6 @@
   - [ ] --config-path arg
   - [ ] search in pwd, base git dir, $XDG_CONFIG_HOME/md-novel, $HOME
   - [ ] get rid of all hardcodes - move to config?
-- [x] move `frontmatter` from individual scripts to subcommands?
-- [x] move `novel` from individual scripts to subcommands?
 
 # Tests
 - [x] add github action on push to main
