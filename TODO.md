@@ -33,11 +33,6 @@
   - [ ] data dir with reference.odt etc?
 - [ ] docx manuscript submission format
 
-# Config
-- [x] example config
-- [x] search in pwd, base git dir, $XDG_CONFIG_HOME/md-novel, $HOME
-- [ ] get rid of all hardcodes - move to config?
-
 # Tests
 - [x] add github action on push to main
 - [ ] 100% test coverage

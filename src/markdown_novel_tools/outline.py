@@ -166,15 +166,23 @@ class Table:
             if _filter and set(split_by_char(k, "/")).isdisjoint(set(_filter)):
                 continue
             for line in v:
-                # TODO play nicely with order, stop hardcoding. Add a --format argparse option?
-                output = line.Description.replace("[[", "").replace("]]", "").replace(":", " -")
-                # TODO prettify - instead of (Arc1,Arc2 Beat1,Beat2), do (Arc1 Beat1, Arc2 Beat2)
-                output = f"- {output} ({line.Arc}"
+                output = _outline_to_yaml(line.Description)
                 if line.Beat:
-                    output = f"{output} {line.Beat}"
-                output = f"{output})\n"
+                    arcs = line.Arc.split(",")
+                    beats = line.Beat.split(",")
+                    arc_beats = []
+                    for arc_beats_tuple in zip_longest(arcs, beats, fillvalue=""):
+                        arc_beats.append(" ".join(arc_beats_tuple).strip())
+                    output = f"- {output} ({", ".join(arc_beats)})\n"
+                else:
+                    output = f"- {output} ({line.Arc})\n"
                 yaml_output = f"{yaml_output}{output}"
         return yaml_output
+
+
+def _outline_to_yaml(line):
+    """Return the outline string yaml-ified."""
+    return line.replace("[[", "").replace("]]", "").replace(":", " -")
 
 
 def get_line_parts(line, split_column=None):

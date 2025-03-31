@@ -53,7 +53,6 @@ def find_files_by_name(config, _from):
 
     TODO:
     - should this include non-markdown?
-    - exclude kwarg to remove "snippets" hardcode?
     - should we combine this and `find_markdown_files`?
     """
     files = []
