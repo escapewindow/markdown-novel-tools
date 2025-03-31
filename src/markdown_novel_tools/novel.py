@@ -143,7 +143,7 @@ def novel_parser():
         action="store_true",
         help="When sorting by column, split each value into its own table.",
     )
-    beats_parser.add_argument("path", nargs="*")
+    beats_parser.add_argument("path", nargs="?")
     beats_parser.set_defaults(func=novel_beats)
 
     # novel convert
