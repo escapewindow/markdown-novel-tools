@@ -8,6 +8,7 @@ import sys
 
 import yaml
 
+from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.constants import MANUSCRIPT_RE
 from markdown_novel_tools.outline import do_parse_file
 from markdown_novel_tools.scene import FRONTMATTER_VALIDATOR, get_markdown_file
@@ -28,49 +29,12 @@ def frontmatter_check(args):
                 sys.exit(1)
 
 
-def frontmatter_fix(args):
-    """Fix frontmatter.
-
-    This is a hardcode-heavy function, and is largely here to convert from one schema to another.
-    """
-    files = find_markdown_files(args.path)
-    for path in files:
-        markdown_file = get_markdown_file(path)
-        old = markdown_file.parsed_yaml
-        new = {}
-        for key in (
-            "Title",
-            "tags",
-            "aliases",
-            "Locations",
-            "Characters",
-            "POV",
-            "Hook",
-            "Scene",
-            "Sequel",
-            "Cliffhanger",
-            "Summary",
-        ):
-            new[key] = old.get(key)
-        if "Location" in old:
-            if isinstance(old["Location"], list):
-                new["Locations"] = old["Location"]
-            else:
-                new["Locations"] = [old["Location"]]
-        for key in ("Scene", "Sequel"):
-            if isinstance(new[key], list):
-                new[key] = {}
-                for val in old[key]:
-                    new[key].update(val)
-        if old.get("Ideas / thoughts / todo"):
-            new["Ideas / thoughts / todo"] = old["Ideas / thoughts / todo"]
-        markdown_file.parsed_yaml = new
-        _write_updated_frontmatter(path, markdown_file)
-
-
 def frontmatter_diff(args):
     """Diff frontmatter."""
 
+    config = get_config(args)
+    if not args.outline:
+        args.outline = get_primary_outline_path(config)
     files = find_markdown_files(args.path)
     with open(args.outline, encoding="utf-8") as fh:
         table = do_parse_file(fh, column="Scene")
@@ -110,8 +74,47 @@ def _write_updated_frontmatter(path, markdown_file):
         )
 
 
+def _fix_frontmatter(old_frontmatter):
+    """Fix frontmatter.
+
+    This is a hardcode-heavy function, and is largely here to convert from one schema to another.
+    """
+    new_frontmatter = {}
+    for key in (
+        "Title",
+        "tags",
+        "aliases",
+        "Locations",
+        "Characters",
+        "POV",
+        "Hook",
+        "Scene",
+        "Sequel",
+        "Cliffhanger",
+        "Summary",
+    ):
+        new_frontmatter[key] = old_frontmatter.get(key)
+    if "Location" in old_frontmatter:
+        if isinstance(old_frontmatter["Location"], list):
+            new_frontmatter["Locations"] = old_frontmatter["Location"]
+        else:
+            new_frontmatter["Locations"] = [old_frontmatter["Location"]]
+    for key in ("Scene", "Sequel"):
+        if isinstance(new_frontmatter[key], list):
+            new_frontmatter[key] = {}
+            for val in old_frontmatter[key]:
+                new_frontmatter[key].update(val)
+    if old_frontmatter.get("Ideas / thoughts / todo"):
+        new_frontmatter["Ideas / thoughts / todo"] = old_frontmatter["Ideas / thoughts / todo"]
+    return new_frontmatter
+
+
 def frontmatter_update(args):
     """Overwrite frontmatter with formatted output after replacing the summary."""
+
+    config = get_config(args)
+    if not args.outline:
+        args.outline = get_primary_outline_path(config)
 
     files = find_markdown_files(args.path)
     with open(args.outline, encoding="utf-8") as fh:
@@ -128,8 +131,8 @@ def frontmatter_update(args):
         )
 
         markdown_file = get_markdown_file(path)
-        if markdown_file.parsed_yaml["Summary"] == outline_summary:
-            continue
+        if args.fix:
+            markdown_file.parsed_yaml = _fix_frontmatter(markdown_file.parsed_yaml)
         markdown_file.parsed_yaml["Summary"] = outline_summary
         new_yaml = yaml_string(markdown_file.parsed_yaml).rstrip()
 
@@ -188,6 +191,9 @@ def frontmatter_parser():
     parser = argparse.ArgumentParser(prog="frontmatter")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
     parser.add_argument("-s", "--strict", action="store_true")
+    parser.add_argument(
+        "-c", "--config-path", help="Specify the path to the markdown-novel-tools config file."
+    )
     subparsers = parser.add_subparsers()
 
     # frontmatter check
@@ -197,16 +203,9 @@ def frontmatter_parser():
 
     # frontmatter diff
     diff_parser = subparsers.add_parser("diff")
-    diff_parser.add_argument(
-        "-o", "--outline", default="outline/Book 1 outline/scenes.md"
-    )  # TODO unhardcode
+    diff_parser.add_argument("-o", "--outline")
     diff_parser.add_argument("path", nargs="+")
     diff_parser.set_defaults(func=frontmatter_diff)
-
-    # frontmatter fix
-    fix_parser = subparsers.add_parser("fix")
-    fix_parser.add_argument("path", nargs="+")
-    fix_parser.set_defaults(func=frontmatter_fix)
 
     # frontmatter query
     query_parser = subparsers.add_parser("query")
@@ -228,9 +227,8 @@ def frontmatter_parser():
 
     # frontmatter update
     update_parser = subparsers.add_parser("update")
-    update_parser.add_argument(
-        "-o", "--outline", default="outline/Book 1 outline/scenes.md"
-    )  # TODO unhardcode
+    update_parser.add_argument("-o", "--outline")
+    update_parser.add_argument("-f", "--fix", action="store_true")
     update_parser.add_argument("-n", "--noop", action="store_true")
     update_parser.add_argument("path", nargs="+")
     update_parser.set_defaults(func=frontmatter_update)

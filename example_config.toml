@@ -1,0 +1,8 @@
+[outline]
+outline_dir = "outline/Book 1 outline/"
+
+[outline.primary]
+path = "scenes.md"
+
+[novel]
+timezone = "US/Mountain"
