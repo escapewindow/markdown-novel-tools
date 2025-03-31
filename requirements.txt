@@ -3,4 +3,3 @@ GitPython
 num2words
 pytz
 PyYAML
-toml

@@ -2,7 +2,7 @@ recursive-include src *
 
 include LICENSE
 include README.md
-include example_config.toml
+include example_config.yaml
 include pyproject.toml
 include requirements.txt
 include requirements-test.txt

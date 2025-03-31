@@ -1,0 +1,10 @@
+timezone: US/Mountain
+outline_dir: outline/Book 1 outline/
+primary_outline_file: scenes.md
+convert:
+  metadata_path: skeleton/Book 1 Metadata.txt
+  frontmatter_files:
+    - skeleton/Book 1 Copyright.md
+    - skeleton/Book 1 Dedication.md
+    - skeleton/Book 1 Author's Note.md
+    - skeleton/Book 1 Pronunciation Guide.md

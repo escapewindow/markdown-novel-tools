@@ -17,9 +17,8 @@ from markdown_novel_tools.scene import walk_current_dir, walk_previous_revision
 
 def novel_beats(args):
     """Munge novel args, then call parse_beats."""
-    config = get_config(args)
     if not args.path:
-        args.path = get_primary_outline_path(config)
+        args.path = get_primary_outline_path(args.config)
 
     if args.order:
         args.order = args.order.split(",")
@@ -36,7 +35,6 @@ def novel_beats(args):
 
 def novel_convert(args):
     """Convert a novel to a different file format."""
-    config = get_config(args)
     if args.format in ("pdf", "epub", "docx", "odt", "chapter-pdf"):
         if not shutil.which("pandoc"):
             print(f"`{args.format}` format requires `pandoc`! Exiting...", file=sys.stderr)
@@ -46,9 +44,9 @@ def novel_convert(args):
             print(f"`{args.format}` format requires `imagemagick`! Exiting...", file=sys.stderr)
             sys.exit(1)
     if args.format in ("chapter-pdf",):
-        convert_chapter(config, args)
+        convert_chapter(args)
     else:
-        convert_full(config, args)
+        convert_full(args)
 
 
 def novel_stats(args):
@@ -91,11 +89,10 @@ def novel_today(args):
 
 def novel_parser():
     """Return a parser for the novel tool."""
+    config = get_config()
     parser = argparse.ArgumentParser(prog="novel")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
-    parser.add_argument(
-        "-c", "--config-path", help="Specify the path to the markdown-novel-tools config file."
-    )
+    parser.set_defaults(config=config)
     subparsers = parser.add_subparsers()
 
     # novel beats

@@ -32,7 +32,6 @@ def frontmatter_check(args):
 def frontmatter_diff(args):
     """Diff frontmatter."""
 
-    config = get_config(args)
     if not args.outline:
         args.outline = get_primary_outline_path(config)
     files = find_markdown_files(args.path)
@@ -110,10 +109,6 @@ def _fix_frontmatter(old_frontmatter):
 def frontmatter_update(args):
     """Overwrite frontmatter with formatted output after replacing the summary."""
 
-    config = get_config(args)
-    if not args.outline:
-        args.outline = get_primary_outline_path(config)
-
     files = find_markdown_files(args.path)
     with open(args.outline, encoding="utf-8") as fh:
         table = do_parse_file(fh, column="Scene")
@@ -186,12 +181,11 @@ def frontmatter_query(args):
 
 def frontmatter_parser():
     """Return a parser for the frontmatter tool."""
+    config = get_config()
     parser = argparse.ArgumentParser(prog="frontmatter")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
     parser.add_argument("-s", "--strict", action="store_true")
-    parser.add_argument(
-        "-c", "--config-path", help="Specify the path to the markdown-novel-tools config file."
-    )
+    parser.set_defaults(config=config)
     subparsers = parser.add_subparsers()
 
     # frontmatter check
@@ -201,7 +195,7 @@ def frontmatter_parser():
 
     # frontmatter diff
     diff_parser = subparsers.add_parser("diff")
-    diff_parser.add_argument("-o", "--outline")
+    diff_parser.add_argument("-o", "--outline", default=get_primary_outline_path(config))
     diff_parser.add_argument("path", nargs="+")
     diff_parser.set_defaults(func=frontmatter_diff)
 
@@ -225,9 +219,9 @@ def frontmatter_parser():
 
     # frontmatter update
     update_parser = subparsers.add_parser("update")
-    update_parser.add_argument("-o", "--outline")
     update_parser.add_argument("-f", "--fix", action="store_true")
     update_parser.add_argument("-n", "--noop", action="store_true")
+    update_parser.add_argument("-o", "--outline", default=get_primary_outline_path(config))
     update_parser.add_argument("path", nargs="+")
     update_parser.set_defaults(func=frontmatter_update)
 

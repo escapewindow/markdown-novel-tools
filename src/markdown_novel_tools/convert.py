@@ -124,12 +124,12 @@ def munge_metadata(path, artifact_dir):
     return (contents, orig_image, new_image)
 
 
-def convert_chapter(config, args):
+def convert_chapter(args):
     """Convert a single chapter."""
     ignore_blank_lines = False
     artifact_dir = Path(args.artifact_dir)
     chapters = {}
-    metadata_path = Path("skeleton/Book 1 Metadata.txt")  # TODO unhardcode
+    metadata_path = Path(args.config["convert"]["metadata_path"])
     with open(metadata_path, encoding="utf-8") as fh:
         metadata = fh.read()
 
@@ -176,7 +176,7 @@ def convert_chapter(config, args):
         subprocess.check_call(cmd)
 
 
-def convert_full(config, args):
+def convert_full(args):
     """Convert the full manuscript."""
     contents = ""
     toc = "# Table of Contents\n\n"
@@ -185,16 +185,11 @@ def convert_full(config, args):
     orig_image = ""
     new_image = ""
     artifact_dir = Path(args.artifact_dir)
-    metadata_path = Path("skeleton/Book 1 Metadata.txt")  # TODO unhardcode
+    metadata_path = Path(args.config["convert"]["metadata_path"])
     if args.format in ("docx", "odt"):
         file_sources = args.filename
     else:
-        file_sources = [
-            "skeleton/Book 1 Copyright.md",
-            "skeleton/Book 1 Dedication.md",
-            "skeleton/Book 1 Author's Note.md",
-            "skeleton/Book 1 Pronunciation Guide.md",
-        ] + args.filename  # TODO unhardcode
+        file_sources = args.config["convert"]["frontmatter_files"] + args.filename
 
     if args.format == "text":
         ignore_blank_lines = True

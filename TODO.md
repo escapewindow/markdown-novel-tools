@@ -35,7 +35,6 @@
 
 # Config
 - [x] example config
-- [x] --config-path arg
 - [x] search in pwd, base git dir, $XDG_CONFIG_HOME/md-novel, $HOME
 - [ ] get rid of all hardcodes - move to config?
 
