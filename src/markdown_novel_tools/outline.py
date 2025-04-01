@@ -182,7 +182,7 @@ class Table:
 
 def _outline_to_yaml(line):
     """Return the outline string yaml-ified."""
-    return line.replace("[[", "").replace("]]", "").replace(":", " -")
+    return line.strip('"').replace("[[", "").replace("]]", "").replace('"', "").replace(":", " -")
 
 
 def get_line_parts(line, split_column=None):
