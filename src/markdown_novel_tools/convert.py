@@ -133,6 +133,7 @@ def convert_chapter(args):
     with open(metadata_path, encoding="utf-8") as fh:
         metadata = fh.read()
 
+    first = True
     for base_path in args.filename:
         for path in find_markdown_files(base_path):
             m = MANUSCRIPT_REGEX.match(os.path.basename(path))
@@ -140,6 +141,8 @@ def convert_chapter(args):
                 print(f"skipping {path}")
                 continue
             chapter_num = m["chapter_num"]
+            if chapters.get(chapter_num) is None:
+                first = True
             chapters.setdefault(
                 chapter_num, f"{metadata}\n\n# Chapter {chapter_num} - {m['POV']}\n\n"
             )
@@ -147,7 +150,10 @@ def convert_chapter(args):
                 simplified_contents = simplify_markdown(
                     fh.read(), ignore_blank_lines=ignore_blank_lines
                 )
+                if not first:
+                    chapters[chapter_num] = f"{chapters[chapter_num]}\n\n&ast; &ast; &ast;\n\n"
                 chapters[chapter_num] = f"{chapters[chapter_num]}{simplified_contents}\n"
+            first = False
 
     bin_dir = Path("bin")
     if not os.path.exists(artifact_dir):
