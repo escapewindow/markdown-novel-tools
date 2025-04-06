@@ -1,12 +1,13 @@
 timezone: US/Mountain
-outline_dir: outline/Book 1 outline/
-primary_outline_file: scenes.md
+outline:
+  outline_dir: outline/Book {book_num} outline/
+  primary_outline_file: scenes.md
 convert:
-  metadata_path: skeleton/Book 1 Metadata.txt
+  metadata_path: skeleton/Book {book_num} Metadata.txt
   frontmatter_files:
-    - skeleton/Book 1 Copyright.md
-    - skeleton/Book 1 Dedication.md
-    - skeleton/Book 1 Author's Note.md
-    - skeleton/Book 1 Pronunciation Guide.md
+    - skeleton/Book {book_num} Copyright.md
+    - skeleton/Book {book_num} Dedication.md
+    - skeleton/Book {book_num} Author's Note.md
+    - skeleton/Book {book_num} Pronunciation Guide.md
 find_files_by_name_cmd: ["fd", "-s", "-F", "-E", "snippets"]
 find_files_by_content_cmd: ["rg", "-F", "-l"]

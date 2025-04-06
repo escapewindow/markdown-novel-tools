@@ -94,6 +94,7 @@ def novel_parser():
     config = get_config()
     parser = argparse.ArgumentParser(prog="novel")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
+    parser.add_argument("-b", "--book", default="1", help="Specify the book number.")
     parser.set_defaults(config=config)
     subparsers = parser.add_subparsers()
 

@@ -2,10 +2,13 @@
 """markdown-novel-tools config."""
 
 import os
+from copy import deepcopy
 from pathlib import Path
 
 import yaml
 from git import InvalidGitRepositoryError, Repo
+
+from markdown_novel_tools.constants import DEFAULT_CONFIG
 
 
 def get_config_path():
@@ -31,11 +34,32 @@ def get_primary_outline_path(config):
     return Path(config["outline_dir"]) / config["primary_outline_file"]
 
 
+def _get_new_config_val(config_val, user_config_val, key_name):
+    """Return the new config val"""
+    if user_config_val is None:
+        return config_val
+    if type(config_val) is not type(user_config_val):
+        raise TypeError(
+            f"{type(user_config_val)} is not {type(config_val)} for config key {key_name}!"
+        )
+    if isinstance(config_val, str):
+        return user_config_val
+    if isinstance(config_val, dict):
+        for key in config_val:
+            if key in user_config_val:
+                config_val[key] = user_config_val[key]
+        return config_val
+    raise TypeError("Unknown type {type(user_config_val)} in config key {key_name}!")
+
+
 def get_config():
     """Read and return the config."""
-    config = {}
+    config = deepcopy(DEFAULT_CONFIG)
     path = get_config_path()
+    user_config = {}
     if path is not None:
         with open(path) as fh:
-            config = yaml.safe_load(fh)
+            user_config = yaml.safe_load(fh)
+    for key, val in config.items():
+        config[key] = _get_new_config_val(val, user_config.get(key), key)
     return config

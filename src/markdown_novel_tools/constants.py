@@ -13,6 +13,27 @@ cssClass: "wide-table"
 # Outline
 """
 
+# Config {{{1
+
+DEFAULT_CONFIG = {
+    "timezone": "US/Mountain",
+    "outline": {
+        "outline_dir": "outline/Book {book_num} outline/",
+        "primary_outline_file": "scenes.md",
+    },
+    "convert": {
+        "metadata_path": "skeleton/Book {book_num} Metadata.txt",
+        "frontmatter_files": [
+            "skeleton/Book {book_num} Copyright.md",
+            "skeleton/Book {book_num} Dedication.md",
+            "skeleton/Book {book_num} Author's Note.md",
+            "skeleton/Book {book_num} Pronunciation Guide.md",
+        ],
+    },
+    "find_files_by_name_cmd": ["fd", "-s", "-F", "-E", "snippets"],
+    "find_files_by_content_cmd": ["rg", "-F", "-l"],
+}
+
 # Regex {{{1
 ALPHANUM_REGEX = re.compile(r"""\w""")
 SPECIAL_CHAR_REGEX = re.compile(r"""[^A-Za-z0-9 ]""")
