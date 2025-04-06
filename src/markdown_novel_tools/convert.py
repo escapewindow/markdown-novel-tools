@@ -8,6 +8,7 @@ plugins and the various existing pandoc formats aren't working for me.
 
 import os
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -61,7 +62,9 @@ def _header_helper(title, heading_link, style="chapter-only"):
             header = "\n\n<br /><br /><center>&ast;&nbsp;&nbsp;&nbsp;&ast;&nbsp;&nbsp;&nbsp;&ast;</center><br /><br />\n\n"
             toc_link = ""
         elif info:
-            header_pre = f"""Chapter {int(info["chapter_num"])} - {info["POV"]}"""
+            header_pre = (
+                f"""Chapter {num2words(info["chapter_num"]).capitalize()} - {info["POV"]}"""
+            )
             header = f"""# {header_pre} {{#{heading_link}}}\n\n"""
             toc_link = f"- [{header_pre}](#{heading_link})\n"
     return header, toc_link
@@ -144,7 +147,8 @@ def convert_chapter(args):
             if chapters.get(chapter_num) is None:
                 first = True
             chapters.setdefault(
-                chapter_num, f"{metadata}\n\n# Chapter {chapter_num} - {m['POV']}\n\n"
+                chapter_num,
+                f"{metadata}\n\n# Chapter {num2words(chapter_num).capitalize()} - {m["POV"]}\n\n",
             )
             with open(path, encoding="utf-8") as fh:
                 simplified_contents = simplify_markdown(
