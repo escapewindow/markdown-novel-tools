@@ -151,7 +151,9 @@ def convert_chapter(args):
                     fh.read(), ignore_blank_lines=ignore_blank_lines
                 )
                 if not first:
-                    chapters[chapter_num] = f"{chapters[chapter_num]}\n\n&ast; &ast; &ast;\n\n"
+                    chapters[chapter_num] = (
+                        f"{chapters[chapter_num]}\n\n<center>&ast; &ast; &ast;</center>\n\n"
+                    )
                 chapters[chapter_num] = f"{chapters[chapter_num]}{simplified_contents}\n"
             first = False
 
@@ -170,16 +172,17 @@ def convert_chapter(args):
         chapter_pdf = artifact_dir / f"{chapter_basestr}.pdf"
         with open(chapter_md, "w", encoding="utf-8") as fh:
             fh.write(contents)
-        cmd = [
-            "pandoc",
-            chapter_md,
-            "--pdf-engine=weasyprint",
-            "--css",
-            bin_dir / "pdf.css",
-            "-o",
-            chapter_pdf,
-        ]
-        subprocess.check_call(cmd)
+        if args.format == "chapter-pdf":
+            cmd = [
+                "pandoc",
+                chapter_md,
+                "--pdf-engine=weasyprint",
+                "--css",
+                bin_dir / "pdf.css",
+                "-o",
+                chapter_pdf,
+            ]
+            subprocess.check_call(cmd)
 
 
 def convert_full(args):
