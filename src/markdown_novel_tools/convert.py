@@ -151,9 +151,7 @@ def convert_chapter(args):
                     fh.read(), ignore_blank_lines=ignore_blank_lines
                 )
                 if not first:
-                    chapters[chapter_num] = (
-                        f"{chapters[chapter_num]}\n\n<center>&ast; &ast; &ast;</center>\n\n"
-                    )
+                    chapters[chapter_num] = f"{chapters[chapter_num]}\n\n{'&nbsp;' * 60}#\n\n"
                 chapters[chapter_num] = f"{chapters[chapter_num]}{simplified_contents}\n"
             first = False
 
