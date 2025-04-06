@@ -31,7 +31,7 @@ def get_config_path():
 
 def get_primary_outline_path(config):
     """Return the primary outline path."""
-    return Path(config["outline_dir"]) / config["primary_outline_file"]
+    return Path(config["outline"]["outline_dir"]) / config["outline"]["primary_outline_file"]
 
 
 def _get_new_config_val(config_val, user_config_val, key_name):
@@ -42,14 +42,14 @@ def _get_new_config_val(config_val, user_config_val, key_name):
         raise TypeError(
             f"{type(user_config_val)} is not {type(config_val)} for config key {key_name}!"
         )
-    if isinstance(config_val, str):
+    if isinstance(config_val, (str, list)):
         return user_config_val
     if isinstance(config_val, dict):
         for key in config_val:
             if key in user_config_val:
                 config_val[key] = user_config_val[key]
         return config_val
-    raise TypeError("Unknown type {type(user_config_val)} in config key {key_name}!")
+    raise TypeError(f"Unknown type {type(user_config_val)} in config key {key_name}!")
 
 
 def get_config():
