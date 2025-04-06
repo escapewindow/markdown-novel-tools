@@ -154,7 +154,7 @@ def novel_parser():
         default="text",
     )
     convert_parser.add_argument("--subtitle")
-    convert_parser.add_argument("--clean")
+    convert_parser.add_argument("--clean", action="store_true")
     convert_parser.add_argument("--artifact-dir", default="_output")
     convert_parser.add_argument("filename", nargs="+")
     convert_parser.set_defaults(func=novel_convert)
