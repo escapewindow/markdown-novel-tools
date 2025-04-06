@@ -156,6 +156,8 @@ def convert_chapter(args):
             first = False
 
     bin_dir = Path("bin")
+    if args.clean and os.path.exists(artifact_dir):
+        shutil.rmtree(artifact_dir)
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)
     revstr = get_git_revision()
