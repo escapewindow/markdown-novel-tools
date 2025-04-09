@@ -53,7 +53,7 @@ def _beats_helper(
         sys.exit(1)
 
 
-def _get_csv(path):
+def _get_tsv(path):
     """Shared logic from novel_beats and novel_sync"""
     table = build_table_from_file(
         path,
@@ -61,7 +61,7 @@ def _get_csv(path):
         split_column=["Arc", "Beat"],
     )
     if table:
-        return table.get_csv()
+        return table.get_tsv()
     else:
         print("No table found!", file=sys.stderr)
         sys.exit(1)
@@ -165,7 +165,7 @@ def novel_sync(args):
     write_to_file(parent / "questions.md", contents)
     print(f"{stats}\n", file=sys.stderr)
 
-    write_to_file(parent / "full.csv", _get_csv(full_path))
+    write_to_file(parent / "full.tsv", _get_tsv(full_path))
 
 
 def novel_convert(args):

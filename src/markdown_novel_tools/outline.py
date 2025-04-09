@@ -175,10 +175,10 @@ class Table:
                 yaml_output = f"{yaml_output}{output}"
         return yaml_output
 
-    def get_csv(self, _filter=None):
-        """Print all the appropriate lines in csv format."""
+    def get_tsv(self, _filter=None):
+        """Print all the appropriate lines in tsv format."""
         headers = ["Beat #"] + list(self.order)
-        body = f"""{",".join(headers)}\n"""
+        body = f"""{"\t".join(headers)}\n"""
         count = 1
         for k, v in sorted(self.parsed_lines.items()):
             if _filter:
@@ -189,7 +189,7 @@ class Table:
                 line_parts = [str(count)]
                 for o in self.order:
                     line_parts.append(getattr(line, o))
-                body = f"""{body}{",".join(line_parts)}\n"""
+                body = f"""{body}{"\t".join(line_parts)}\n"""
                 count += 1
         return body
 
