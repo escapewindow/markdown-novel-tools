@@ -12,7 +12,7 @@
 - [ ] function to walk the entire wiki
 
 # Outline
-- [ ] script(s) to convert from one source of truth to the other(s)
+- [x] script(s) to convert from one source of truth to the other(s)
   - currently arcs, povs, scenes, all-in-one
   - copy from script bin, change from shell script to python
 - [x] Table object is able to refer to columns by name rather than column number - done?
