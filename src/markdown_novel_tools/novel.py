@@ -15,6 +15,7 @@ from markdown_novel_tools.convert import convert_chapter, convert_full
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import num_commits_today, replace
 from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
+from markdown_novel_tools.utils import write_to_file
 
 
 def _beats_helper(
@@ -85,6 +86,18 @@ def novel_beats(args):
         print(stdout, end="")
     if stderr:
         print(stderr, file=sys.stderr)
+
+
+def novel_sync(args):
+    pass
+
+
+#    novel beats -c Scene --fh -s "$OUTLINE_DIR/scenes.md" > "$OUTLINE_DIR/full.md"
+#
+#    novel beats -c POV --fh -m -s outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/povs.md
+#    novel beats -c Arc --fh -m -s --split-column Arc,Beat outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/arcs.md
+#    novel beats -c Scene --fh -m -s outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/scenes.md
+#    novel beats -c Beat --fh -s -f Question Promise Reveal Goal SubGoal Death --split-column Arc,Beat outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/questions.md
 
 
 def novel_convert(args):
@@ -198,6 +211,10 @@ def novel_parser():
     )
     beats_parser.add_argument("path", nargs="?")
     beats_parser.set_defaults(func=novel_beats)
+
+    sync_parser = subparsers.add_parser("sync")
+    sync_parser.add_argument("path", nargs="?")
+    sync_parser.set_defaults(func=novel_sync)
 
     # novel convert
     convert_parser = subparsers.add_parser("convert")

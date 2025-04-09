@@ -134,6 +134,11 @@ def split_by_char(var, char="/"):
     return return_val
 
 
+def write_to_file(path, contents):
+    with open(path, "w") as fh:
+        fh.write(contents)
+
+
 def unwikilink(string, remove=("[[", "]]", "#")):
     """Remove the [[ ]] from a string. Also # for tags."""
     for repl in remove:
