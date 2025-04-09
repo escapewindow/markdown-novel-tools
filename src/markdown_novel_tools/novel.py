@@ -53,6 +53,20 @@ def _beats_helper(
         sys.exit(1)
 
 
+def _get_csv(path):
+    """Shared logic from novel_beats and novel_sync"""
+    table = build_table_from_file(
+        path,
+        column="Scene",
+        split_column=["Arc", "Beat"],
+    )
+    if table:
+        return table.get_csv()
+    else:
+        print("No table found!", file=sys.stderr)
+        sys.exit(1)
+
+
 def novel_beats(args):
     """Print an outline's beats in the desired form."""
     if not args.path:
@@ -107,19 +121,21 @@ def novel_sync(args):
     parent.mkdir(parents=True, exist_ok=True)
     full_path = parent / "full.md"
     if path.name == "scenes.md":
-        contents, _ = _beats_helper(path, column="Scene", file_headers=True, stats=True)
+        contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
         write_to_file(full_path, contents)
+        print(f"{stats}\n", file=sys.stderr)
     elif not os.path.exists(full_path):
         shutil.copyfile(path, full_path)
 
     # POVS
-    contents, _ = _beats_helper(
+    contents, stats = _beats_helper(
         full_path, column="POV", file_headers=True, multi_table_output=True, stats=True
     )
     write_to_file(parent / "povs.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
 
     # Arc
-    contents, _ = _beats_helper(
+    contents, stats = _beats_helper(
         full_path,
         column="Arc",
         file_headers=True,
@@ -128,12 +144,14 @@ def novel_sync(args):
         stats=True,
     )
     write_to_file(parent / "arcs.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
 
     # Scene
     contents, stats = _beats_helper(
         full_path, column="Scene", file_headers=True, multi_table_output=True, stats=True
     )
     write_to_file(parent / "scenes.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
 
     # Questions etc.
     contents, stats = _beats_helper(
@@ -145,6 +163,9 @@ def novel_sync(args):
         stats=True,
     )
     write_to_file(parent / "questions.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
+
+    write_to_file(parent / "full.csv", _get_csv(full_path))
 
 
 def novel_convert(args):

@@ -131,7 +131,7 @@ class Table:
         return f'{header}\n{re.sub(r"""[^+|]""", "-", header)}'
 
     def get_markdown(self, _filter=None, multi_table=False):
-        """Print all the appropriate lines."""
+        """Return all the appropriate lines in markdown format."""
         widths = dict(zip(list(self.line_obj._fields), self.max_width))
         header = "|"
         for o in self.order:
@@ -156,7 +156,7 @@ class Table:
         return f"{toc}{body}"
 
     def get_yaml(self, _filter=None):
-        """Print all the appropriate lines in yaml format."""
+        """Return all the appropriate lines in yaml format."""
         yaml_output = ""
         for k, v in sorted(self.parsed_lines.items()):
             if _filter and set(split_by_char(k, "/")).isdisjoint(set(_filter)):
@@ -174,6 +174,24 @@ class Table:
                     output = f"- {output} ({line.Arc})\n"
                 yaml_output = f"{yaml_output}{output}"
         return yaml_output
+
+    def get_csv(self, _filter=None):
+        """Print all the appropriate lines in csv format."""
+        headers = ["Beat #"] + list(self.order)
+        body = f"""{",".join(headers)}\n"""
+        count = 1
+        for k, v in sorted(self.parsed_lines.items()):
+            if _filter:
+                filter_key = split_by_char(k, "/")
+                if set(filter_key).isdisjoint(set(_filter)):
+                    continue
+            for line in v:
+                line_parts = [str(count)]
+                for o in self.order:
+                    line_parts.append(getattr(line, o))
+                body = f"""{body}{",".join(line_parts)}\n"""
+                count += 1
+        return body
 
 
 def _outline_to_yaml(line):
