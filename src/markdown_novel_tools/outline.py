@@ -197,22 +197,24 @@ def get_line_parts(line, split_column=None):
     return parts
 
 
-def get_beats(table, args):
+def get_beats(
+    table, filter=None, file_headers=False, multi_table_output=False, stats=False, yaml=False
+):
     """Return the output."""
     stdout = ""
     stderr = ""
-    if args.file_headers:
+    if file_headers:
         stdout += f"{OUTLINE_FILE_HEADER}\n"
 
-    if args.yaml:
-        stdout = f"{stdout}{table.get_yaml(_filter=args.filter)}"
+    if yaml:
+        stdout = f"{stdout}{table.get_yaml(_filter=filter)}"
     else:
-        stdout = f"{stdout}{table.get_markdown(_filter=args.filter, multi_table=args.multi_table_output)}"
+        stdout = f"{stdout}{table.get_markdown(_filter=filter, multi_table=multi_table_output)}"
 
-    if args.stats:
+    if stats:
         if table.column_values:
             values = set()
-            if args.filter:
+            if filter:
                 for val in table.column_values:
                     values.update(set(split_by_char(val, "/")))
                 values = list(values)

@@ -17,8 +17,44 @@ from markdown_novel_tools.repo import num_commits_today, replace
 from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
 
 
+def _beats_helper(
+    path,
+    column=None,
+    filter=None,
+    file_headers=False,
+    multi_table_output=False,
+    order=None,
+    split_column=False,
+    stats=False,
+    target_table_num=None,
+    yaml=False,
+):
+    """Shared logic from novel_beats and novel_sync"""
+    with open(path, encoding="utf-8") as fh:
+        table = build_table_from_file(
+            fh,
+            column=column,
+            order=order,
+            split_column=split_column,
+            target_table_num=target_table_num,
+        )
+
+    if table:
+        return get_beats(
+            table,
+            filter=filter,
+            file_headers=file_headers,
+            multi_table_output=multi_table_output,
+            stats=stats,
+            yaml=yaml,
+        )
+    else:
+        print("No table found!", file=sys.stderr)
+        sys.exit(1)
+
+
 def novel_beats(args):
-    """Munge novel args, then call parse_beats."""
+    """Print an outline's beats in the desired form."""
     if not args.path:
         args.path = get_primary_outline_path(args.config)
 
@@ -33,24 +69,22 @@ def novel_beats(args):
         print("Specify column with `-c` when filtering!", file=sys.stderr)
         sys.exit(1)
 
-    with open(args.path, encoding="utf-8") as fh:
-        table = build_table_from_file(
-            fh,
-            column=args.column,
-            order=args.order,
-            split_column=args.split_column,
-            target_table_num=args.table,
-        )
-
-    if table:
-        stdout, stderr = get_beats(table, args)
-        if stdout:
-            print(stdout, end="")
-        if stderr:
-            print(stderr, file=sys.stderr)
-    else:
-        print("No table found!", file=sys.stderr)
-        sys.exit(1)
+    stdout, stderr = _beats_helper(
+        args.path,
+        column=args.column,
+        filter=args.filter,
+        file_headers=args.file_headers,
+        multi_table_output=args.multi_table_output,
+        order=args.order,
+        split_column=args.split_column,
+        stats=args.stats,
+        target_table_num=args.table,
+        yaml=args.yaml,
+    )
+    if stdout:
+        print(stdout, end="")
+    if stderr:
+        print(stderr, file=sys.stderr)
 
 
 def novel_convert(args):
