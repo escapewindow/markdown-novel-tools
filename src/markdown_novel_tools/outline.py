@@ -222,37 +222,38 @@ def get_beats(
     return stdout, stderr
 
 
-def build_table_from_file(fh, column=None, order=None, split_column=None, target_table_num=None):
+def build_table_from_file(path, column=None, order=None, split_column=None, target_table_num=None):
     """Parse the given filehandle's table(s)."""
     in_table = False
     cur_table_num = 0
     line_num = 0
     table = None
-    for line in fh:
-        line_num += 1
-        if not in_table:
-            if line.startswith("|"):
-                in_table = True
-                cur_table_num += 1
-                if target_table_num is not None and cur_table_num != target_table_num:
-                    continue
-                if table is None:
-                    table = Table(
-                        line,
-                        column=column,
-                        order=order,
-                        split_column=split_column,
-                    )
-                else:
-                    table.verify_header(line, line_num)
-            continue
-        if not line.startswith("|"):
-            in_table = False
-            continue
-        if target_table_num is not None and cur_table_num != target_table_num:
-            continue
-        if TABLE_DIVIDER_REGEX.match(line):
-            continue
-        if table is not None:
-            table.add_line(line)
+    with open(path) as fh:
+        for line in fh:
+            line_num += 1
+            if not in_table:
+                if line.startswith("|"):
+                    in_table = True
+                    cur_table_num += 1
+                    if target_table_num is not None and cur_table_num != target_table_num:
+                        continue
+                    if table is None:
+                        table = Table(
+                            line,
+                            column=column,
+                            order=order,
+                            split_column=split_column,
+                        )
+                    else:
+                        table.verify_header(line, line_num)
+                continue
+            if not line.startswith("|"):
+                in_table = False
+                continue
+            if target_table_num is not None and cur_table_num != target_table_num:
+                continue
+            if TABLE_DIVIDER_REGEX.match(line):
+                continue
+            if table is not None:
+                table.add_line(line)
     return table

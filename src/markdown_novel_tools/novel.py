@@ -25,20 +25,19 @@ def _beats_helper(
     file_headers=False,
     multi_table_output=False,
     order=None,
-    split_column=False,
+    split_column=None,
     stats=False,
     target_table_num=None,
     yaml=False,
 ):
     """Shared logic from novel_beats and novel_sync"""
-    with open(path, encoding="utf-8") as fh:
-        table = build_table_from_file(
-            fh,
-            column=column,
-            order=order,
-            split_column=split_column,
-            target_table_num=target_table_num,
-        )
+    table = build_table_from_file(
+        path,
+        column=column,
+        order=order,
+        split_column=split_column,
+        target_table_num=target_table_num,
+    )
 
     if table:
         return get_beats(
@@ -90,12 +89,33 @@ def novel_beats(args):
 
 def novel_sync(args):
     """Sync the various outline files."""
-    if not args.path:
-        args.path = get_primary_outline_path(args.config)
+    valid_filenames = ("scenes.md", "full.md")
+
+    if args.path:
+        path = Path(args.path)
+    else:
+        path = get_primary_outline_path(args.config)
+
+    if path.name not in valid_filenames:
+        raise Exception(f"{path} is not in {valid_filenames}; quitting before we break beat order.")
+
+    if args.output_dir:
+        parent = Path(args.output_dir)
+    else:
+        parent = path.parent
+
+    parent.mkdir(parents=True, exist_ok=True)
+    full_path = parent / "full.md"
+    if path.name == "scenes.md":
+        contents, _ = _beats_helper(path, column="Scene", file_headers=True)
+        write_to_file(full_path, contents)
+    elif not os.path.exists(full_path):
+        shutil.copyfile(path, full_path)
+
+    contents, _ = _beats_helper(full_path, column="POV", file_headers=True, multi_table_output=True)
+    write_to_file(parent / "povs.md", contents)
 
 
-#    novel beats -c Scene --fh -s "$OUTLINE_DIR/scenes.md" > "$OUTLINE_DIR/full.md"
-#
 #    novel beats -c POV --fh -m -s outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/povs.md
 #    novel beats -c Arc --fh -m -s --split-column Arc,Beat outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/arcs.md
 #    novel beats -c Scene --fh -m -s outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/scenes.md
@@ -215,7 +235,10 @@ def novel_parser():
     beats_parser.set_defaults(func=novel_beats)
 
     sync_parser = subparsers.add_parser("sync", help="Sync the various outline files.")
-    sync_parser.add_argument("path", nargs="?")
+    sync_parser.add_argument("--output-dir", help="Defaults to the parent of PATH")
+    sync_parser.add_argument(
+        "path", nargs="?", help="Defaults to the config or default primary outline path."
+    )
     sync_parser.set_defaults(func=novel_sync)
 
     # novel convert

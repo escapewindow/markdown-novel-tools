@@ -35,8 +35,7 @@ def frontmatter_diff(args):
     if not args.outline:
         args.outline = get_primary_outline_path(config)
     files = find_markdown_files(args.path)
-    with open(args.outline, encoding="utf-8") as fh:
-        table = build_table_from_file(fh, column="Scene")
+    table = build_table_from_file(args.outline, column="Scene")
 
     # Diff summaries
     for path in files:
@@ -110,8 +109,7 @@ def frontmatter_update(args):
     """Overwrite frontmatter with formatted output after replacing the summary."""
 
     files = find_markdown_files(args.path)
-    with open(args.outline, encoding="utf-8") as fh:
-        table = build_table_from_file(fh, column="Scene")
+    table = build_table_from_file(args.outline, column="Scene")
 
     # Update summaries
     for path in files:
