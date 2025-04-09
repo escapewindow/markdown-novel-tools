@@ -12,7 +12,7 @@ from git import Repo
 
 from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.convert import convert_chapter, convert_full
-from markdown_novel_tools.outline import parse_beats
+from markdown_novel_tools.outline import do_parse_file, get_beats
 from markdown_novel_tools.repo import num_commits_today, replace
 from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
 
@@ -32,7 +32,25 @@ def novel_beats(args):
     if args.filter is not None and args.column is None:
         print("Specify column with `-c` when filtering!", file=sys.stderr)
         sys.exit(1)
-    parse_beats(args)
+
+    with open(args.path, encoding="utf-8") as fh:
+        table = do_parse_file(
+            fh,
+            column=args.column,
+            order=args.order,
+            split_column=args.split_column,
+            target_table_num=args.table,
+        )
+
+    if table:
+        stdout, stderr = get_beats(table, args)
+        if stdout:
+            print(stdout, end="")
+        if stderr:
+            print(stderr, file=sys.stderr)
+    else:
+        print("No table found!", file=sys.stderr)
+        sys.exit(1)
 
 
 def novel_convert(args):

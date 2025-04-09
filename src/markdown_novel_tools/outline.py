@@ -223,10 +223,10 @@ def get_beats(table, args):
     return stdout, stderr
 
 
-def do_parse_file(fh, **kwargs):
+def do_parse_file(fh, column=None, order=None, split_column=None, target_table_num=None):
     """Parse the given filehandle's table(s)."""
     in_table = False
-    table_num = 0
+    cur_table_num = 0
     line_num = 0
     table = None
     for line in fh:
@@ -234,15 +234,15 @@ def do_parse_file(fh, **kwargs):
         if not in_table:
             if line.startswith("|"):
                 in_table = True
-                table_num += 1
-                if kwargs.get("table") is not None and table_num != kwargs.get("table"):
+                cur_table_num += 1
+                if target_table_num is not None and cur_table_num != target_table_num:
                     continue
                 if table is None:
                     table = Table(
                         line,
-                        column=kwargs.get("column"),
-                        order=kwargs.get("order"),
-                        split_column=kwargs.get("split_column"),
+                        column=column,
+                        order=order,
+                        split_column=split_column,
                     )
                 else:
                     table.verify_header(line, line_num)
@@ -250,26 +250,10 @@ def do_parse_file(fh, **kwargs):
         if not line.startswith("|"):
             in_table = False
             continue
-        if kwargs.get("table") is not None and table_num != kwargs.get("table"):
+        if target_table_num is not None and cur_table_num != target_table_num:
             continue
         if TABLE_DIVIDER_REGEX.match(line):
             continue
         if table is not None:
             table.add_line(line)
     return table
-
-
-def parse_beats(args):
-    """Main function."""
-    with open(args.path, encoding="utf-8") as fh:
-        table = do_parse_file(fh, **vars(args))
-
-    if table:
-        stdout, stderr = get_beats(table, args)
-        if stdout:
-            print(stdout, end="")
-        if stderr:
-            print(stderr, file=sys.stderr)
-    else:
-        print("No table found!", file=sys.stderr)
-        sys.exit(1)
