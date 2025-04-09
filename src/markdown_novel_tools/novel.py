@@ -107,19 +107,44 @@ def novel_sync(args):
     parent.mkdir(parents=True, exist_ok=True)
     full_path = parent / "full.md"
     if path.name == "scenes.md":
-        contents, _ = _beats_helper(path, column="Scene", file_headers=True)
+        contents, _ = _beats_helper(path, column="Scene", file_headers=True, stats=True)
         write_to_file(full_path, contents)
     elif not os.path.exists(full_path):
         shutil.copyfile(path, full_path)
 
-    contents, _ = _beats_helper(full_path, column="POV", file_headers=True, multi_table_output=True)
+    # POVS
+    contents, _ = _beats_helper(
+        full_path, column="POV", file_headers=True, multi_table_output=True, stats=True
+    )
     write_to_file(parent / "povs.md", contents)
 
+    # Arc
+    contents, _ = _beats_helper(
+        full_path,
+        column="Arc",
+        file_headers=True,
+        multi_table_output=True,
+        split_column=["Arc", "Beat"],
+        stats=True,
+    )
+    write_to_file(parent / "arcs.md", contents)
 
-#    novel beats -c POV --fh -m -s outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/povs.md
-#    novel beats -c Arc --fh -m -s --split-column Arc,Beat outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/arcs.md
-#    novel beats -c Scene --fh -m -s outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/scenes.md
-#    novel beats -c Beat --fh -s -f Question Promise Reveal Goal SubGoal Death --split-column Arc,Beat outline/Book\ 1\ outline/full.md > outline/Book\ 1\ outline/questions.md
+    # Scene
+    contents, stats = _beats_helper(
+        full_path, column="Scene", file_headers=True, multi_table_output=True, stats=True
+    )
+    write_to_file(parent / "scenes.md", contents)
+
+    # Questions etc.
+    contents, stats = _beats_helper(
+        full_path,
+        column="Beat",
+        file_headers=True,
+        filter=["Question", "Promise", "Reveal", "Goal", "SubGoal", "Death"],
+        split_column=["Arc", "Beat"],
+        stats=True,
+    )
+    write_to_file(parent / "questions.md", contents)
 
 
 def novel_convert(args):

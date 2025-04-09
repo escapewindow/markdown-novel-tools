@@ -22,10 +22,6 @@ from markdown_novel_tools.utils import split_by_char
 class Table:
     """Table object."""
 
-    parsed_lines = {}
-    line_count = 0
-    column_values = set()
-
     def __init__(self, line, column=None, order=None, split_column=None):
         """Init Table object."""
         parts = get_line_parts(line)
@@ -41,6 +37,9 @@ class Table:
                 split_column[i] = self.get_column(val)
             self.split_column = tuple(split_column)
         self.column = self.get_column(column)
+        self.parsed_lines = {}
+        self.line_count = 0
+        self.column_values = set()
 
     def get_column(self, column):
         """Get the column name, given either an int or a column name"""
