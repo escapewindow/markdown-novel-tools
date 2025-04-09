@@ -223,7 +223,7 @@ def get_beats(table, args):
     return stdout, stderr
 
 
-def do_parse_file(fh, column=None, order=None, split_column=None, target_table_num=None):
+def build_table_from_file(fh, column=None, order=None, split_column=None, target_table_num=None):
     """Parse the given filehandle's table(s)."""
     in_table = False
     cur_table_num = 0

@@ -10,7 +10,7 @@ import yaml
 
 from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.constants import MANUSCRIPT_REGEX
-from markdown_novel_tools.outline import do_parse_file
+from markdown_novel_tools.outline import build_table_from_file
 from markdown_novel_tools.scene import FRONTMATTER_VALIDATOR, get_markdown_file
 from markdown_novel_tools.utils import diff_yaml, find_markdown_files, output_diff, yaml_string
 
@@ -36,7 +36,7 @@ def frontmatter_diff(args):
         args.outline = get_primary_outline_path(config)
     files = find_markdown_files(args.path)
     with open(args.outline, encoding="utf-8") as fh:
-        table = do_parse_file(fh, column="Scene")
+        table = build_table_from_file(fh, column="Scene")
 
     # Diff summaries
     for path in files:
@@ -111,7 +111,7 @@ def frontmatter_update(args):
 
     files = find_markdown_files(args.path)
     with open(args.outline, encoding="utf-8") as fh:
-        table = do_parse_file(fh, column="Scene")
+        table = build_table_from_file(fh, column="Scene")
 
     # Update summaries
     for path in files:

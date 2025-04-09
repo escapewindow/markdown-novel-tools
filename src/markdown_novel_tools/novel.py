@@ -12,7 +12,7 @@ from git import Repo
 
 from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.convert import convert_chapter, convert_full
-from markdown_novel_tools.outline import do_parse_file, get_beats
+from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import num_commits_today, replace
 from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
 
@@ -34,7 +34,7 @@ def novel_beats(args):
         sys.exit(1)
 
     with open(args.path, encoding="utf-8") as fh:
-        table = do_parse_file(
+        table = build_table_from_file(
             fh,
             column=args.column,
             order=args.order,
