@@ -89,7 +89,9 @@ def novel_beats(args):
 
 
 def novel_sync(args):
-    pass
+    """Sync the various outline files."""
+    if not args.path:
+        args.path = get_primary_outline_path(args.config)
 
 
 #    novel beats -c Scene --fh -s "$OUTLINE_DIR/scenes.md" > "$OUTLINE_DIR/full.md"
@@ -212,7 +214,7 @@ def novel_parser():
     beats_parser.add_argument("path", nargs="?")
     beats_parser.set_defaults(func=novel_beats)
 
-    sync_parser = subparsers.add_parser("sync")
+    sync_parser = subparsers.add_parser("sync", help="Sync the various outline files.")
     sync_parser.add_argument("path", nargs="?")
     sync_parser.set_defaults(func=novel_sync)
 

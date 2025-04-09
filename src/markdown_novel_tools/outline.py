@@ -150,13 +150,10 @@ class Table:
                 body = f"{body}\n## {k}\n{self.table_header(header)}\n"
                 toc = f"{toc}- {k} [github](#{self.to_header_anchor(k)}) [obsidian](#{quote(k)})\n"
             for line in v:
-                if self.order:
-                    output = "|"
-                    for o in self.order:
-                        output += f" {{:<{widths[o]}}} |".format(getattr(line, o))
-                    body = f"{body}{output}\n"
-                else:
-                    body = f"{body}{line}\n"
+                output = "|"
+                for o in self.order:
+                    output += f" {{:<{widths[o]}}} |".format(getattr(line, o))
+                body = f"{body}{output}\n"
         return f"{toc}{body}"
 
     def get_yaml(self, _filter=None):
