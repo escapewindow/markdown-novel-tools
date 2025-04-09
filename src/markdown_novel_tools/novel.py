@@ -165,7 +165,7 @@ def novel_sync(args):
     write_to_file(parent / "questions.md", contents)
     print(f"{stats}\n", file=sys.stderr)
 
-    write_to_file(parent / "full.tsv", _get_tsv(full_path))
+    # write_to_file(parent / "full.tsv", _get_tsv(full_path))
 
 
 def novel_convert(args):
