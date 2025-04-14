@@ -25,7 +25,7 @@ def unwikilink(string):
     return re.sub(r"""\[\[([^\]\|]+\|)?([^\]]+)\]\]""", r"\2", string)
 
 
-def simplify_markdown(contents, ignore_blank_lines=True):
+def simplify_markdown(contents, ignore_blank_lines=True, plaintext=True):
     """Simplify the markdown - remove frontmatter, unwikilink."""
     in_meta = False
     simplified_contents = ""
@@ -43,6 +43,9 @@ def simplify_markdown(contents, ignore_blank_lines=True):
             continue
 
         line = unwikilink(line)
+        if not plaintext:
+            # em-dash
+            line = re.sub(r"""\s*--\s*""", "&mdash;", line)
         simplified_contents = f"{simplified_contents}{line}\n"
     return simplified_contents
 
@@ -136,6 +139,13 @@ def convert_chapter(args):
     with open(metadata_path, encoding="utf-8") as fh:
         metadata = fh.read()
 
+    if args.format in ("markdown", "text"):
+        plaintext = True
+        separator = " - "
+    else:
+        plaintext = False
+        separator = "&mdash;"
+
     first = True
     for base_path in args.filename:
         for path in find_markdown_files(base_path):
@@ -148,11 +158,13 @@ def convert_chapter(args):
                 first = True
             chapters.setdefault(
                 chapter_num,
-                f"{metadata}\n\n# Chapter {num2words(chapter_num).capitalize()} - {m["POV"]}\n\n",
+                f"{metadata}\n\n# Chapter {num2words(chapter_num).capitalize()}{separator}{m["POV"]}\n\n",
             )
             with open(path, encoding="utf-8") as fh:
                 simplified_contents = simplify_markdown(
-                    fh.read(), ignore_blank_lines=ignore_blank_lines
+                    fh.read(),
+                    ignore_blank_lines=ignore_blank_lines,
+                    plaintext=plaintext,
                 )
                 if not first:
                     chapters[chapter_num] = f"{chapters[chapter_num]}\n\n{'&nbsp;' * 60}#\n\n"
@@ -209,6 +221,10 @@ def convert_full(args):
     if args.format in ("pdf", "epub"):
         metadata, orig_image, new_image = munge_metadata(metadata_path, artifact_dir=artifact_dir)
         contents += metadata
+    if args.format in ("markdown", "text"):
+        plaintext = True
+    else:
+        plaintext = False
 
     for base_path in file_sources:
         for path in find_markdown_files(base_path):
@@ -219,7 +235,9 @@ def convert_full(args):
                 toc += toc_link
             with open(path, encoding="utf-8") as fh:
                 simplified_contents = simplify_markdown(
-                    fh.read(), ignore_blank_lines=ignore_blank_lines
+                    fh.read(),
+                    ignore_blank_lines=ignore_blank_lines,
+                    plaintext=plaintext,
                 )
                 contents += simplified_contents
             contents += "\n"
