@@ -352,9 +352,12 @@ def walk_repo_dir():
                 error = update_stats(path, contents, books, stats)
                 if error:
                     errors += error
-        for skip in (".git", ".obsidian", "_output"):
+        for skip in (".git", ".obsidian"):
             if skip in dirs:
                 dirs.remove(skip)
+        for dir in dirs:
+            if dir.startswith("_"):
+                dirs.remove(dir)
     return books, stats, errors
 
 
