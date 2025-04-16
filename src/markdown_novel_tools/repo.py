@@ -12,7 +12,7 @@ from git import Repo
 from markdown_novel_tools.utils import find_files_by_content, find_files_by_name, local_time
 
 
-def num_commits_today(config):
+def commits_today(config):
     """Print the number of git commits in cwd today."""
     path = Path(os.getcwd())
     repo = Repo(path)
@@ -20,15 +20,15 @@ def num_commits_today(config):
     todays_date = local_time(time.time(), timezone=config["timezone"]).strftime(time_fmt)
     # current_commit = repo.head.commit
     # current_commit_date = local_time(current_commit.committed_date, timezone=config["timezone"]).strftime(time_fmt)
-    count = 0
+    commit_info = []
     for rev in repo.iter_commits(repo.head.ref):
         if (
             local_time(rev.committed_date, timezone=config["timezone"]).strftime(time_fmt)
             != todays_date
         ):
             break
-        count += 1
-    return count
+        commit_info.append(f"{rev.hexsha} - {rev.message.strip()}")
+    return commit_info
 
 
 def replace(args):

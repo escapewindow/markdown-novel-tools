@@ -13,7 +13,7 @@ from git import Repo
 from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.convert import convert_chapter, convert_full
 from markdown_novel_tools.outline import build_table_from_file, get_beats
-from markdown_novel_tools.repo import num_commits_today, replace
+from markdown_novel_tools.repo import commits_today, replace
 from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
 from markdown_novel_tools.utils import write_to_file
 
@@ -217,9 +217,9 @@ Total words: {stats['total']['words']}
 def novel_today(args):
     """Get daily stats."""
     # pylint: disable=unused-argument
-    num_commits = num_commits_today(args.config)
+    commits = commits_today(args.config)
 
-    print(f"{num_commits} commits today.")
+    print(f"""{len(commits)} commits today:\n{"\n".join(commits[::-1])}""")
 
 
 def novel_parser():
