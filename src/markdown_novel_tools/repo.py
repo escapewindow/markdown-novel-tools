@@ -14,8 +14,7 @@ from markdown_novel_tools.utils import find_files_by_content, find_files_by_name
 
 def commits_today(config):
     """Print the number of git commits in cwd today."""
-    path = Path(os.getcwd())
-    repo = Repo(path)
+    repo = Repo(Path("."), search_parent_directories=True)
     time_fmt = "%Y%m%d"
     todays_date = local_time(time.time(), timezone=config["timezone"]).strftime(time_fmt)
     # current_commit = repo.head.commit
