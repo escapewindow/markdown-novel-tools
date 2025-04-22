@@ -219,8 +219,7 @@ def novel_today(args):
     # pylint: disable=unused-argument
     commits = commits_today(args.config)
 
-    if args.verbose:
-        print(f"""{"\n".join(commits[::-1])}""")
+    print(f"""{"\n".join(commits[::-1])}""")
     print(f"""{len(commits)} commits today.""")
 
 
@@ -315,7 +314,6 @@ def novel_parser():
 
     # novel today
     today_parser = subparsers.add_parser("today")
-    today_parser.add_argument("-v", "--verbose", action="store_true")
     today_parser.set_defaults(func=novel_today)
 
     return parser
