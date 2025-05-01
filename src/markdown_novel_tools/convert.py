@@ -101,7 +101,7 @@ def get_header_and_toc(path, format_, heading_num):
         header, toc_link = _header_helper(title, heading_link, style="chapter-and-scene")
     elif format_ == "epub":
         header, toc_link = _header_helper(title, heading_link, style="chapter-only")
-    elif format_ in ("docx", "odt"):
+    elif format_ in ("odt",):
         header = _doc_header_helper(title)
         toc_link = ""
     elif format_ in ("text"):
@@ -212,7 +212,7 @@ def convert_full(args):
     new_image = ""
     artifact_dir = Path(args.artifact_dir)
     metadata_path = get_metadata_path(args.config, args.format)
-    if args.format in ("docx", "odt"):
+    if args.format in ("odt",):
         file_sources = args.filename
     else:
         file_sources = args.config["convert"]["frontmatter_files"] + args.filename
@@ -312,7 +312,7 @@ def convert_full(args):
             ]
         )
 
-    elif args.format in ("docx", "odt"):
+    elif args.format in ("odt",):
         data_dir = bin_dir / "data" / "pandoc"
         env = os.environ
         if args.format == "odt":
