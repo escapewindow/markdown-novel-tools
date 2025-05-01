@@ -34,6 +34,15 @@ def get_primary_outline_path(config):
     return Path(config["outline"]["outline_dir"]) / config["outline"]["primary_outline_file"]
 
 
+def get_metadata_path(config, format_="default"):
+    """Get the `novel convert` metadata path for a given format."""
+    return Path(
+        config["convert"]["metadata_path"].get(
+            format_, config["convert"]["metadata_path"]["default"]
+        )
+    )
+
+
 def _get_new_config_val(config_val, user_config_val, key_name):
     """Return the new config val"""
     if user_config_val is None:

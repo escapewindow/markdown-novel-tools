@@ -3,7 +3,8 @@ outline:
   outline_dir: outline/Book {book_num} outline/
   primary_outline_file: scenes.md
 convert:
-  metadata_path: skeleton/Book {book_num} Metadata.txt
+  metadata_path:
+    default: skeleton/Book {book_num} Metadata.txt
   frontmatter_files:
     - skeleton/Book {book_num} Copyright.md
     - skeleton/Book {book_num} Dedication.md

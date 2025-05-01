@@ -16,6 +16,7 @@ from pathlib import Path
 
 from num2words import num2words
 
+from markdown_novel_tools.config import get_metadata_path
 from markdown_novel_tools.constants import ALPHANUM_REGEX, MANUSCRIPT_REGEX
 from markdown_novel_tools.utils import find_markdown_files, get_git_revision, local_time
 
@@ -135,7 +136,7 @@ def convert_chapter(args):
     ignore_blank_lines = False
     artifact_dir = Path(args.artifact_dir)
     chapters = {}
-    metadata_path = Path(args.config["convert"]["metadata_path"])
+    metadata_path = get_metadata_path(args.config, args.format)
     with open(metadata_path, encoding="utf-8") as fh:
         metadata = fh.read()
 
@@ -210,7 +211,7 @@ def convert_full(args):
     orig_image = ""
     new_image = ""
     artifact_dir = Path(args.artifact_dir)
-    metadata_path = Path(args.config["convert"]["metadata_path"])
+    metadata_path = get_metadata_path(args.config, args.format)
     if args.format in ("docx", "odt"):
         file_sources = args.filename
     else:
