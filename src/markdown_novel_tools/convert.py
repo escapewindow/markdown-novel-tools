@@ -46,7 +46,7 @@ def simplify_markdown(contents, ignore_blank_lines=True, plaintext=True):
         line = unwikilink(line)
         if not plaintext:
             # em-dash
-            line = re.sub(r"""\s*--\s*""", "&mdash;", line)
+            line = re.sub(r"""\([^-]\)\s*--\s*\([^-]\)""", "\1&mdash;\2", line)
         simplified_contents = f"{simplified_contents}{line}\n"
     return simplified_contents
 
