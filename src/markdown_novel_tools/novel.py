@@ -11,7 +11,7 @@ from pathlib import Path
 from git import Repo
 
 from markdown_novel_tools.config import get_config, get_primary_outline_path
-from markdown_novel_tools.convert import convert_chapter, convert_full
+from markdown_novel_tools.convert import chapter_pdf_callback, convert_chapter, convert_full
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
 from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
@@ -178,8 +178,11 @@ def novel_convert(args):
         if not shutil.which("magick"):
             print(f"`{args.format}` format requires `imagemagick`! Exiting...", file=sys.stderr)
             sys.exit(1)
-    if args.format in ("chapter-pdf", "shunn-docx"):
-        convert_chapter(args)
+    if args.format == "chapter-pdf":
+        convert_chapter(args, per_chapter_callback=chapter_pdf_callback)
+    elif args.format == "shunn-docx":
+        # TODO
+        convert_chapter(args, post_callback=None)
     else:
         convert_full(args)
 

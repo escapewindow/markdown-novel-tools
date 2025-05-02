@@ -31,6 +31,7 @@ DEFAULT_CONFIG = {
             "skeleton/Book {book_num} Author's Note.md",
             "skeleton/Book {book_num} Pronunciation Guide.md",
         ],
+        "pdf_css_path": "bin/pdf.css",
     },
     "find_files_by_name_cmd": ["fd", "-s", "-F", "-E", "snippets"],
     "find_files_by_content_cmd": ["rg", "-F", "-l"],

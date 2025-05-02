@@ -131,21 +131,16 @@ def munge_metadata(path, artifact_dir):
     return (contents, orig_image, new_image)
 
 
-def convert_chapter(args):
-    """Convert a single chapter."""
+def convert_chapter(args, per_chapter_callback=None, post_callback=None):
+    """Convert chapters into their own files."""
     ignore_blank_lines = False
+    plaintext = False
+    separator = "&mdash;"
     artifact_dir = Path(args.artifact_dir)
     chapters = {}
     metadata_path = get_metadata_path(args.config, args.format)
     with open(metadata_path, encoding="utf-8") as fh:
         metadata = fh.read()
-
-    if args.format in ("markdown", "text"):
-        plaintext = True
-        separator = " - "
-    else:
-        plaintext = False
-        separator = "&mdash;"
 
     first = True
     for base_path in args.filename:
@@ -172,7 +167,6 @@ def convert_chapter(args):
                 chapters[chapter_num] = f"{chapters[chapter_num]}{simplified_contents}\n"
             first = False
 
-    bin_dir = Path("bin")
     if args.clean and os.path.exists(artifact_dir):
         shutil.rmtree(artifact_dir)
     if not os.path.exists(artifact_dir):
@@ -183,23 +177,38 @@ def convert_chapter(args):
     if args.subtitle:
         subtitle = f"{args.subtitle}-"
 
+    chapter_markdown = []
     for chapter_num, contents in chapters.items():
+        # TODO unhardcode
         chapter_basestr = f"book1-{datestr}-{subtitle}{revstr}-chapter{chapter_num}"
         chapter_md = artifact_dir / f"{chapter_basestr}.md"
-        chapter_pdf = artifact_dir / f"{chapter_basestr}.pdf"
         with open(chapter_md, "w", encoding="utf-8") as fh:
             fh.write(contents)
-        if args.format == "chapter-pdf":
-            cmd = [
-                "pandoc",
-                chapter_md,
-                "--pdf-engine=weasyprint",
-                "--css",
-                bin_dir / "pdf.css",
-                "-o",
-                chapter_pdf,
-            ]
-            subprocess.check_call(cmd)
+        chapter_markdown.append(chapter_md)
+        if per_chapter_callback is not None:
+            per_chapter_callback(args, chapter_basestr, chapter_md)
+    if post_callback is not None:
+        post_callback()
+
+
+def chapter_pdf_callback(
+    args,
+    chapter_basestr,
+    chapter_md,
+):
+    """Create a pdf from each chapter"""
+    chapter_pdf = Path(args.artifact_dir) / f"{chapter_basestr}.pdf"
+    css = args.config["convert"]["pdf_css_path"]
+    cmd = [
+        "pandoc",
+        chapter_md,
+        "--pdf-engine=weasyprint",
+        "--css",
+        css,
+        "-o",
+        chapter_pdf,
+    ]
+    subprocess.check_call(cmd)
 
 
 def convert_full(args):
