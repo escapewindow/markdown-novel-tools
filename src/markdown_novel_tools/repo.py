@@ -47,3 +47,8 @@ def replace(args):
         for _file in name_files:
             to_file = _file.replace(args.from_, args.to)
             subprocess.check_call(["git", "mv", _file, to_file])
+
+
+def clone(url, path):
+    """Clone a git repo."""
+    Repo.clone_from(url=url, to_path=path)
