@@ -1,0 +1,12 @@
+body {
+    background-color: white;
+    font-family: Times;
+    color: #333333;
+    line-height: 1;
+    font-size: 12px;
+}
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 10px;
+}

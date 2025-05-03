@@ -3,6 +3,7 @@
 
 import os
 import re
+from pathlib import Path
 
 DEBUG = 0
 
@@ -31,6 +32,13 @@ DEFAULT_CONFIG = {
             "skeleton/Book {book_num} Author's Note.md",
             "skeleton/Book {book_num} Pronunciation Guide.md",
         ],
+        "css": {
+            # TODO works in develop env, need an install fix
+            "css_dir": Path(__file__).parent.parent / "data" / "css",
+            "manuscript_pdf_css_path": "pdf-light.css",
+            "outline_pdf_css_path": "pdf-outline.css",
+            "epub_css_path": "epub.css",
+        },
         "pdf_css_path": "bin/pdf.css",
         "shunn_repo_url": "https://github.com/escapewindow/pandoc-templates",
         "shunn_repo_path": None,

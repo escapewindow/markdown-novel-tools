@@ -17,7 +17,7 @@ from pathlib import Path
 import yaml
 from num2words import num2words
 
-from markdown_novel_tools.config import get_metadata_path
+from markdown_novel_tools.config import get_css_path, get_metadata_path
 from markdown_novel_tools.constants import ALPHANUM_REGEX, MANUSCRIPT_REGEX
 from markdown_novel_tools.utils import find_markdown_files, get_git_revision, local_time
 
@@ -192,10 +192,11 @@ def single_markdown_to_pdf(
     basename,
     from_,
     artifact_dir=None,
+    css_path=None,
 ):
     """Create a pdf from each chapter"""
     output_pdf = Path(artifact_dir or args.artifact_dir) / f"{basename}.pdf"
-    css = args.config["convert"]["pdf_css_path"]
+    css = css_path or get_css_path(args.config, variant="manuscript_pdf_css_path")
     cmd = [
         "pandoc",
         from_,
@@ -272,7 +273,7 @@ def convert_full(args):
                 "--pdf-engine=weasyprint",
                 "--toc",
                 "--css",
-                bin_dir / "pdf.css",
+                get_css_path(args.config, variant="manuscript_pdf_css_path"),
                 "-o",
                 artifact_dir / f"{output_basestr}.pdf",
             ]
@@ -309,7 +310,7 @@ def convert_full(args):
                 "-t",
                 "epub",
                 "--css",
-                "bin/epub.css",
+                get_css_path(args.config, variant="epub_css_path"),
                 "-o",
                 artifact_dir / f"{output_basestr}.epub",
                 output_md,

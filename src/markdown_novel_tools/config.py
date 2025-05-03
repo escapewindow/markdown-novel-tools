@@ -43,6 +43,11 @@ def get_metadata_path(config, format_="default"):
     )
 
 
+def get_css_path(config, variant="manuscript_pdf_css_path"):
+    """Return the css path."""
+    return Path(config["convert"]["css"]["css_dir"]) / config["convert"]["css"][variant]
+
+
 def _get_new_config_val(config_val, user_config_val, key_name):
     """Return the new config val"""
     if user_config_val is None:
