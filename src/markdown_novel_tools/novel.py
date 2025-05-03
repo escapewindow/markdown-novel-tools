@@ -15,7 +15,7 @@ from markdown_novel_tools.convert import chapter_pdf_callback, convert_chapter, 
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
 from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
-from markdown_novel_tools.shunn import shunn_docx
+from markdown_novel_tools.shunn import shunn_docx, shunn_md
 from markdown_novel_tools.utils import write_to_file
 
 
@@ -171,7 +171,7 @@ def novel_sync(args):
 
 def novel_convert(args):
     """Convert a novel to a different file format."""
-    if args.format in ("pdf", "epub", "chapter-pdf", "shunn-docx"):
+    if args.format in ("pdf", "epub", "chapter-pdf", "shunn-docx", "shunn-md"):
         if not shutil.which("pandoc"):
             print(f"`{args.format}` format requires `pandoc`! Exiting...", file=sys.stderr)
             sys.exit(1)
@@ -183,6 +183,8 @@ def novel_convert(args):
         convert_chapter(args, per_chapter_callback=chapter_pdf_callback)
     elif args.format == "shunn-docx":
         shunn_docx(args)
+    elif args.format == "shunn-md":
+        shunn_md(args)
     else:
         convert_full(args)
 
@@ -295,7 +297,7 @@ def novel_parser():
     convert_parser = subparsers.add_parser("convert")
     convert_parser.add_argument(
         "--format",
-        choices=("pdf", "chapter-pdf", "shunn-docx", "text", "epub"),
+        choices=("pdf", "chapter-pdf", "shunn-docx", "shunn-md", "text", "epub"),
         default="text",
     )
     convert_parser.add_argument("--subtitle")
