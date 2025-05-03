@@ -207,6 +207,20 @@ def novel_outline_convert(args):
     )
     write_to_file(parent / "scenes.html", contents)
 
+    if args.format == "pdf":
+        css = args.config["convert"]["pdf_css_path"]
+        for base_name in ("arcs", "scenes"):
+            cmd = [
+                "pandoc",
+                parent / f"{base_name}.html",
+                "--pdf-engine=weasyprint",
+                "--css",
+                css,
+                "-o",
+                parent / f"{base_name}.pdf",
+            ]
+            subprocess.check_call(cmd)
+
 
 def novel_stats(args):
     """Get the stats for the manuscript"""
