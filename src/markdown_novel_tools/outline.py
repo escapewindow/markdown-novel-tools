@@ -111,25 +111,6 @@ class Table:
             if value > self.max_width[count]:
                 self.max_width[count] = value
 
-    def to_header_anchor(self, header_text):
-        """Munge the header_text into a header anchor:
-
-        - All text is converted to lowercase.
-        - All non-word text (e.g., punctuation, HTML) is removed.
-        - All spaces are converted to hyphens.
-        - Two or more hyphens in a row are converted to one.
-        - If a header with the same ID has already been generated, a unique incrementing number is appended, starting at 1.
-        """
-        anchor = header_text.lower()
-        anchor = re.sub(SPECIAL_CHAR_REGEX, "", anchor)
-        anchor = anchor.replace(" ", "-")
-        anchor = re.sub("-+", "-", anchor)
-        return anchor
-
-    def table_header(self, header):
-        """Return the table header and divider line"""
-        return f'{header}\n{re.sub(r"""[^+|]""", "-", header)}'
-
 
 def _outline_to_yaml(line):
     """Return the outline string yaml-ified."""
@@ -213,6 +194,27 @@ def build_table_from_file(path, column=None, order=None, split_column=None, targ
     return table
 
 
+def get_markdown_table_header(header):
+    """Return the table header and divider line"""
+    return f'{header}\n{re.sub(r"""[^+|]""", "-", header)}'
+
+
+def header_text_to_header_anchor(header_text):
+    """Munge the header_text into a header anchor:
+
+    - All text is converted to lowercase.
+    - All non-word text (e.g., punctuation, HTML) is removed.
+    - All spaces are converted to hyphens.
+    - Two or more hyphens in a row are converted to one.
+    - If a header with the same ID has already been generated, a unique incrementing number is appended, starting at 1.
+    """
+    anchor = header_text.lower()
+    anchor = re.sub(SPECIAL_CHAR_REGEX, "", anchor)
+    anchor = anchor.replace(" ", "-")
+    anchor = re.sub("-+", "-", anchor)
+    return anchor
+
+
 def get_markdown_from_table(table, _filter=None, multi_table=False):
     """Return all the appropriate lines in markdown format."""
     widths = dict(zip(list(table.line_obj._fields), table.max_width))
@@ -222,15 +224,17 @@ def get_markdown_from_table(table, _filter=None, multi_table=False):
     toc = ""
     body = ""
     if not multi_table:
-        body = f"{body}{table.table_header(header)}\n"
+        body = f"{body}{markdown_table_header(header)}\n"
     for k, v in sorted(table.parsed_lines.items()):
         if _filter:
             filter_key = split_by_char(k, "/")
             if set(filter_key).isdisjoint(set(_filter)):
                 continue
         if multi_table:
-            body = f"{body}\n## {k}\n{table.table_header(header)}\n"
-            toc = f"{toc}- {k} [github](#{table.to_header_anchor(k)}) [obsidian](#{quote(k)})\n"
+            body = f"{body}\n## {k}\n{markdown_table_header(header)}\n"
+            toc = (
+                f"{toc}- {k} [github](#{header_text_to_header_anchor(k)}) [obsidian](#{quote(k)})\n"
+            )
         for line in v:
             output = "|"
             for o in table.order:
@@ -258,3 +262,27 @@ def get_yaml_from_table(table, _filter=None):
                 output = f"- {output} ({line.Arc})\n"
             yaml_output = f"{yaml_output}{output}"
     return yaml_output
+
+
+def get_html_from_table(table, _filter=None, multi_table=False):
+    """Return all the appropriate lines in html format."""
+    header = r"""<table><tr>"""
+    for o in table.order:
+        header = f"{body}<th>{o}</th>"
+    header = "</tr>\n"
+    body = ""
+    if not multi_table:
+        body = f"{body}{markdown_table_header(header)}\n"
+    for k, v in sorted(table.parsed_lines.items()):
+        if _filter:
+            filter_key = split_by_char(k, "/")
+            if set(filter_key).isdisjoint(set(_filter)):
+                continue
+        if multi_table:
+            body = f"{body}\n## {k}\n{markdown_table_header(header)}\n"
+        for line in v:
+            output = "|"
+            for o in table.order:
+                output += f" {{:<{widths[o]}}} |".format(getattr(line, o))
+            body = f"{body}{output}\n"
+    return f"{body}"
