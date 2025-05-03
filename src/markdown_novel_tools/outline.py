@@ -175,24 +175,6 @@ class Table:
                 yaml_output = f"{yaml_output}{output}"
         return yaml_output
 
-    def get_tsv(self, _filter=None):
-        """Print all the appropriate lines in tsv format."""
-        headers = ["Beat #"] + list(self.order)
-        body = f"""{"\t".join(headers)}\n"""
-        count = 1
-        for k, v in sorted(self.parsed_lines.items()):
-            if _filter:
-                filter_key = split_by_char(k, "/")
-                if set(filter_key).isdisjoint(set(_filter)):
-                    continue
-            for line in v:
-                line_parts = [str(count)]
-                for o in self.order:
-                    line_parts.append(getattr(line, o))
-                body = f"""{body}{"\t".join(line_parts)}\n"""
-                count += 1
-        return body
-
 
 def _outline_to_yaml(line):
     """Return the outline string yaml-ified."""

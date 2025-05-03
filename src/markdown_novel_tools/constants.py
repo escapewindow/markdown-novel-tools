@@ -39,6 +39,8 @@ DEFAULT_CONFIG = {
     "find_files_by_content_cmd": ["rg", "-F", "-l"],
 }
 
+VALID_PRIMARY_OUTLINE_FILENAMES = ("scenes.md", "full.md")
+
 # Regex {{{1
 ALPHANUM_REGEX = re.compile(r"""\w""")
 SPECIAL_CHAR_REGEX = re.compile(r"""[^A-Za-z0-9 ]""")

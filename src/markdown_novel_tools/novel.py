@@ -11,6 +11,7 @@ from pathlib import Path
 from git import Repo
 
 from markdown_novel_tools.config import get_config, get_primary_outline_path
+from markdown_novel_tools.constants import VALID_PRIMARY_OUTLINE_NAMES
 from markdown_novel_tools.convert import chapter_pdf_callback, convert_chapter, convert_full
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
@@ -54,20 +55,6 @@ def _beats_helper(
         sys.exit(1)
 
 
-def _get_tsv(path):
-    """Shared logic from novel_beats and novel_sync"""
-    table = build_table_from_file(
-        path,
-        column="Scene",
-        split_column=["Arc", "Beat"],
-    )
-    if table:
-        return table.get_tsv()
-    else:
-        print("No table found!", file=sys.stderr)
-        sys.exit(1)
-
-
 def novel_beats(args):
     """Print an outline's beats in the desired form."""
     if not args.path:
@@ -104,18 +91,18 @@ def novel_beats(args):
 
 def novel_sync(args):
     """Sync the various outline files."""
-    valid_filenames = ("scenes.md", "full.md")
-
     if args.path:
         path = Path(args.path)
     else:
         path = get_primary_outline_path(args.config)
 
-    if path.name not in valid_filenames:
-        raise Exception(f"{path} is not in {valid_filenames}; quitting before we break beat order.")
+    if path.name not in VALID_PRIMARY_OUTLINE_FILENAMES:
+        raise Exception(
+            f"{path} is not in {VALID_PRIMARY_OUTLINE_FILENAMES}; quitting before we break beat order."
+        )
 
-    if args.output_dir:
-        parent = Path(args.output_dir)
+    if args.artifact_dir:
+        parent = Path(args.artifact_dir)
     else:
         parent = path.parent
 
@@ -188,7 +175,66 @@ def novel_convert(args):
 
 
 def novel_outline_convert(args):
-    pass
+    """Convert the outline to something shareable."""
+    path = get_primary_outline_path(args.config)
+
+    if path.name not in VALID_PRIMARY_OUTLINE_FILENAMES:
+        raise Exception(
+            f"{path} is not in {VALID_PRIMARY_OUTLINE_FILENAMES}; quitting before we break beat order."
+        )
+
+    if args.artifact_dir:
+        parent = Path(args.artifact_dir)
+    else:
+        parent = path.parent
+
+    parent.mkdir(parents=True, exist_ok=True)
+
+    # aki
+    if path.name == "scenes.md":
+        contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
+        write_to_file(full_path, contents)
+        print(f"{stats}\n", file=sys.stderr)
+    elif not os.path.exists(full_path):
+        shutil.copyfile(path, full_path)
+
+    # POVS
+    contents, stats = _beats_helper(
+        full_path, column="POV", file_headers=True, multi_table_output=True, stats=True
+    )
+    write_to_file(parent / "povs.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
+
+    # Arc
+    contents, stats = _beats_helper(
+        full_path,
+        column="Arc",
+        file_headers=True,
+        multi_table_output=True,
+        split_column=["Arc", "Beat"],
+        stats=True,
+    )
+    write_to_file(parent / "arcs.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
+
+    # Scene
+    contents, stats = _beats_helper(
+        full_path, column="Scene", file_headers=True, multi_table_output=True, stats=True
+    )
+    write_to_file(parent / "scenes.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
+
+    # Questions etc.
+    contents, stats = _beats_helper(
+        full_path,
+        column="Beat",
+        file_headers=True,
+        filter=["Question", "Promise", "Reveal", "Goal", "SubGoal", "Death"],
+        split_column=["Arc", "Beat"],
+        stats=True,
+    )
+    write_to_file(parent / "questions.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
 
 
 def novel_stats(args):
@@ -289,7 +335,7 @@ def novel_parser():
     beats_parser.set_defaults(func=novel_beats)
 
     sync_parser = subparsers.add_parser("sync", help="Sync the various outline files.")
-    sync_parser.add_argument("--output-dir", help="Defaults to the parent of PATH")
+    sync_parser.add_argument("--artifact-dir", help="Defaults to the parent of PATH")
     sync_parser.add_argument(
         "path", nargs="?", help="Defaults to the config or default primary outline path."
     )
@@ -315,6 +361,7 @@ def novel_parser():
         choices=("pdf", "html"),
         default="html",
     )
+    outline_convert_parser.add_argument("--subtitle")
     outline_convert_parser.add_argument("--clean", action="store_true")
     outline_convert_parser.add_argument("--artifact-dir", default="_output")
     outline_convert_parser.set_defaults(func=novel_outline_convert)
