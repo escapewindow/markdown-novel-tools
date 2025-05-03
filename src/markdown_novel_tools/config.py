@@ -61,7 +61,12 @@ def _get_new_config_val(config_val, user_config_val, key_name):
     if isinstance(config_val, dict):
         for key in config_val:
             if key in user_config_val:
-                config_val[key] = user_config_val[key]
+                if isinstance(config_val[key], dict):
+                    config_val[key] = _get_new_config_val(
+                        config_val[key], user_config_val[key], key
+                    )
+                else:
+                    config_val[key] = user_config_val[key]
         return config_val
     raise TypeError(f"Unknown type {type(user_config_val)} in config key {key_name}!")
 
