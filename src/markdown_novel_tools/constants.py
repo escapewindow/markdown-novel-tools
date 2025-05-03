@@ -39,7 +39,11 @@ DEFAULT_CONFIG = {
     "find_files_by_content_cmd": ["rg", "-F", "-l"],
 }
 
+
+# Outline {{{1
 VALID_PRIMARY_OUTLINE_FILENAMES = ("scenes.md", "full.md")
+
+OUTLINE_HTML_HEADER = "<html><head></head><body>\n"
 
 # Regex {{{1
 ALPHANUM_REGEX = re.compile(r"""\w""")

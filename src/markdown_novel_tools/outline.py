@@ -13,6 +13,7 @@ from urllib.parse import quote
 
 from markdown_novel_tools.constants import (
     OUTLINE_FILE_HEADER,
+    OUTLINE_HTML_HEADER,
     SPECIAL_CHAR_REGEX,
     TABLE_DIVIDER_REGEX,
 )
@@ -135,7 +136,7 @@ def get_beats(
     file_headers=False,
     multi_table_output=False,
     stats=False,
-    format_="markdown",
+    format_=None,
 ):
     """Return the output."""
     stdout = ""
@@ -145,9 +146,10 @@ def get_beats(
 
     if format_ == "yaml":
         stdout = f"{stdout}{get_yaml_from_table(table, _filter=filter)}"
-    elif format_ == "markdown":
+    elif format_ is None or format_ == "markdown":
         stdout = f"{stdout}{get_markdown_from_table(table, _filter=filter, multi_table=multi_table_output)}"
     elif format_ == "html":
+        # No markdown file headers in html
         stdout = get_html_from_table(table, _filter=filter, multi_table=multi_table_output)
     else:
         raise Exception(f"Unknown format {format_}!")
@@ -275,11 +277,11 @@ def get_yaml_from_table(table, _filter=None):
 
 def get_html_from_table(table, _filter=None, multi_table=False):
     """Return all the appropriate lines in html format."""
-    table_header = r"""<table><tr>"""
+    table_header = "<table><tr>\n"
     for o in table.order:
-        table_header = f"{body}<th>{o}</th>"
-    table_header = "</tr>\n"
-    body = r"""<html><head></head><body>\n"""
+        table_header = f"{table_header}  <th>{o}</th>\n"
+    table_header = f"{table_header}</tr>"
+    body = OUTLINE_HTML_HEADER
     if not multi_table:
         body = f"{body}{table_header}\n"
     for k, v in sorted(table.parsed_lines.items()):
@@ -291,12 +293,10 @@ def get_html_from_table(table, _filter=None, multi_table=False):
             body = f"{body}\n<h2>{k}</h2>\n{table_header}\n"
 
         for line in v:
-            output = "<tr>"
+            output = "<tr>\n"
             for o in table.order:
-                output = f"{output}<td>{getattr(line, o)}</td>"
+                output = f"{output}  <td>{getattr(line, o)}</td>\n"
             body = f"{body}{output}</tr>\n"
-            body = f"{body}<!-- ?? 1 -->\n"
-        body = f"{body}<!-- ?? 2 -->\n"
-    body = f"{body}<!-- ?? 3 -->\n"
+        body = f"{body}</table>\n"
     body = f"{body}</body></html>\n"
     return body
