@@ -130,7 +130,12 @@ def get_line_parts(line, split_column=None):
 
 
 def get_beats(
-    table, filter=None, file_headers=False, multi_table_output=False, stats=False, yaml=False
+    table,
+    filter=None,
+    file_headers=False,
+    multi_table_output=False,
+    stats=False,
+    format_="markdown",
 ):
     """Return the output."""
     stdout = ""
@@ -138,10 +143,14 @@ def get_beats(
     if file_headers:
         stdout += f"{OUTLINE_FILE_HEADER}\n"
 
-    if yaml:
+    if format_ == "yaml":
         stdout = f"{stdout}{get_yaml_from_table(table, _filter=filter)}"
-    else:
+    elif format == "markdown":
         stdout = f"{stdout}{get_markdown_from_table(table, _filter=filter, multi_table=multi_table_output)}"
+    elif format == "html":
+        stdout = get_html_from_table(table, _filter=filter, multi_table=multi_table_output)
+    else:
+        raise Exception(f"Unknown format {format_}!")
 
     if stats:
         if table.column_values:
@@ -266,23 +275,28 @@ def get_yaml_from_table(table, _filter=None):
 
 def get_html_from_table(table, _filter=None, multi_table=False):
     """Return all the appropriate lines in html format."""
-    header = r"""<table><tr>"""
+    table_header = r"""<table><tr>"""
     for o in table.order:
-        header = f"{body}<th>{o}</th>"
-    header = "</tr>\n"
-    body = ""
+        table_header = f"{body}<th>{o}</th>"
+    table_header = "</tr>\n"
+    body = r"""<html><head></head><body>\n"""
     if not multi_table:
-        body = f"{body}{markdown_table_header(header)}\n"
+        body = f"{body}{table_header}\n"
     for k, v in sorted(table.parsed_lines.items()):
         if _filter:
             filter_key = split_by_char(k, "/")
             if set(filter_key).isdisjoint(set(_filter)):
                 continue
         if multi_table:
-            body = f"{body}\n## {k}\n{markdown_table_header(header)}\n"
+            body = f"{body}\n<h2>{k}</h2>\n{table_header}\n"
+
         for line in v:
-            output = "|"
+            output = "<tr>"
             for o in table.order:
-                output += f" {{:<{widths[o]}}} |".format(getattr(line, o))
-            body = f"{body}{output}\n"
-    return f"{body}"
+                output = f"{output}<td>{getattr(line, o)}</td>"
+            body = f"{body}{output}</tr>\n"
+            body = f"{body}<!-- ?? 1 -->\n"
+        body = f"{body}<!-- ?? 2 -->\n"
+    body = f"{body}<!-- ?? 3 -->\n"
+    body = f"{body}</body></html>\n"
+    return body

@@ -30,7 +30,7 @@ def _beats_helper(
     split_column=None,
     stats=False,
     target_table_num=None,
-    yaml=False,
+    format_=None,
 ):
     """Shared logic from novel_beats and novel_sync"""
     table = build_table_from_file(
@@ -48,7 +48,7 @@ def _beats_helper(
             file_headers=file_headers,
             multi_table_output=multi_table_output,
             stats=stats,
-            yaml=yaml,
+            format_=format_,
         )
     else:
         print("No table found!", file=sys.stderr)
@@ -81,7 +81,7 @@ def novel_beats(args):
         split_column=args.split_column,
         stats=args.stats,
         target_table_num=args.table,
-        yaml=args.yaml,
+        format_=args.format,
     )
     if stdout:
         print(stdout, end="")
@@ -190,51 +190,22 @@ def novel_outline_convert(args):
 
     parent.mkdir(parents=True, exist_ok=True)
 
-    # aki
-    if path.name == "scenes.md":
-        contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
-        write_to_file(full_path, contents)
-        print(f"{stats}\n", file=sys.stderr)
-    elif not os.path.exists(full_path):
-        shutil.copyfile(path, full_path)
-
-    # POVS
-    contents, stats = _beats_helper(
-        full_path, column="POV", file_headers=True, multi_table_output=True, stats=True
-    )
-    write_to_file(parent / "povs.md", contents)
-    print(f"{stats}\n", file=sys.stderr)
-
     # Arc
     contents, stats = _beats_helper(
-        full_path,
+        path,
         column="Arc",
-        file_headers=True,
         multi_table_output=True,
         split_column=["Arc", "Beat"],
         stats=True,
+        format_="html",
     )
-    write_to_file(parent / "arcs.md", contents)
-    print(f"{stats}\n", file=sys.stderr)
+    write_to_file(parent / "arcs.html", contents)
 
     # Scene
     contents, stats = _beats_helper(
-        full_path, column="Scene", file_headers=True, multi_table_output=True, stats=True
+        path, column="Scene", multi_table_output=True, stats=True, format_="html"
     )
-    write_to_file(parent / "scenes.md", contents)
-    print(f"{stats}\n", file=sys.stderr)
-
-    # Questions etc.
-    contents, stats = _beats_helper(
-        full_path,
-        column="Beat",
-        file_headers=True,
-        filter=["Question", "Promise", "Reveal", "Goal", "SubGoal", "Death"],
-        split_column=["Arc", "Beat"],
-        stats=True,
-    )
-    write_to_file(parent / "questions.md", contents)
-    print(f"{stats}\n", file=sys.stderr)
+    write_to_file(parent / "scenes.html", contents)
 
 
 def novel_stats(args):
@@ -313,10 +284,10 @@ def novel_parser():
         "-s", "--stats", action="store_true", help="Display stats at the end."
     )
     beats_parser.add_argument(
-        "-y",
-        "--yaml",
-        action="store_true",
-        help="Print in yaml header mode, rather than markdown table.",
+        "--format",
+        choices=["yaml", "markdown", "html"],
+        default="markdown",
+        help="Markdown table, yaml header, or html table mode.",
     )
     beats_parser.add_argument("--split-column", help="Split column by commas.")
     beats_parser.add_argument(
