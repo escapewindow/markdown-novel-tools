@@ -131,7 +131,7 @@ def munge_metadata(path, artifact_dir):
     return (contents, orig_image, new_image)
 
 
-def convert_chapter(args, per_chapter_callback=None, post_callback=None):
+def convert_chapter(args, per_chapter_callback=None):
     """Convert chapters into their own files."""
     ignore_blank_lines = False
     plaintext = False
@@ -187,8 +187,6 @@ def convert_chapter(args, per_chapter_callback=None, post_callback=None):
         chapter_markdown.append(chapter_md)
         if per_chapter_callback is not None:
             per_chapter_callback(args, chapter_basestr, chapter_md)
-    if post_callback is not None:
-        post_callback()
 
 
 def chapter_pdf_callback(

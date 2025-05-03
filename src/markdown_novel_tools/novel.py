@@ -15,6 +15,7 @@ from markdown_novel_tools.convert import chapter_pdf_callback, convert_chapter, 
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
 from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
+from markdown_novel_tools.shunn import shunn_docx
 from markdown_novel_tools.utils import write_to_file
 
 
@@ -181,8 +182,7 @@ def novel_convert(args):
     if args.format == "chapter-pdf":
         convert_chapter(args, per_chapter_callback=chapter_pdf_callback)
     elif args.format == "shunn-docx":
-        # TODO
-        convert_chapter(args, post_callback=None)
+        shunn_docx(args)
     else:
         convert_full(args)
 

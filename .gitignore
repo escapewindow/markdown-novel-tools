@@ -49,7 +49,7 @@ htmlcov/
 .python-version
 
 # script output
-_output
+_*
 
 # Misc
 .DS_Store
