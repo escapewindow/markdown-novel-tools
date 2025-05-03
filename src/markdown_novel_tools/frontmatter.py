@@ -10,7 +10,7 @@ import yaml
 
 from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.constants import MANUSCRIPT_REGEX
-from markdown_novel_tools.outline import build_table_from_file
+from markdown_novel_tools.outline import build_table_from_file, get_yaml_from_table
 from markdown_novel_tools.scene import FRONTMATTER_VALIDATOR, get_markdown_file
 from markdown_novel_tools.utils import diff_yaml, find_markdown_files, output_diff, yaml_string
 
@@ -43,7 +43,9 @@ def frontmatter_diff(args):
         if not m:
             continue
 
-        outline_summary = table.get_yaml(_filter=[f"{m['chapter_num']}.{m['scene_num']}"])
+        outline_summary = get_yaml_from_table(
+            table, _filter=[f"{m['chapter_num']}.{m['scene_num']}"]
+        )
 
         markdown_file = get_markdown_file(path)
         scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
@@ -118,7 +120,7 @@ def frontmatter_update(args):
             continue
 
         outline_summary = yaml.safe_load(
-            table.get_yaml(_filter=[f"{m['chapter_num']}.{m['scene_num']}"])
+            get_yaml_from_table(table, _filter=[f"{m['chapter_num']}.{m['scene_num']}"])
         )
 
         markdown_file = get_markdown_file(path)

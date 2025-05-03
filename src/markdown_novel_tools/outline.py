@@ -130,51 +130,6 @@ class Table:
         """Return the table header and divider line"""
         return f'{header}\n{re.sub(r"""[^+|]""", "-", header)}'
 
-    def get_markdown(self, _filter=None, multi_table=False):
-        """Return all the appropriate lines in markdown format."""
-        widths = dict(zip(list(self.line_obj._fields), self.max_width))
-        header = "|"
-        for o in self.order:
-            header += f" {{:<{widths[o]}}} |".format(o)
-        toc = ""
-        body = ""
-        if not multi_table:
-            body = f"{body}{self.table_header(header)}\n"
-        for k, v in sorted(self.parsed_lines.items()):
-            if _filter:
-                filter_key = split_by_char(k, "/")
-                if set(filter_key).isdisjoint(set(_filter)):
-                    continue
-            if multi_table:
-                body = f"{body}\n## {k}\n{self.table_header(header)}\n"
-                toc = f"{toc}- {k} [github](#{self.to_header_anchor(k)}) [obsidian](#{quote(k)})\n"
-            for line in v:
-                output = "|"
-                for o in self.order:
-                    output += f" {{:<{widths[o]}}} |".format(getattr(line, o))
-                body = f"{body}{output}\n"
-        return f"{toc}{body}"
-
-    def get_yaml(self, _filter=None):
-        """Return all the appropriate lines in yaml format."""
-        yaml_output = ""
-        for k, v in sorted(self.parsed_lines.items()):
-            if _filter and set(split_by_char(k, "/")).isdisjoint(set(_filter)):
-                continue
-            for line in v:
-                output = _outline_to_yaml(line.Description)
-                if line.Beat:
-                    arcs = line.Arc.split(",")
-                    beats = line.Beat.split(",")
-                    arc_beats = []
-                    for arc_beats_tuple in zip_longest(arcs, beats, fillvalue=""):
-                        arc_beats.append(" ".join(arc_beats_tuple).strip())
-                    output = f"""- {output} ({", ".join(arc_beats)})\n"""
-                else:
-                    output = f"- {output} ({line.Arc})\n"
-                yaml_output = f"{yaml_output}{output}"
-        return yaml_output
-
 
 def _outline_to_yaml(line):
     """Return the outline string yaml-ified."""
@@ -203,9 +158,9 @@ def get_beats(
         stdout += f"{OUTLINE_FILE_HEADER}\n"
 
     if yaml:
-        stdout = f"{stdout}{table.get_yaml(_filter=filter)}"
+        stdout = f"{stdout}{get_yaml_from_table(table, _filter=filter)}"
     else:
-        stdout = f"{stdout}{table.get_markdown(_filter=filter, multi_table=multi_table_output)}"
+        stdout = f"{stdout}{get_markdown_from_table(table, _filter=filter, multi_table=multi_table_output)}"
 
     if stats:
         if table.column_values:
@@ -256,3 +211,50 @@ def build_table_from_file(path, column=None, order=None, split_column=None, targ
             if table is not None:
                 table.add_line(line)
     return table
+
+
+def get_markdown_from_table(table, _filter=None, multi_table=False):
+    """Return all the appropriate lines in markdown format."""
+    widths = dict(zip(list(table.line_obj._fields), table.max_width))
+    header = "|"
+    for o in table.order:
+        header += f" {{:<{widths[o]}}} |".format(o)
+    toc = ""
+    body = ""
+    if not multi_table:
+        body = f"{body}{table.table_header(header)}\n"
+    for k, v in sorted(table.parsed_lines.items()):
+        if _filter:
+            filter_key = split_by_char(k, "/")
+            if set(filter_key).isdisjoint(set(_filter)):
+                continue
+        if multi_table:
+            body = f"{body}\n## {k}\n{table.table_header(header)}\n"
+            toc = f"{toc}- {k} [github](#{table.to_header_anchor(k)}) [obsidian](#{quote(k)})\n"
+        for line in v:
+            output = "|"
+            for o in table.order:
+                output += f" {{:<{widths[o]}}} |".format(getattr(line, o))
+            body = f"{body}{output}\n"
+    return f"{toc}{body}"
+
+
+def get_yaml_from_table(table, _filter=None):
+    """Return all the appropriate lines in yaml format."""
+    yaml_output = ""
+    for k, v in sorted(table.parsed_lines.items()):
+        if _filter and set(split_by_char(k, "/")).isdisjoint(set(_filter)):
+            continue
+        for line in v:
+            output = _outline_to_yaml(line.Description)
+            if line.Beat:
+                arcs = line.Arc.split(",")
+                beats = line.Beat.split(",")
+                arc_beats = []
+                for arc_beats_tuple in zip_longest(arcs, beats, fillvalue=""):
+                    arc_beats.append(" ".join(arc_beats_tuple).strip())
+                output = f"""- {output} ({", ".join(arc_beats)})\n"""
+            else:
+                output = f"- {output} ({line.Arc})\n"
+            yaml_output = f"{yaml_output}{output}"
+    return yaml_output
