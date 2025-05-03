@@ -171,7 +171,7 @@ def novel_sync(args):
 
 def novel_convert(args):
     """Convert a novel to a different file format."""
-    if args.format in ("pdf", "epub", "odt", "chapter-pdf", "shunn-docx"):
+    if args.format in ("pdf", "epub", "chapter-pdf", "shunn-docx"):
         if not shutil.which("pandoc"):
             print(f"`{args.format}` format requires `pandoc`! Exiting...", file=sys.stderr)
             sys.exit(1)
@@ -295,7 +295,7 @@ def novel_parser():
     convert_parser = subparsers.add_parser("convert")
     convert_parser.add_argument(
         "--format",
-        choices=("pdf", "chapter-pdf", "shunn-docx", "text", "epub", "odt"),
+        choices=("pdf", "chapter-pdf", "shunn-docx", "text", "epub"),
         default="text",
     )
     convert_parser.add_argument("--subtitle")

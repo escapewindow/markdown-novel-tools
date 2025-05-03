@@ -29,9 +29,7 @@
 - [x] pdf support
   - [x] example / custom css instead of hardcoding
   - [x] allow for splitting manuscript into chunks, to avoid githug git-lfs issues after annotating by hand
-- [x] odt manuscript submission format
-  - [ ] data dir with reference.odt etc?
-- [ ] docx manuscript submission format
+- [x] docx manuscript submission format
 
 # Tests
 - [x] add github action on push to main

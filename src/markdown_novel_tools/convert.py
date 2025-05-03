@@ -101,9 +101,6 @@ def get_header_and_toc(path, format_, heading_num):
         header, toc_link = _header_helper(title, heading_link, style="chapter-and-scene")
     elif format_ == "epub":
         header, toc_link = _header_helper(title, heading_link, style="chapter-only")
-    elif format_ in ("odt",):
-        header = _doc_header_helper(title)
-        toc_link = ""
     elif format_ in ("text"):
         header = f"# {title}\n\n"
         toc_link = ""
@@ -219,10 +216,7 @@ def convert_full(args):
     new_image = ""
     artifact_dir = Path(args.artifact_dir)
     metadata_path = get_metadata_path(args.config, args.format)
-    if args.format in ("odt",):
-        file_sources = args.filename
-    else:
-        file_sources = args.config["convert"]["frontmatter_files"] + args.filename
+    file_sources = args.config["convert"]["frontmatter_files"] + args.filename
 
     if args.format == "text":
         ignore_blank_lines = True
@@ -317,34 +311,4 @@ def convert_full(args):
                 artifact_dir / f"{output_basestr}.epub",
                 output_md,
             ]
-        )
-
-    elif args.format in ("odt",):
-        data_dir = bin_dir / "data" / "pandoc"
-        env = os.environ
-        if args.format == "odt":
-            template = data_dir / "default.opendocument"
-            env["PANDOC_NEWPAGE_ODT_STYLE"] = "1"
-        else:
-            template = data_dir / "default.openxml"
-        subprocess.check_call(
-            [
-                "pandoc",
-                "-f",
-                "markdown",
-                "-t",
-                args.format,
-                "--data-dir",
-                data_dir,
-                "--template",
-                template,
-                "--metadata-file",
-                metadata_path,
-                "--lua-filter",
-                data_dir / "pagebreak.lua",
-                "-o",
-                artifact_dir / f"{output_basestr}.{args.format}",
-                output_md,
-            ],
-            env=env,
         )
