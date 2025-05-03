@@ -78,11 +78,17 @@ def find_markdown_files(paths):
             continue
         root = Path(base_path)
 
-        for root, _, files in os.walk(root):
+        for root, dirs, files in os.walk(root):
             for file_ in sorted(files):
                 if file_.endswith(".md"):
                     path = os.path.join(root, file_)
                     file_paths.append(path)
+            for skip in (".git", ".obsidian"):
+                if skip in dirs:
+                    dirs.remove(skip)
+            for dir in dirs:
+                if dir.startswith("_"):
+                    dirs.remove(dir)
     return file_paths
 
 
