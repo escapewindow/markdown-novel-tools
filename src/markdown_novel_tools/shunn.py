@@ -3,6 +3,7 @@
 
 import glob
 import os
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -46,8 +47,7 @@ def shunn_md(args):
         os.mkdir(artifact_dir)
 
     with tempfile.TemporaryDirectory() as d:
-        # tmpfile = Path(d) / "temp.md"
-        tmpfile = os.path.expanduser("~/tmp/foo.md")
+        tmpfile = Path(d) / "temp.md"
         cmd = [
             "pandoc",
             "--from=docx",
@@ -57,4 +57,16 @@ def shunn_md(args):
             args.filename[0],
         ]
         subprocess.check_call(cmd)
-        # TODO split into multiple markdown files
+
+        with open(tmpfile) as from_fh:
+            count = 1
+            contents = ""
+            for line in from_fh.readlines():
+                if line.startswith("# ") and contents:
+                    with open(artifact_dir / f"chapter{str(count).zfill(3)}.md", "w") as fh:
+                        fh.write(contents)
+                    contents = ""
+                    count += 1
+                contents += line
+            with open(artifact_dir / f"chapter{str(count).zfill(3)}.md", "w") as fh:
+                fh.write(contents)
