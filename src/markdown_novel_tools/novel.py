@@ -10,7 +10,7 @@ from pathlib import Path
 
 from git import Repo
 
-from markdown_novel_tools.config import get_config, get_primary_outline_path
+from markdown_novel_tools.config import get_config, get_css_path, get_primary_outline_path
 from markdown_novel_tools.constants import VALID_PRIMARY_OUTLINE_FILENAMES
 from markdown_novel_tools.convert import convert_chapter, convert_full, single_markdown_to_pdf
 from markdown_novel_tools.outline import build_table_from_file, get_beats
@@ -210,7 +210,11 @@ def novel_outline_convert(args):
     if args.format == "pdf":
         for base_name in ("arcs", "scenes"):
             single_markdown_to_pdf(
-                args, base_name, parent / f"{base_name}.html", artifact_dir=parent
+                args,
+                base_name,
+                parent / f"{base_name}.html",
+                artifact_dir=parent,
+                css_path=get_css_path(args.config, variant="outline_pdf_css_path"),
             )
 
 

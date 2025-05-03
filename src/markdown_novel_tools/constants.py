@@ -34,7 +34,7 @@ DEFAULT_CONFIG = {
         ],
         "css": {
             # TODO works in develop env, need an install fix
-            "css_dir": Path(__file__).parent.parent / "data" / "css",
+            "css_dir": Path(__file__).parent.parent.parent / "data" / "css",
             "manuscript_pdf_css_path": "pdf-light.css",
             "outline_pdf_css_path": "pdf-outline.css",
             "epub_css_path": "epub.css",
