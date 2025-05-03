@@ -19,20 +19,6 @@
 - [ ] Table schema
   - [ ] script to check/fix outline file(s)
 
-# Conversion
-- [x] conversion script in repo
-  - [x] copy convert.py in, add to console scripts
-- [x] epub support
-  - [ ] example / custom css instead of hardcoding
-  - [ ] cover, filename format in config
-- [x] markdown support
-- [x] pdf support
-  - [x] example / custom css instead of hardcoding
-  - [x] allow for splitting manuscript into chunks, to avoid github git-lfs issues after annotating by hand
-- [x] docx manuscript submission format
-- [x] docx to markdown
-- [ ] outline to html to pdf?
-
 # Tests
 - [x] add github action on push to main
 - [ ] 100% test coverage
