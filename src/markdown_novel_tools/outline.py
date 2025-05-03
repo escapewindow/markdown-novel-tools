@@ -145,9 +145,9 @@ def get_beats(
 
     if format_ == "yaml":
         stdout = f"{stdout}{get_yaml_from_table(table, _filter=filter)}"
-    elif format == "markdown":
+    elif format_ == "markdown":
         stdout = f"{stdout}{get_markdown_from_table(table, _filter=filter, multi_table=multi_table_output)}"
-    elif format == "html":
+    elif format_ == "html":
         stdout = get_html_from_table(table, _filter=filter, multi_table=multi_table_output)
     else:
         raise Exception(f"Unknown format {format_}!")
@@ -233,14 +233,14 @@ def get_markdown_from_table(table, _filter=None, multi_table=False):
     toc = ""
     body = ""
     if not multi_table:
-        body = f"{body}{markdown_table_header(header)}\n"
+        body = f"{body}{get_markdown_table_header(header)}\n"
     for k, v in sorted(table.parsed_lines.items()):
         if _filter:
             filter_key = split_by_char(k, "/")
             if set(filter_key).isdisjoint(set(_filter)):
                 continue
         if multi_table:
-            body = f"{body}\n## {k}\n{markdown_table_header(header)}\n"
+            body = f"{body}\n## {k}\n{get_markdown_table_header(header)}\n"
             toc = (
                 f"{toc}- {k} [github](#{header_text_to_header_anchor(k)}) [obsidian](#{quote(k)})\n"
             )

@@ -11,7 +11,7 @@ from pathlib import Path
 from git import Repo
 
 from markdown_novel_tools.config import get_config, get_primary_outline_path
-from markdown_novel_tools.constants import VALID_PRIMARY_OUTLINE_NAMES
+from markdown_novel_tools.constants import VALID_PRIMARY_OUTLINE_FILENAMES
 from markdown_novel_tools.convert import chapter_pdf_callback, convert_chapter, convert_full
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
