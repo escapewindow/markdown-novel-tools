@@ -12,7 +12,7 @@ from git import Repo
 
 from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.constants import VALID_PRIMARY_OUTLINE_FILENAMES
-from markdown_novel_tools.convert import chapter_pdf_callback, convert_chapter, convert_full
+from markdown_novel_tools.convert import convert_chapter, convert_full, single_markdown_to_pdf
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
 from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
@@ -165,7 +165,7 @@ def novel_convert(args):
             print(f"`{args.format}` format requires `imagemagick`! Exiting...", file=sys.stderr)
             sys.exit(1)
     if args.format == "chapter-pdf":
-        convert_chapter(args, per_chapter_callback=chapter_pdf_callback)
+        convert_chapter(args, per_chapter_callback=single_markdown_to_pdf)
     elif args.format == "shunn-docx":
         shunn_docx(args)
     elif args.format == "shunn-md":
@@ -208,18 +208,10 @@ def novel_outline_convert(args):
     write_to_file(parent / "scenes.html", contents)
 
     if args.format == "pdf":
-        css = args.config["convert"]["pdf_css_path"]
         for base_name in ("arcs", "scenes"):
-            cmd = [
-                "pandoc",
-                parent / f"{base_name}.html",
-                "--pdf-engine=weasyprint",
-                "--css",
-                css,
-                "-o",
-                parent / f"{base_name}.pdf",
-            ]
-            subprocess.check_call(cmd)
+            single_markdown_to_pdf(
+                args, base_name, parent / f"{base_name}.html", artifact_dir=parent
+            )
 
 
 def novel_stats(args):

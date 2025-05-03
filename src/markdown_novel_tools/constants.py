@@ -43,7 +43,14 @@ DEFAULT_CONFIG = {
 # Outline {{{1
 VALID_PRIMARY_OUTLINE_FILENAMES = ("scenes.md", "full.md")
 
-OUTLINE_HTML_HEADER = "<html><head></head><body>\n"
+OUTLINE_HTML_HEADER = """<html><head><style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 10px;
+    }
+</style></head><body>
+"""
 
 # Regex {{{1
 ALPHANUM_REGEX = re.compile(r"""\w""")

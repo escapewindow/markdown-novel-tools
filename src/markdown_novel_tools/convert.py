@@ -187,22 +187,23 @@ def convert_chapter(args, per_chapter_callback=None):
             per_chapter_callback(args, chapter_basestr, chapter_md)
 
 
-def chapter_pdf_callback(
+def single_markdown_to_pdf(
     args,
-    chapter_basestr,
-    chapter_md,
+    basename,
+    from_,
+    artifact_dir=None,
 ):
     """Create a pdf from each chapter"""
-    chapter_pdf = Path(args.artifact_dir) / f"{chapter_basestr}.pdf"
+    output_pdf = Path(artifact_dir or args.artifact_dir) / f"{basename}.pdf"
     css = args.config["convert"]["pdf_css_path"]
     cmd = [
         "pandoc",
-        chapter_md,
+        from_,
         "--pdf-engine=weasyprint",
         "--css",
         css,
         "-o",
-        chapter_pdf,
+        output_pdf,
     ]
     subprocess.check_call(cmd)
 
