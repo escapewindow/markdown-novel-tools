@@ -166,8 +166,6 @@ def novel_sync(args):
     write_to_file(parent / "questions.md", contents)
     print(f"{stats}\n", file=sys.stderr)
 
-    # write_to_file(parent / "full.tsv", _get_tsv(full_path))
-
 
 def novel_convert(args):
     """Convert a novel to a different file format."""
@@ -187,6 +185,10 @@ def novel_convert(args):
         shunn_md(args)
     else:
         convert_full(args)
+
+
+def novel_outline_convert(args):
+    pass
 
 
 def novel_stats(args):
@@ -305,6 +307,17 @@ def novel_parser():
     convert_parser.add_argument("--artifact-dir", default="_output")
     convert_parser.add_argument("filename", nargs="+")
     convert_parser.set_defaults(func=novel_convert)
+
+    # novel outline-convert
+    outline_convert_parser = subparsers.add_parser("outline_convert")
+    outline_convert_parser.add_argument(
+        "--format",
+        choices=("pdf", "html"),
+        default="html",
+    )
+    outline_convert_parser.add_argument("--clean", action="store_true")
+    outline_convert_parser.add_argument("--artifact-dir", default="_output")
+    outline_convert_parser.set_defaults(func=novel_outline_convert)
 
     # novel replace
     replace_parser = subparsers.add_parser("replace")

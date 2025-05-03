@@ -14,6 +14,7 @@ import sys
 import time
 from pathlib import Path
 
+import yaml
 from num2words import num2words
 
 from markdown_novel_tools.config import get_metadata_path
@@ -279,7 +280,8 @@ def convert_full(args):
     elif args.format == "epub":
         if args.subtitle:
             subtitle = f"{args.subtitle}\n"
-        cover_title = f"The Seer of Redgate\n{datestr}\n{subtitle}{revstr}"
+        parsed_metadata = yaml.safe_load(metadata.replace("---", ""))
+        cover_title = f"{parsed_metadata['title']}\n{datestr}\n{subtitle}{revstr}"
 
         # Create cover image
         subprocess.check_call(
