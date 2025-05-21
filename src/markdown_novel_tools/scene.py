@@ -32,7 +32,6 @@ FRONTMATTER_SCHEMA = {
             "Setback": {"type": ["list", "string"], "empty": False, "required": True},
         },
         "empty": False,
-        "required": True,
     },
     "Sequel": {
         "type": "dict",
@@ -42,7 +41,6 @@ FRONTMATTER_SCHEMA = {
             "Decision": {"type": ["list", "string"], "empty": False, "required": True},
         },
         "empty": False,
-        "required": True,
     },
     "Cliffhanger": {"type": "string", "required": True},
     "Summary": {

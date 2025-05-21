@@ -86,8 +86,6 @@ def _fix_frontmatter(old_frontmatter):
         "Characters",
         "POV",
         "Hook",
-        "Scene",
-        "Sequel",
         "Cliffhanger",
         "Summary",
     ):
@@ -97,13 +95,6 @@ def _fix_frontmatter(old_frontmatter):
             new_frontmatter["Locations"] = old_frontmatter["Location"]
         else:
             new_frontmatter["Locations"] = [old_frontmatter["Location"]]
-    for key in ("Scene", "Sequel"):
-        if isinstance(new_frontmatter[key], list):
-            new_frontmatter[key] = {}
-            for val in old_frontmatter[key]:
-                new_frontmatter[key].update(val)
-    if old_frontmatter.get("Ideas / thoughts / todo"):
-        new_frontmatter["Ideas / thoughts / todo"] = old_frontmatter["Ideas / thoughts / todo"]
     return new_frontmatter
 
 
