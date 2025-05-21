@@ -4,6 +4,7 @@
 import os
 from copy import deepcopy
 from pathlib import Path
+from pprint import pprint
 
 import yaml
 from git import InvalidGitRepositoryError, Repo
@@ -48,7 +49,7 @@ def get_css_path(config, variant="manuscript_pdf_css_path"):
     return Path(config["convert"]["css"]["css_dir"]) / config["convert"]["css"][variant]
 
 
-def _get_new_config_val(config_val, user_config_val, key_name):
+def _get_new_config_val(config_val, user_config_val, key_name, use_default_keys=True):
     """Return the new config val"""
     if user_config_val is None:
         return config_val
@@ -59,14 +60,22 @@ def _get_new_config_val(config_val, user_config_val, key_name):
     if isinstance(config_val, (str, list)):
         return user_config_val
     if isinstance(config_val, dict):
-        for key in config_val:
+        print(f"{key_name} is a dict")
+        if use_default_keys:
+            from_dict = config_val
+        else:
+            from_dict = user_config_val
+        for key in from_dict:
             if key in user_config_val:
-                if isinstance(config_val[key], dict):
+                if isinstance(from_dict[key], dict):
                     config_val[key] = _get_new_config_val(
-                        config_val[key], user_config_val[key], key
+                        config_val[key], user_config_val[key], key, use_default_keys=False
                     )
+                    print(f"hacking {key} with {config_val[key]}")
                 else:
                     config_val[key] = user_config_val[key]
+                    print(f"just overwriting {key} with {config_val[key]}")
+        print(f"key {key_name} is {config_val}")
         return config_val
     raise TypeError(f"Unknown type {type(user_config_val)} in config key {key_name}!")
 
@@ -75,10 +84,15 @@ def get_config():
     """Read and return the config."""
     config = deepcopy(DEFAULT_CONFIG)
     path = get_config_path()
+    print(f"config path {path}")
     user_config = {}
     if path is not None:
         with open(path) as fh:
             user_config = yaml.safe_load(fh)
+    print(f"user config:")
+    print(pprint(user_config))
     for key, val in config.items():
         config[key] = _get_new_config_val(val, user_config.get(key), key)
+    print(f"config:")
+    print(pprint(config))
     return config

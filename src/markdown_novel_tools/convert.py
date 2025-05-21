@@ -137,6 +137,7 @@ def convert_chapter(args, per_chapter_callback=None):
     artifact_dir = Path(args.artifact_dir)
     chapters = {}
     metadata_path = get_metadata_path(args.config, args.format)
+    print(f"metadata_path {metadata_path}")
     with open(metadata_path, encoding="utf-8") as fh:
         metadata = fh.read()
 
