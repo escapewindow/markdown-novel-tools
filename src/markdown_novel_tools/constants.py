@@ -29,8 +29,6 @@ DEFAULT_CONFIG = {
         "frontmatter_files": [
             "skeleton/Book {book_num} Copyright.md",
             "skeleton/Book {book_num} Dedication.md",
-            "skeleton/Book {book_num} Author's Note.md",
-            "skeleton/Book {book_num} Pronunciation Guide.md",
         ],
         "css": {
             # TODO works in develop env, need an install fix

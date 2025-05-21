@@ -8,8 +8,6 @@ convert:
   frontmatter_files:
     - skeleton/Book {book_num} Copyright.md
     - skeleton/Book {book_num} Dedication.md
-    - skeleton/Book {book_num} Author's Note.md
-    - skeleton/Book {book_num} Pronunciation Guide.md
   css:
     # css_dir: path/to/css/
     manuscript_pdf_css_path: "pdf-light.css"
