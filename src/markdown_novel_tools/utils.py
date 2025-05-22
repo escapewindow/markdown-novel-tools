@@ -120,6 +120,21 @@ def output_diff(diff):
         print(diff, end="")
 
 
+def print_object_one_line_per(obj, padding=""):
+    """Print a dict, list, or str, one line per val"""
+    if isinstance(obj, str):
+        print(f"{padding}{str}")
+    elif isinstance(obj, (list, tuple)):
+        for i in obj:
+            print(f"{padding}{i}")
+    elif isinstance(obj, dict):
+        for key in obj.keys():
+            print(f"{padding}{key}")
+            print_object_one_line_per(obj[key], f"    {padding}")
+    else:
+        raise SyntaxError(f"Unknown type of {type(obj)} in print_object_one_line_per!")
+
+
 def round_to_one_decimal(f):
     """round float f to 1 decimal place"""
     return f"{f:.1f}"

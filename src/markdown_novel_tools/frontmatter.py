@@ -12,7 +12,13 @@ from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.constants import MANUSCRIPT_REGEX
 from markdown_novel_tools.outline import build_table_from_file, get_yaml_from_table
 from markdown_novel_tools.scene import FRONTMATTER_VALIDATOR, get_markdown_file
-from markdown_novel_tools.utils import diff_yaml, find_markdown_files, output_diff, yaml_string
+from markdown_novel_tools.utils import (
+    diff_yaml,
+    find_markdown_files,
+    output_diff,
+    print_object_one_line_per,
+    yaml_string,
+)
 
 
 # Frontmatter {{{1
@@ -137,37 +143,37 @@ def frontmatter_update(args):
 
 def frontmatter_query(args):
     """Query frontmatter."""
-    if args.sort and (not args.aggregate or not args.field):
-        raise SyntaxError("`--aggregate` and `--field` must both be specified with `--sort`!")
-    if args.aggregate and not args.field:
-        raise SyntaxError("`--field` must be specified with `--aggregate`!")
-
     files = find_markdown_files(args.path)
 
-    aggregate = set()
+    paths_to_values = {}
+    values_to_paths = {}
     # Diff summaries
     for path in files:
         markdown_file = get_markdown_file(path)
-        if args.field:
-            value = markdown_file.parsed_yaml[args.field]
-            if args.aggregate:
-                if isinstance(value, list):
-                    aggregate.update(value)
-                else:
-                    aggregate.add(value)
-            else:
-                print(path)
-                print(yaml_string(value), end="")
+        values = markdown_file.parsed_yaml.get(args.field, [])
+        if isinstance(values, str):
+            values = [values]
+        if args.grep and args.grep not in values:
+            continue
+        paths_to_values[path] = values
+        for val in values:
+            values_to_paths.setdefault(val, []).append(path)
+
+    if args.grep:
+        if args.verbose:
+            print_object_one_line_per(dict(sorted(paths_to_values.items())))
         else:
-            print(path)
-            print(yaml_string(markdown_file.parsed_yaml), end="")
-    if aggregate:
-        output = f"{args.field}:\n"
-        if args.sort:
-            aggregate = sorted(aggregate)
-        for item in aggregate:
-            output = f"{output}- {item}\n"
-        print(output, end="")
+            print_object_one_line_per(sorted(paths_to_values.keys()))
+        sys.exit()
+
+    if args.aggregate:
+        if args.verbose:
+            print_object_one_line_per(dict(sorted(values_to_paths.items())))
+        else:
+            print_object_one_line_per(sorted(values_to_paths.keys()))
+        sys.exit()
+
+    print_object_one_line_per(dict(sorted(paths_to_values.items())))
 
 
 def frontmatter_parser():
@@ -192,19 +198,15 @@ def frontmatter_parser():
 
     # frontmatter query
     query_parser = subparsers.add_parser("query")
-    query_parser.add_argument("-f", "--field")
+    query_parser.add_argument("-f", "--field", required=True)
+    query_parser.add_argument("-g", "--grep")
     query_parser.add_argument(
         "-a",
         "--aggregate",
         action="store_true",
-        help="Print a unique list of values. Must be used with `--field`.",
+        help="Print a sorted set of values. Must be used with `--field`.",
     )
-    query_parser.add_argument(
-        "-s",
-        "--sort",
-        action="store_true",
-        help="Sort the unique list of values. Must be used with `--field` and `--aggregate`.",
-    )
+    query_parser.add_argument("-v", "--verbose", action="store_true")
     query_parser.add_argument("path", nargs="+")
     query_parser.set_defaults(func=frontmatter_query)
 
