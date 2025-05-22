@@ -127,13 +127,13 @@ class MarkdownFile:
 
     def parse_yaml(self):
         """Parse the yaml of a scene."""
-        if self.manuscript_info.get("book_num") and self.yaml:
-            try:
-                self.parsed_yaml = yaml.safe_load(self.yaml)
-            except yaml.YAMLError as e:
-                print(str(e))
-                self.error = f"### {self.path} yaml is broken.\n{str(e)}\n"
-                return
+        try:
+            self.parsed_yaml = yaml.safe_load(self.yaml)
+        except yaml.YAMLError as e:
+            print(str(e))
+            self.error = f"### {self.path} yaml is broken.\n{str(e)}\n"
+            return
+        if self.manuscript_info.get("book_num"):
             if self.parsed_yaml.get("POV"):
                 self.manuscript_info["pov"] = self.parsed_yaml["POV"]
             for char in self.parsed_yaml.get("Characters", []):

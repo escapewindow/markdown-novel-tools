@@ -150,6 +150,10 @@ def frontmatter_query(args):
     # Diff summaries
     for path in files:
         markdown_file = get_markdown_file(path)
+        if not isinstance(markdown_file.parsed_yaml, dict):
+            if args.verbose:
+                print(f"{path} doesn't have yaml; skipping.")
+            continue
         values = markdown_file.parsed_yaml.get(args.field, [])
         if isinstance(values, str):
             values = [values]
