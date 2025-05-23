@@ -367,7 +367,9 @@ def walk_previous_revision(config, current_stats):
         if blob.name.endswith(".md"):
             contents = blob.data_stream.read().decode("utf-8")
             update_stats(blob.path, contents, books, stats, hack_yaml=True)
-    return f"""Today:
+    return f"""Previous revision: {previous_commit.hexsha}
+
+Today:
     {current_stats["manuscript"]["files"] - stats["manuscript"]["files"]} manuscript files
     {current_stats["manuscript"]["words"] - stats["manuscript"]["words"]} manuscript words
     {current_stats["total"]["files"] - stats["total"]["files"]} total files
