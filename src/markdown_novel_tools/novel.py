@@ -18,9 +18,9 @@ from markdown_novel_tools.config import (
 )
 from markdown_novel_tools.constants import VALID_PRIMARY_OUTLINE_FILENAMES
 from markdown_novel_tools.convert import convert_chapter, convert_full, single_markdown_to_pdf
+from markdown_novel_tools.mdfile import walk_previous_revision, walk_repo_dir
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
-from markdown_novel_tools.scene import walk_previous_revision, walk_repo_dir
 from markdown_novel_tools.shunn import shunn_docx, shunn_md
 from markdown_novel_tools.utils import write_to_file
 

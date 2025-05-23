@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Deal with frontmatter of scenes."""
+"""Deal with individual markdown files."""
 
 import os
 import re

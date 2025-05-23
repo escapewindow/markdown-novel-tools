@@ -10,8 +10,8 @@ import yaml
 
 from markdown_novel_tools.config import get_config, get_primary_outline_path
 from markdown_novel_tools.constants import MANUSCRIPT_REGEX
+from markdown_novel_tools.mdfile import FRONTMATTER_VALIDATOR, get_markdown_file
 from markdown_novel_tools.outline import build_table_from_file, get_yaml_from_table
-from markdown_novel_tools.scene import FRONTMATTER_VALIDATOR, get_markdown_file
 from markdown_novel_tools.utils import (
     diff_yaml,
     find_markdown_files,
