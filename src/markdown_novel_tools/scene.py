@@ -116,9 +116,9 @@ class MarkdownFile:
             self.error = f"### {self.path} yaml is broken.\n{str(e)}\n"
             return
         if self.manuscript_info.get("book_num"):
-            if self.parsed_yaml.get("POV"):
-                self.manuscript_info["pov"] = self.parsed_yaml["POV"]
-            for char in self.parsed_yaml.get("Characters", []):
+            if self.parsed_yaml.get("pov"):
+                self.manuscript_info["pov"] = self.parsed_yaml["pov"]
+            for char in self.parsed_yaml.get("characters", []):
                 if self.manuscript_info.get("characters") is None:
                     self.manuscript_info["characters"] = []
                 self.manuscript_info["characters"].append(char)
