@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """markdown-novel-tools config."""
 
+import glob
 import os
 from copy import deepcopy
 from pathlib import Path
@@ -46,6 +47,15 @@ def get_metadata_path(config, format_="default"):
 def get_css_path(config, variant="manuscript_pdf_css_path"):
     """Return the css path."""
     return Path(config["convert"]["css"]["css_dir"]) / config["convert"]["css"][variant]
+
+
+def get_markdown_template_choices(config):
+    """List the markdown template choices available."""
+    template_dir = Path(config["markdown_template_dir"])
+    choices = []
+    for file in glob.glob(str(template_dir / "*.md")):
+        choices.append(os.path.basename(file).replace(".md", ""))
+    return sorted(choices)
 
 
 def _get_new_config_val(config_val, user_config_val, key_name, use_default_keys=True):

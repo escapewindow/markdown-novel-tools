@@ -10,7 +10,12 @@ from pathlib import Path
 
 from git import Repo
 
-from markdown_novel_tools.config import get_config, get_css_path, get_primary_outline_path
+from markdown_novel_tools.config import (
+    get_config,
+    get_css_path,
+    get_markdown_template_choices,
+    get_primary_outline_path,
+)
 from markdown_novel_tools.constants import VALID_PRIMARY_OUTLINE_FILENAMES
 from markdown_novel_tools.convert import convert_chapter, convert_full, single_markdown_to_pdf
 from markdown_novel_tools.outline import build_table_from_file, get_beats
@@ -174,6 +179,17 @@ def novel_convert(args):
         convert_full(args)
 
 
+def novel_new(args):
+    """Create a new file from template."""
+
+    path = Path(args.path)
+    template = Path(args.config["markdown_template_dir"]) / f"{args.template}.md"
+    if args.create_missing_parents:
+        path.parent.mkdir(parents=True, exist_ok=True)
+
+    shutil.copy(template, path)
+
+
 def novel_outline_convert(args):
     """Convert the outline to something shareable."""
     path = get_primary_outline_path(args.config)
@@ -334,6 +350,18 @@ def novel_parser():
     convert_parser.add_argument("--artifact-dir", default="_output")
     convert_parser.add_argument("filename", nargs="+")
     convert_parser.set_defaults(func=novel_convert)
+
+    # novel new
+    new_parser = subparsers.add_parser("new")
+    new_parser.add_argument(
+        "-p",
+        "--create-missing-parents",
+        action="store_true",
+        help="Like `mkdir -p`; create the missing directory structure if needed.",
+    )
+    new_parser.add_argument("template", choices=get_markdown_template_choices(config))
+    new_parser.add_argument("path")
+    new_parser.set_defaults(func=novel_new)
 
     # novel outline-convert
     outline_convert_parser = subparsers.add_parser("outline_convert")
