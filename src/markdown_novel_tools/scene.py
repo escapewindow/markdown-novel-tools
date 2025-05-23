@@ -17,38 +17,20 @@ from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikil
 
 # Schema {{{1
 FRONTMATTER_SCHEMA = {
-    "Title": {"type": "string", "empty": False, "required": True},
+    "title": {"type": "string", "empty": False, "required": True},
     "tags": {"type": "list", "schema": {"type": "string"}, "required": True},
     "aliases": {"type": "list", "schema": {"type": "string"}, "required": True},
-    "Locations": {"type": "list", "schema": {"type": "string", "empty": False}, "required": True},
-    "Characters": {"type": "list", "schema": {"type": "string", "empty": False}, "required": True},
-    "POV": {"type": "string", "empty": False, "required": True},
-    "Hook": {"type": "string", "empty": False, "required": True},
-    "Scene": {
-        "type": "dict",
-        "schema": {
-            "Goal": {"type": ["list", "string"], "empty": False, "required": True},
-            "Conflict": {"type": ["list", "string"], "empty": False, "required": True},
-            "Setback": {"type": ["list", "string"], "empty": False, "required": True},
-        },
-        "empty": False,
-    },
-    "Sequel": {
-        "type": "dict",
-        "schema": {
-            "Reaction": {"type": ["list", "string"], "empty": False, "required": True},
-            "Dilemma": {"type": ["list", "string"], "empty": False, "required": True},
-            "Decision": {"type": ["list", "string"], "empty": False, "required": True},
-        },
-        "empty": False,
-    },
-    "Cliffhanger": {"type": "string", "required": True},
-    "Summary": {
+    "locations": {"type": "list", "schema": {"type": "string", "empty": False}, "required": True},
+    "characters": {"type": "list", "schema": {"type": "string", "empty": False}, "required": True},
+    "pov": {"type": "string", "empty": False, "required": True},
+    "hook": {"type": "string", "empty": False, "required": True},
+    "cliffhanger": {"type": "string", "required": True},
+    "summary": {
         "type": "list",
         "schema": {"type": "string", "empty": False, "required": True},
         "required": True,
     },
-    "Ideas / thoughts / todo": {
+    "todo": {
         "type": "list",
         "schema": {"type": "string"},
         "nullable": True,

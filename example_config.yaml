@@ -13,6 +13,7 @@ convert:
     manuscript_pdf_css_path: "pdf-light.css"
     outline_pdf_css_path: "pdf-outline.css"
     epub_css_path: "epub.css"
+  # markdown_template_dir: path/to/templates/
   shunn_repo_url: https://github.com/escapewindow/pandoc-templates
   shunn_repo_path: null
 find_files_by_name_cmd: ["fd", "-s", "-F", "-E", "snippets"]

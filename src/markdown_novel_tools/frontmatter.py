@@ -54,7 +54,7 @@ def frontmatter_diff(args):
         )
 
         markdown_file = get_markdown_file(path)
-        scene_summary = yaml_string(markdown_file.parsed_yaml["Summary"])
+        scene_summary = yaml_string(markdown_file.parsed_yaml["summary"])
 
         base_filename = re.sub(r"\.md$", "", os.path.basename(path))
         diff = diff_yaml(
@@ -85,22 +85,17 @@ def _fix_frontmatter(old_frontmatter):
     """
     new_frontmatter = {}
     for key in (
-        "Title",
+        "title",
         "tags",
         "aliases",
-        "Locations",
-        "Characters",
-        "POV",
-        "Hook",
-        "Cliffhanger",
-        "Summary",
+        "locations",
+        "characters",
+        "pov",
+        "hook",
+        "cliffhanger",
+        "summary",
     ):
         new_frontmatter[key] = old_frontmatter.get(key)
-    if "Location" in old_frontmatter:
-        if isinstance(old_frontmatter["Location"], list):
-            new_frontmatter["Locations"] = old_frontmatter["Location"]
-        else:
-            new_frontmatter["Locations"] = [old_frontmatter["Location"]]
     return new_frontmatter
 
 
@@ -123,7 +118,7 @@ def frontmatter_update(args):
         markdown_file = get_markdown_file(path)
         if args.fix:
             markdown_file.parsed_yaml = _fix_frontmatter(markdown_file.parsed_yaml)
-        markdown_file.parsed_yaml["Summary"] = outline_summary
+        markdown_file.parsed_yaml["summary"] = outline_summary
         new_yaml = yaml_string(markdown_file.parsed_yaml).rstrip()
 
         if args.noop:

@@ -32,15 +32,18 @@ DEFAULT_CONFIG = {
         ],
         "css": {
             # TODO works in develop env, need an install fix
-            "css_dir": Path(__file__).parent.parent.parent / "data" / "css",
+            "css_dir": str(Path(__file__).parent.parent.parent / "data" / "css"),
             "manuscript_pdf_css_path": "pdf-light.css",
             "outline_pdf_css_path": "pdf-outline.css",
             "epub_css_path": "epub.css",
         },
-        "pdf_css_path": "bin/pdf.css",
         "shunn_repo_url": "https://github.com/escapewindow/pandoc-templates",
         "shunn_repo_path": None,
     },
+    # TODO works in develop env, need an install fix
+    "markdown_template_dir": str(
+        Path(__file__).parent.parent.parent / "data" / "markdown-templates"
+    ),
     "find_files_by_name_cmd": ["fd", "-s", "-F", "-E", "snippets"],
     "find_files_by_content_cmd": ["rg", "-F", "-l"],
 }
