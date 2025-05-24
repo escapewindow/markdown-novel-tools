@@ -20,7 +20,6 @@
 # Conversion
 - [ ] start using a tempdir to avoid polluting the artifact dir
   - [ ] this could be specifiable to see the intermediate artifacts if wanted
-- [ ] rename output.docx to a pretty name
 
 # Enhancements
 - [ ] non-yaml frontmatter support

@@ -129,7 +129,23 @@ def munge_metadata(path, artifact_dir):
     return (contents, orig_image, new_image)
 
 
-def convert_chapter(args, per_chapter_callback=None):
+# TODO unhardcode
+def get_output_basestr(args, format_string="book1-{datestr}-{subtitle}-{revstr}", repl_dict=None):
+    """Get the basestr for the name of our output file."""
+    repl_dict = repl_dict or {}
+    repl_dict = {}
+    if "{revstr}" in format_string:
+        repl_dict["revstr"] = get_git_revision()
+    if "{datestr}" in format_string:
+        repl_dict["datestr"] = local_time(time.time(), timezone=args.config["timezone"]).strftime(
+            "%Y.%m.%d"
+        )
+    if "{subtitle}" in format_string:
+        repl_dict["subtitle"] = args.subtitle or ""
+    return format_string.format(**repl_dict)
+
+
+def convert_chapter(args, per_chapter_callback=None, output_basestr=None):
     """Convert chapters into their own files."""
     ignore_blank_lines = False
     plaintext = False
@@ -169,22 +185,16 @@ def convert_chapter(args, per_chapter_callback=None):
         shutil.rmtree(artifact_dir)
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)
-    revstr = get_git_revision()
-    datestr = local_time(time.time(), timezone=args.config["timezone"]).strftime("%Y.%m.%d")
-    subtitle = ""
-    if args.subtitle:
-        subtitle = f"{args.subtitle}-"
 
     chapter_markdown = []
     for chapter_num, contents in chapters.items():
-        # TODO unhardcode
-        chapter_basestr = f"book1-{datestr}-{subtitle}{revstr}-chapter{chapter_num}"
-        chapter_md = artifact_dir / f"{chapter_basestr}.md"
+        output_basestr = output_basestr or get_output_basestr(args)
+        chapter_md = artifact_dir / f"{output_basestr}-chapter{chapter_num}.md"
         with open(chapter_md, "w", encoding="utf-8") as fh:
             fh.write(contents)
         chapter_markdown.append(chapter_md)
         if per_chapter_callback is not None:
-            per_chapter_callback(args, chapter_basestr, chapter_md)
+            per_chapter_callback(args, output_basestr, chapter_md)
 
 
 def single_markdown_to_pdf(
@@ -255,12 +265,13 @@ def convert_full(args):
         shutil.rmtree(artifact_dir)
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)
+    if args.subtitle:
+        subtitle = args.subtitle
     revstr = get_git_revision()
     datestr = local_time(time.time(), timezone=args.config["timezone"]).strftime("%Y.%m.%d")
-    subtitle = ""
-    if args.subtitle:
-        subtitle = f"{args.subtitle}-"
-    output_basestr = f"book1-{datestr}-{subtitle}{revstr}"
+    output_basestr = get_output_basestr(
+        args, repl_dict={"datestr": datestr, "revstr": revstr, "subtitle": subtitle}
+    )
     output_md = artifact_dir / f"{output_basestr}.md"
     with open(output_md, "w", encoding="utf-8") as fh:
         fh.write(contents)
@@ -280,10 +291,8 @@ def convert_full(args):
         )
 
     elif args.format == "epub":
-        if args.subtitle:
-            subtitle = f"{args.subtitle}\n"
         parsed_metadata = yaml.safe_load(metadata.replace("---", ""))
-        cover_title = f"{parsed_metadata['title']}\n{datestr}\n{subtitle}{revstr}"
+        cover_title = f"{parsed_metadata['title']}\n{datestr}\n{subtitle}\n{revstr}"
 
         # Create cover image
         subprocess.check_call(

@@ -10,16 +10,17 @@ from pathlib import Path
 
 from git import Repo
 
-from markdown_novel_tools.convert import convert_chapter
+from markdown_novel_tools.convert import convert_chapter, get_output_basestr
 
 
 def shunn_docx(args):
     """Convert markdown file(s) to a Shunn novel docx suitable for submission to an editor"""
     repo_path = args.config["convert"]["shunn_repo_path"]
     artifact_dir = Path(args.artifact_dir)
-    to = artifact_dir / "output.docx"
+    output_basestr = get_output_basestr(args)
+    to = artifact_dir / f"{output_basestr}.docx"
 
-    convert_chapter(args)
+    convert_chapter(args, output_basestr=output_basestr)
 
     with tempfile.TemporaryDirectory() as d:
         if repo_path is None:
