@@ -130,7 +130,7 @@ def munge_metadata(path, artifact_dir):
 
 
 # TODO unhardcode
-def get_output_basestr(args, format_string="book1-{datestr}-{subtitle}-{revstr}", repl_dict=None):
+def get_output_basestr(args, format_string="book1-{datestr}-{subtitle}{revstr}", repl_dict=None):
     """Get the basestr for the name of our output file."""
     repl_dict = repl_dict or {}
     repl_dict = {}
@@ -141,7 +141,7 @@ def get_output_basestr(args, format_string="book1-{datestr}-{subtitle}-{revstr}"
             "%Y.%m.%d"
         )
     if "{subtitle}" in format_string:
-        repl_dict["subtitle"] = args.subtitle or ""
+        repl_dict["subtitle"] = f"{args.subtitle}-" or ""
     return format_string.format(**repl_dict)
 
 

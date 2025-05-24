@@ -17,7 +17,12 @@ from markdown_novel_tools.config import (
     get_primary_outline_path,
 )
 from markdown_novel_tools.constants import VALID_PRIMARY_OUTLINE_FILENAMES
-from markdown_novel_tools.convert import convert_chapter, convert_full, single_markdown_to_pdf
+from markdown_novel_tools.convert import (
+    convert_chapter,
+    convert_full,
+    get_output_basestr,
+    single_markdown_to_pdf,
+)
 from markdown_novel_tools.mdfile import walk_previous_revision, walk_repo_dir
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
@@ -193,14 +198,17 @@ def novel_new(args):
 def novel_outline_convert(args):
     """Convert the outline to something shareable."""
     path = get_primary_outline_path(args.config)
-
     if path.name not in VALID_PRIMARY_OUTLINE_FILENAMES:
         raise Exception(
             f"{path} is not in {VALID_PRIMARY_OUTLINE_FILENAMES}; quitting before we break beat order."
         )
 
+    output_basestr = get_output_basestr(args)
+
     if args.artifact_dir:
         parent = Path(args.artifact_dir)
+        if args.clean and os.path.exists(args.artifact_dir):
+            shutil.rmtree(args.artifact_dir)
     else:
         parent = path.parent
 
@@ -215,16 +223,16 @@ def novel_outline_convert(args):
         stats=True,
         format_="html",
     )
-    write_to_file(parent / "arcs.html", contents)
+    write_to_file(parent / f"{output_basestr}-arcs.html", contents)
 
     # Scene
     contents, stats = _beats_helper(
         path, column="Scene", multi_table_output=True, stats=True, format_="html"
     )
-    write_to_file(parent / "scenes.html", contents)
+    write_to_file(parent / f"{output_basestr}-scenes.html", contents)
 
     if args.format == "pdf":
-        for base_name in ("arcs", "scenes"):
+        for base_name in (f"{output_basestr}-arcs", f"{output_basestr}-scenes"):
             single_markdown_to_pdf(
                 args,
                 base_name,
