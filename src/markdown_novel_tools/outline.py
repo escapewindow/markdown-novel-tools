@@ -295,7 +295,7 @@ def get_html_from_table(table, _filter=None, multi_table=False):
         for line in v:
             output = "<tr>\n"
             for o in table.order:
-                output = f"{output}  <td>{getattr(line, o)}</td>\n"
+                output = f"{output}  <td>{re.sub(r""" - """, "&mdash;", getattr(line, o))}</td>\n"
             body = f"{body}{output}</tr>\n"
         body = f"{body}</table>\n"
     body = f"{body}</body></html>\n"
