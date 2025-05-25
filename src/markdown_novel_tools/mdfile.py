@@ -325,6 +325,8 @@ def walk_repo_dir():
         if DEBUG:
             print(f"root: {root}")
         for file_ in sorted(files):
+            if file_.startswith("_"):
+                continue
             if file_.endswith(".md"):
                 path = os.path.join(root, file_)
                 with open(path, encoding="utf-8") as fh:
