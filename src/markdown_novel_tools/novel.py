@@ -287,6 +287,10 @@ def novel_parser():
     config, remaining_args = get_config()
     parser = argparse.ArgumentParser(prog="novel")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
+
+    # this will already be swallowed by the config_parser, but add here for --help
+    parser.add_argument("-b", "--book-num")
+    parser.add_argument("-c", "--config-path")
     parser.set_defaults(config=config)
     subparsers = parser.add_subparsers()
 

@@ -118,7 +118,7 @@ def _get_new_config_val(
 
 def get_config():
     """Read and return the config."""
-    config_parser = argparse.ArgumentParser()
+    config_parser = argparse.ArgumentParser(add_help=False)
     config_parser.add_argument("-c", "--config-path")
     config_parser.add_argument("-b", "--book-num")
     config_args, remaining_args = config_parser.parse_known_args()

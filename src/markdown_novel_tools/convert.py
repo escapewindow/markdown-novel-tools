@@ -266,8 +266,7 @@ def convert_full(args):
         shutil.rmtree(artifact_dir)
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)
-    if args.subtitle:
-        subtitle = args.subtitle
+    subtitle = args.subtitle or ""
     revstr = get_git_revision()
     datestr = local_time(time.time(), timezone=args.config["timezone"]).strftime("%Y.%m.%d")
     output_basestr = get_output_basestr(

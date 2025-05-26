@@ -181,6 +181,10 @@ def frontmatter_parser():
     parser = argparse.ArgumentParser(prog="frontmatter")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
     parser.add_argument("-s", "--strict", action="store_true")
+
+    # this will already be swallowed by the config_parser, but add here for --help
+    parser.add_argument("-b", "--book-num")
+    parser.add_argument("-c", "--config-path")
     parser.set_defaults(config=config)
     subparsers = parser.add_subparsers()
 
