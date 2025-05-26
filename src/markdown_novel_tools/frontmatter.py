@@ -181,6 +181,9 @@ def frontmatter_parser():
     parser = argparse.ArgumentParser(prog="frontmatter")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
     parser.add_argument("-s", "--strict", action="store_true")
+    parser.add_argument(
+        "-b", "--book-num", default="1", required=True, help="Specify the book number."
+    )
     parser.set_defaults(config=config)
     subparsers = parser.add_subparsers()
 
