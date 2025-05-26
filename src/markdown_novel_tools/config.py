@@ -87,6 +87,8 @@ def _get_new_config_val(
     repl_dict = repl_dict or {}
     if user_config_val is None:
         return _replace_values(config_val, repl_dict)
+    if config_val is None:
+        return
     if type(config_val) is not type(user_config_val):
         error = f"{type(user_config_val)} is not {type(config_val)}!"
         if key_name is not None:
@@ -102,8 +104,8 @@ def _get_new_config_val(
         for key in from_dict:
             if key in user_config_val:
                 config_val[key] = _get_new_config_val(
-                    config_val[key],
-                    user_config_val[key],
+                    config_val.get(key),
+                    user_config_val.get(key),
                     key_name=key,
                     use_default_keys=False,
                     repl_dict=repl_dict,
