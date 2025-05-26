@@ -239,7 +239,7 @@ def novel_outline_convert(args):
                 base_name,
                 parent / f"{base_name}.html",
                 artifact_dir=parent,
-                css_path=get_css_path(args.config, variant="outline_pdf_css_path"),
+                css_path=get_css_path(args.config, variant="misc_pdf_css_path"),
             )
 
 

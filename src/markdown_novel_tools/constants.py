@@ -34,7 +34,7 @@ DEFAULT_CONFIG = {
             # TODO works in develop env, need an install fix
             "css_dir": str(Path(__file__).parent.parent.parent / "data" / "css"),
             "manuscript_pdf_css_path": "pdf-light.css",
-            "outline_pdf_css_path": "pdf-outline.css",
+            "misc_pdf_css_path": "pdf-misc.css",
             "epub_css_path": "epub.css",
         },
         "shunn_repo_url": "https://github.com/escapewindow/pandoc-templates",
