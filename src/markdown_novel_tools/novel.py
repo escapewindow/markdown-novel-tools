@@ -78,7 +78,7 @@ def novel_beats(args):
             print("--split-column and --order are incompatible!", file=sys.stderr)
             sys.exit(1)
     if args.filter is not None and args.column is None:
-        print("Specify column with `-c` when filtering!", file=sys.stderr)
+        print("Specify column with `--column` when filtering!", file=sys.stderr)
         sys.exit(1)
 
     stdout, stderr = _beats_helper(
@@ -295,7 +295,6 @@ def novel_parser():
     # novel beats
     beats_parser = subparsers.add_parser("beats")
     beats_parser.add_argument(
-        "-c",
         "--column",
         help="Which column to sort by, if any. First column is 0, 2nd is 1, etc.",
     )
