@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """markdown-novel-tools config."""
 
+import argparse
 import glob
 import os
 from copy import deepcopy
@@ -58,16 +59,41 @@ def get_markdown_template_choices(config):
     return sorted(choices)
 
 
-def _get_new_config_val(config_val, user_config_val, key_name, use_default_keys=True):
+def _replace_values(var, repl_dict):
+    """Replace values in a string, or recursively in a list or dict"""
+    if repl_dict is None or var is None:
+        return_val = var
+    elif isinstance(var, str):
+        return_val = var.format(**repl_dict)
+    elif isinstance(var, (list, tuple)):
+        new_var = []
+        for i in var:
+            new_var.append(_replace_values(i, repl_dict))
+        return_val = new_var
+    elif isinstance(var, dict):
+        new_var = {}
+        for k, v in var.items():
+            new_var[k] = _replace_values(v, repl_dict)
+        return_val = new_var
+    else:
+        raise TypeError(f"_replace_values: Unknown var type {type(var)}!")
+    return return_val
+
+
+def _get_new_config_val(
+    config_val, user_config_val, key_name=None, use_default_keys=True, repl_dict=None
+):
     """Return the new config val"""
+    repl_dict = repl_dict or {}
     if user_config_val is None:
-        return config_val
+        return _replace_values(config_val, repl_dict)
     if type(config_val) is not type(user_config_val):
-        raise TypeError(
-            f"{type(user_config_val)} is not {type(config_val)} for config key {key_name}!"
-        )
+        error = f"{type(user_config_val)} is not {type(config_val)}!"
+        if key_name is not None:
+            error = f"{error} for config key {key_name}!"
+        raise TypeError(error)
     if isinstance(config_val, (str, list)):
-        return user_config_val
+        return _replace_values(user_config_val, repl_dict)
     if isinstance(config_val, dict):
         if use_default_keys:
             from_dict = config_val
@@ -75,24 +101,35 @@ def _get_new_config_val(config_val, user_config_val, key_name, use_default_keys=
             from_dict = user_config_val
         for key in from_dict:
             if key in user_config_val:
-                if isinstance(from_dict[key], dict):
-                    config_val[key] = _get_new_config_val(
-                        config_val[key], user_config_val[key], key, use_default_keys=False
-                    )
-                else:
-                    config_val[key] = user_config_val[key]
+                config_val[key] = _get_new_config_val(
+                    config_val[key],
+                    user_config_val[key],
+                    key_name=key,
+                    use_default_keys=False,
+                    repl_dict=repl_dict,
+                )
+            else:
+                config_val[key] = _replace_values(config_val[key], repl_dict)
         return config_val
     raise TypeError(f"Unknown type {type(user_config_val)} in config key {key_name}!")
 
 
 def get_config():
     """Read and return the config."""
+    config_parser = argparse.ArgumentParser()
+    config_parser.add_argument("-c", "--config-path")
+    config_parser.add_argument("-b", "--book-num")
+    config_args, remaining_args = config_parser.parse_known_args()
     config = deepcopy(DEFAULT_CONFIG)
-    path = get_config_path()
+    path = config_args.config_path or get_config_path()
     user_config = {}
     if path is not None:
         with open(path) as fh:
             user_config = yaml.safe_load(fh)
-    for key, val in config.items():
-        config[key] = _get_new_config_val(val, user_config.get(key), key)
-    return config
+    book_num = str(config_args.book_num or user_config.get("book_num", config.get("book_num")))
+    repl_dict = {
+        "book_num": book_num,
+    }
+    config = _get_new_config_val(config, user_config, repl_dict=repl_dict)
+    config.setdefault("book_num", book_num)
+    return config, remaining_args

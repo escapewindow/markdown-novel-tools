@@ -177,7 +177,7 @@ def frontmatter_query(args):
 
 def frontmatter_parser():
     """Return a parser for the frontmatter tool."""
-    config = get_config()
+    config, remaining_args = get_config()
     parser = argparse.ArgumentParser(prog="frontmatter")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
     parser.add_argument("-s", "--strict", action="store_true")
@@ -220,12 +220,12 @@ def frontmatter_parser():
     update_parser.add_argument("path", nargs="+")
     update_parser.set_defaults(func=frontmatter_update)
 
-    return parser
+    return parser, remaining_args
 
 
 def frontmatter_tool():
     """Work on summaries in both the outline and scene(s)."""
 
-    parser = frontmatter_parser()
-    args = parser.parse_args()
+    parser, remaining_args = frontmatter_parser()
+    args = parser.parse_args(remaining_args)
     args.func(args)

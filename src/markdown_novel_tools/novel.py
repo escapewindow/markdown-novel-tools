@@ -4,6 +4,7 @@
 import argparse
 import json
 import os
+import pprint
 import shutil
 import sys
 from pathlib import Path
@@ -283,7 +284,7 @@ def novel_today(args):
 
 def novel_parser():
     """Return a parser for the novel tool."""
-    config = get_config()
+    config, remaining_args = get_config()
     parser = argparse.ArgumentParser(prog="novel")
     parser.add_argument("-v", "--verbose", help="Verbose logging.")
     parser.add_argument(
@@ -399,12 +400,12 @@ def novel_parser():
     today_parser = subparsers.add_parser("today")
     today_parser.set_defaults(func=novel_today)
 
-    return parser
+    return parser, remaining_args
 
 
 def novel_tool():
     """Work on the outline, repo, and manuscript."""
 
-    parser = novel_parser()
-    args = parser.parse_args()
+    parser, remaining_args = novel_parser()
+    args = parser.parse_args(remaining_args)
     args.func(args)
