@@ -129,19 +129,20 @@ def munge_metadata(path, artifact_dir):
     return (contents, orig_image, new_image)
 
 
-# TODO unhardcode
-def get_output_basestr(args, format_string="book1-{datestr}-{subtitle}{revstr}", repl_dict=None):
+def get_output_basestr(
+    args, format_string="book{book_num}-{datestr}-{subtitle}{revstr}", repl_dict=None
+):
     """Get the basestr for the name of our output file."""
-    repl_dict = repl_dict or {}
-    repl_dict = {}
-    if "{revstr}" in format_string:
-        repl_dict["revstr"] = get_git_revision()
-    if "{datestr}" in format_string:
-        repl_dict["datestr"] = local_time(time.time(), timezone=args.config["timezone"]).strftime(
-            "%Y.%m.%d"
-        )
-    if "{subtitle}" in format_string:
-        repl_dict["subtitle"] = f"{args.subtitle}-" or ""
+    if repl_dict is None:
+        repl_dict = {"book_num": args.config["book_num"]}
+        if "{revstr}" in format_string:
+            repl_dict["revstr"] = get_git_revision()
+        if "{datestr}" in format_string:
+            repl_dict["datestr"] = local_time(
+                time.time(), timezone=args.config["timezone"]
+            ).strftime("%Y.%m.%d")
+        if "{subtitle}" in format_string:
+            repl_dict["subtitle"] = f"{args.subtitle}-" or ""
     return format_string.format(**repl_dict)
 
 
@@ -270,7 +271,13 @@ def convert_full(args):
     revstr = get_git_revision()
     datestr = local_time(time.time(), timezone=args.config["timezone"]).strftime("%Y.%m.%d")
     output_basestr = get_output_basestr(
-        args, repl_dict={"datestr": datestr, "revstr": revstr, "subtitle": subtitle}
+        args,
+        repl_dict={
+            "datestr": datestr,
+            "revstr": revstr,
+            "subtitle": subtitle,
+            "book_num": args.config["book_num"],
+        },
     )
     output_md = artifact_dir / f"{output_basestr}.md"
     with open(output_md, "w", encoding="utf-8") as fh:
