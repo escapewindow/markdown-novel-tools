@@ -19,7 +19,7 @@ from num2words import num2words
 
 from markdown_novel_tools.config import get_css_path, get_metadata_path
 from markdown_novel_tools.constants import ALPHANUM_REGEX, MANUSCRIPT_REGEX
-from markdown_novel_tools.utils import find_markdown_files, get_git_revision, local_time
+from markdown_novel_tools.utils import find_markdown_files, get_git_revision, local_time, mkdir
 
 
 def unwikilink(string):
@@ -182,10 +182,7 @@ def convert_chapter(args, per_chapter_callback=None, output_basestr=None):
                 chapters[chapter_num] = f"{chapters[chapter_num]}{simplified_contents}\n"
             first = False
 
-    if args.clean and os.path.exists(artifact_dir):
-        shutil.rmtree(artifact_dir)
-    if not os.path.exists(artifact_dir):
-        os.mkdir(artifact_dir)
+    mkdir(artifact_dir, clean=args.clean)
 
     chapter_markdown = []
     for chapter_num, contents in chapters.items():
@@ -222,6 +219,22 @@ def single_markdown_to_pdf(
         cmd.append("--toc")
 
     subprocess.check_call(cmd)
+
+
+def convert_simple_pdf(args):
+    """Create a non-outline, non-manuscript pdf from a markdown file."""
+    from_ = args.filename
+    output_basestr = re.sub(r"\.md", "", os.path.basename(args.filename))
+
+    mkdir(args.artifact_dir, clean=args.clean)
+    single_markdown_to_pdf(
+        args,
+        output_basestr,
+        from_,
+        toc=False,
+        artifact_dir=args.artifact_dir,
+        css_path=get_css_path(args.config, variant="misc_pdf_css_path"),
+    )
 
 
 def convert_full(args):
@@ -266,10 +279,7 @@ def convert_full(args):
         contents = f"{toc}\n\n{contents}"
 
     bin_dir = Path("bin")
-    if args.clean and os.path.exists(artifact_dir):
-        shutil.rmtree(artifact_dir)
-    if not os.path.exists(artifact_dir):
-        os.mkdir(artifact_dir)
+    mkdir(artifact_dir, clean=args.clean)
     subtitle = args.subtitle or ""
     revstr = get_git_revision()
     datestr = local_time(time.time(), timezone=args.config["timezone"]).strftime("%Y.%m.%d")
@@ -288,6 +298,7 @@ def convert_full(args):
 
     if args.format == "pdf":
         single_markdown_to_pdf(
+            args,
             output_basestr,
             output_md,
             toc=True,

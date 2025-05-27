@@ -110,6 +110,16 @@ def local_time(timestamp, timezone="US/Mountain"):
     return local_dt
 
 
+def mkdir(path, parents=True, exist_ok=True, clean=False):
+    """Create a directory, cleaning it first if requested."""
+    path = Path(args.path)
+    if clean and os.path.exists(path):
+        shutil.rmtree(path)
+        exist_ok = False
+    if not os.path.exists(path):
+        path.mkdir(parents=parents, exist_ok=exist_ok)
+
+
 def output_diff(diff):
     """Output diff, using `diff-so-fancy` if it exists."""
     if not diff:

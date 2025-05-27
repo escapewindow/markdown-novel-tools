@@ -21,6 +21,7 @@ from markdown_novel_tools.constants import VALID_PRIMARY_OUTLINE_FILENAMES
 from markdown_novel_tools.convert import (
     convert_chapter,
     convert_full,
+    convert_simple_pdf,
     get_output_basestr,
     single_markdown_to_pdf,
 )
@@ -167,7 +168,7 @@ def novel_sync(args):
 
 def novel_convert(args):
     """Convert a novel to a different file format."""
-    if args.format in ("pdf", "epub", "chapter-pdf", "shunn-docx", "shunn-md"):
+    if args.format in ("pdf", "epub", "chapter-pdf", "shunn-docx", "shunn-md", "simple-pdf"):
         if not shutil.which("pandoc"):
             print(f"`{args.format}` format requires `pandoc`! Exiting...", file=sys.stderr)
             sys.exit(1)
@@ -181,6 +182,8 @@ def novel_convert(args):
         shunn_docx(args)
     elif args.format == "shunn-md":
         shunn_md(args)
+    elif args.format == "simple-pdf":
+        convert_simple_pdf(args)
     else:
         convert_full(args)
 
@@ -353,7 +356,7 @@ def novel_parser():
     convert_parser = subparsers.add_parser("convert")
     convert_parser.add_argument(
         "--format",
-        choices=("pdf", "chapter-pdf", "shunn-docx", "shunn-md", "text", "epub"),
+        choices=("pdf", "chapter-pdf", "shunn-docx", "shunn-md", "text", "epub", "simple-pdf"),
         default="text",
     )
     convert_parser.add_argument("--subtitle")
