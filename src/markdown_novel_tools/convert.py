@@ -223,18 +223,18 @@ def single_markdown_to_pdf(
 
 def convert_simple_pdf(args):
     """Create a non-outline, non-manuscript pdf from a markdown file."""
-    from_ = args.filename
-    output_basestr = re.sub(r"\.md", "", os.path.basename(args.filename))
-
     mkdir(args.artifact_dir, clean=args.clean)
-    single_markdown_to_pdf(
-        args,
-        output_basestr,
-        from_,
-        toc=False,
-        artifact_dir=args.artifact_dir,
-        css_path=get_css_path(args.config, variant="misc_pdf_css_path"),
-    )
+    for from_ in args.filename:
+        output_basestr = re.sub(r"\.md", "", os.path.basename(from_))
+
+        single_markdown_to_pdf(
+            args,
+            output_basestr,
+            from_,
+            toc=False,
+            artifact_dir=args.artifact_dir,
+            css_path=get_css_path(args.config, variant="misc_pdf_css_path"),
+        )
 
 
 def convert_full(args):

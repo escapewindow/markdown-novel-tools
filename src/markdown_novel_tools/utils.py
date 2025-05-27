@@ -3,10 +3,10 @@
 
 import datetime
 import os
+import shutil
 import subprocess
 from difflib import unified_diff
 from pathlib import Path
-from shutil import which
 
 import pytz
 import yaml
@@ -112,7 +112,7 @@ def local_time(timestamp, timezone="US/Mountain"):
 
 def mkdir(path, parents=True, exist_ok=True, clean=False):
     """Create a directory, cleaning it first if requested."""
-    path = Path(args.path)
+    path = Path(path)
     if clean and os.path.exists(path):
         shutil.rmtree(path)
         exist_ok = False
@@ -124,7 +124,7 @@ def output_diff(diff):
     """Output diff, using `diff-so-fancy` if it exists."""
     if not diff:
         return
-    if which("diff-so-fancy"):
+    if shutil.which("diff-so-fancy"):
         subprocess.run(["diff-so-fancy"], input=diff.encode("utf-8"), check=True)
     else:
         print(diff, end="")
