@@ -359,7 +359,7 @@ def novel_parser():
         choices=("pdf", "chapter-pdf", "shunn-docx", "shunn-md", "text", "epub", "simple-pdf"),
         default="text",
     )
-    convert_parser.add_argument("--subtitle")
+    convert_parser.add_argument("--subtitle", default="")
     convert_parser.add_argument("--clean", action="store_true")
     convert_parser.add_argument("--artifact-dir", default="_output")
     convert_parser.add_argument("filename", nargs="+")
@@ -384,7 +384,7 @@ def novel_parser():
         choices=("pdf", "html"),
         default="html",
     )
-    outline_convert_parser.add_argument("--subtitle")
+    outline_convert_parser.add_argument("--subtitle", default="")
     outline_convert_parser.add_argument("--clean", action="store_true")
     outline_convert_parser.add_argument("--artifact-dir", default="_output")
     outline_convert_parser.set_defaults(func=novel_outline_convert)
