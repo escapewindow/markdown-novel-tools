@@ -202,6 +202,7 @@ def single_markdown_to_pdf(
     args,
     basename,
     from_,
+    toc=False,
     artifact_dir=None,
     css_path=None,
 ):
@@ -217,6 +218,9 @@ def single_markdown_to_pdf(
         "-o",
         output_pdf,
     ]
+    if toc:
+        cmd.append("--toc")
+
     subprocess.check_call(cmd)
 
 
@@ -283,17 +287,12 @@ def convert_full(args):
         fh.write(contents)
 
     if args.format == "pdf":
-        subprocess.check_call(
-            [
-                "pandoc",
-                output_md,
-                "--pdf-engine=weasyprint",
-                "--toc",
-                "--css",
-                get_css_path(args.config, variant="manuscript_pdf_css_path"),
-                "-o",
-                artifact_dir / f"{output_basestr}.pdf",
-            ]
+        single_markdown_to_pdf(
+            output_basestr,
+            output_md,
+            toc=True,
+            artifact_dir=artifact_dir,
+            css_path=get_css_path(args.config, variant="manuscript_pdf_css_path"),
         )
 
     elif args.format == "epub":
