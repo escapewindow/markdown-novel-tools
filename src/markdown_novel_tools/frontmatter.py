@@ -8,7 +8,7 @@ import sys
 
 import yaml
 
-from markdown_novel_tools.config import get_config, get_primary_outline_path
+from markdown_novel_tools.config import add_config_parser_args, get_config, get_primary_outline_path
 from markdown_novel_tools.constants import MANUSCRIPT_REGEX
 from markdown_novel_tools.mdfile import FRONTMATTER_VALIDATOR, get_markdown_file
 from markdown_novel_tools.outline import build_table_from_file, get_yaml_from_table
@@ -179,12 +179,10 @@ def frontmatter_parser():
     """Return a parser for the frontmatter tool."""
     config, remaining_args = get_config()
     parser = argparse.ArgumentParser(prog="frontmatter")
-    parser.add_argument("-v", "--verbose", help="Verbose logging.")
     parser.add_argument("-s", "--strict", action="store_true")
-
-    # this will already be swallowed by the config_parser, but add here for --help
-    parser.add_argument("-b", "--book-num")
-    parser.add_argument("-c", "--config-path")
+    parser = add_config_parser_args(
+        parser
+    )  # these args will be swallowed by the config_parser, but add for --help
     parser.set_defaults(config=config)
     subparsers = parser.add_subparsers()
 

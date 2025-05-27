@@ -12,6 +12,7 @@ from pathlib import Path
 from git import Repo
 
 from markdown_novel_tools.config import (
+    add_config_parser_args,
     get_config,
     get_css_path,
     get_markdown_template_choices,
@@ -289,12 +290,11 @@ def novel_parser():
     """Return a parser for the novel tool."""
     config, remaining_args = get_config()
     parser = argparse.ArgumentParser(prog="novel")
-    parser.add_argument("-v", "--verbose", help="Verbose logging.")
-
-    # this will already be swallowed by the config_parser, but add here for --help
-    parser.add_argument("-b", "--book-num")
-    parser.add_argument("-c", "--config-path")
+    parser = add_config_parser_args(
+        parser
+    )  # these args will be swallowed by the config_parser, but add for --help
     parser.set_defaults(config=config)
+    parser.add_argument("-v", "--verbose", help="Verbose logging.", action="store_true")
     subparsers = parser.add_subparsers()
 
     # novel beats
