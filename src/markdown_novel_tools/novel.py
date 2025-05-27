@@ -290,7 +290,7 @@ def novel_parser():
     """Return a parser for the novel tool."""
     config, remaining_args = get_config()
     parser = argparse.ArgumentParser(prog="novel")
-    parser = add_config_parser_args(
+    add_config_parser_args(
         parser
     )  # these args will be swallowed by the config_parser, but add for --help
     parser.set_defaults(config=config)

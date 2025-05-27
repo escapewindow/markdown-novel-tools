@@ -120,13 +120,12 @@ def add_config_parser_args(parser):
     """Add config parser args; here to fix --help. These can't have required functions."""
     parser.add_argument("-c", "--config-path")
     parser.add_argument("-b", "--book-num")
-    return parser
 
 
 def get_config():
     """Read and return the config."""
     config_parser = argparse.ArgumentParser(add_help=False)
-    config_parser = add_config_parser_args(config_parser)
+    add_config_parser_args(config_parser)
     config_args, remaining_args = config_parser.parse_known_args()
     config = deepcopy(DEFAULT_CONFIG)
     path = config_args.config_path or get_config_path()

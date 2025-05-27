@@ -180,7 +180,7 @@ def frontmatter_parser():
     config, remaining_args = get_config()
     parser = argparse.ArgumentParser(prog="frontmatter")
     parser.add_argument("-s", "--strict", action="store_true")
-    parser = add_config_parser_args(
+    add_config_parser_args(
         parser
     )  # these args will be swallowed by the config_parser, but add for --help
     parser.set_defaults(config=config)
