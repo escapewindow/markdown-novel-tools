@@ -17,8 +17,8 @@ from markdown_novel_tools.config import (
     get_css_path,
     get_markdown_template_choices,
     get_primary_outline_path,
+    get_valid_primary_outline_filenames,
 )
-from markdown_novel_tools.constants import VALID_PRIMARY_OUTLINE_FILENAMES
 from markdown_novel_tools.convert import (
     convert_chapter,
     convert_full,
@@ -109,9 +109,10 @@ def novel_sync(args):
     else:
         path = get_primary_outline_path(args.config)
 
-    if path.name not in VALID_PRIMARY_OUTLINE_FILENAMES:
+    valid_primary_outline_filenames = get_valid_primary_outline_filenames(args.config)
+    if path.name not in valid_primary_outline_filenames:
         raise Exception(
-            f"{path} is not in {VALID_PRIMARY_OUTLINE_FILENAMES}; quitting before we break beat order."
+            f"{path} is not in {valid_primary_outline_filenames}; quitting before we break beat order."
         )
 
     if args.artifact_dir:
@@ -120,8 +121,8 @@ def novel_sync(args):
         parent = path.parent
 
     parent.mkdir(parents=True, exist_ok=True)
-    full_path = parent / "full.md"
-    if path.name == "scenes.md":
+    full_path = parent / f"book{args.config['book_num']}-full.md"
+    if path.name == f"book{args.config['book_num']}-scenes.md":
         contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
         write_to_file(full_path, contents)
         print(f"{stats}\n", file=sys.stderr)
@@ -132,7 +133,7 @@ def novel_sync(args):
     contents, stats = _beats_helper(
         full_path, column="POV", file_headers=True, multi_table_output=True, stats=True
     )
-    write_to_file(parent / "povs.md", contents)
+    write_to_file(parent / f"book{args.config['book_num']}-povs.md", contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Arc
@@ -144,14 +145,14 @@ def novel_sync(args):
         split_column=["Arc", "Beat"],
         stats=True,
     )
-    write_to_file(parent / "arcs.md", contents)
+    write_to_file(parent / f"book{args.config['book_num']}-arcs.md", contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Scene
     contents, stats = _beats_helper(
         full_path, column="Scene", file_headers=True, multi_table_output=True, stats=True
     )
-    write_to_file(parent / "scenes.md", contents)
+    write_to_file(parent / f"book{args.config['book_num']}-scenes.md", contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Questions etc.
@@ -163,7 +164,7 @@ def novel_sync(args):
         split_column=["Arc", "Beat"],
         stats=True,
     )
-    write_to_file(parent / "questions.md", contents)
+    write_to_file(parent / f"book{args.config['book_num']}-questions.md", contents)
     print(f"{stats}\n", file=sys.stderr)
 
 
@@ -203,9 +204,10 @@ def novel_new(args):
 def novel_outline_convert(args):
     """Convert the outline to something shareable."""
     path = get_primary_outline_path(args.config)
-    if path.name not in VALID_PRIMARY_OUTLINE_FILENAMES:
+    valid_primary_outline_filenames = get_valid_primary_outline_filenames(args.config)
+    if path.name not in valid_primary_outline_filenames:
         raise Exception(
-            f"{path} is not in {VALID_PRIMARY_OUTLINE_FILENAMES}; quitting before we break beat order."
+            f"{path} is not in {valid_primary_outline_filenames}; quitting before we break beat order."
         )
 
     output_basestr = get_output_basestr(args)

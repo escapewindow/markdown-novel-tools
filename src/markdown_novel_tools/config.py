@@ -10,7 +10,7 @@ from pathlib import Path
 import yaml
 from git import InvalidGitRepositoryError, Repo
 
-from markdown_novel_tools.constants import DEFAULT_CONFIG
+from markdown_novel_tools.constants import DEFAULT_CONFIG, VALID_PRIMARY_OUTLINE_FILENAMES
 
 
 def get_config_path():
@@ -57,6 +57,11 @@ def get_markdown_template_choices(config):
     for file in glob.glob(str(template_dir / "*.md")):
         choices.append(os.path.basename(file).replace(".md", ""))
     return sorted(choices)
+
+
+def get_valid_primary_outline_filenames(config):
+    """Return the allowed primary outline filenames."""
+    return _replace_values(VALID_PRIMARY_OUTLINE_FILENAMES, {"book_num": config["book_num"]})
 
 
 def _replace_values(var, repl_dict):

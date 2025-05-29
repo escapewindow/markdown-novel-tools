@@ -20,7 +20,7 @@ DEFAULT_CONFIG = {
     "timezone": "US/Mountain",
     "outline": {
         "outline_dir": "outline/Book {book_num}/",
-        "primary_outline_file": "scenes.md",
+        "primary_outline_file": "book{book_num}-scenes.md",
     },
     "convert": {
         "metadata_path": {
@@ -50,7 +50,7 @@ DEFAULT_CONFIG = {
 
 
 # Outline {{{1
-VALID_PRIMARY_OUTLINE_FILENAMES = ("scenes.md", "full.md")
+VALID_PRIMARY_OUTLINE_FILENAMES = ("book{book_num}-scenes.md", "book{book_num}-full.md")
 
 OUTLINE_HTML_HEADER = """<html><head><style>
     table, th, td {
