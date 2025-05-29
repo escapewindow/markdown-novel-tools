@@ -301,6 +301,7 @@ def novel_parser():
 
     # novel beats
     beats_parser = subparsers.add_parser("beats")
+    beats_parser.set_defaults(require_book_num=True)
     beats_parser.add_argument(
         "--column",
         help="Which column to sort by, if any. First column is 0, 2nd is 1, etc.",
@@ -348,6 +349,7 @@ def novel_parser():
     beats_parser.set_defaults(func=novel_beats)
 
     sync_parser = subparsers.add_parser("sync", help="Sync the various outline files.")
+    sync_parser.set_defaults(require_book_num=True)
     sync_parser.add_argument("--artifact-dir", help="Defaults to the parent of PATH")
     sync_parser.add_argument(
         "path", nargs="?", help="Defaults to the config or default primary outline path."
@@ -356,6 +358,7 @@ def novel_parser():
 
     # novel convert
     convert_parser = subparsers.add_parser("convert")
+    convert_parser.set_defaults(require_book_num=True)
     convert_parser.add_argument(
         "--format",
         choices=("pdf", "chapter-pdf", "shunn-docx", "shunn-md", "text", "epub", "simple-pdf"),
@@ -381,6 +384,7 @@ def novel_parser():
 
     # novel outline-convert
     outline_convert_parser = subparsers.add_parser("outline_convert")
+    outline_convert_parser.set_defaults(require_book_num=True)
     outline_convert_parser.add_argument(
         "--format",
         choices=("pdf", "html"),
@@ -393,6 +397,7 @@ def novel_parser():
 
     # novel replace
     replace_parser = subparsers.add_parser("replace")
+    replace_parser.set_defaults(require_book_num=True)
     replace_parser.add_argument("-l", "--list", action=argparse.BooleanOptionalAction)
     replace_parser.add_argument("from_")
     replace_parser.add_argument("to")
@@ -400,6 +405,7 @@ def novel_parser():
 
     # novel stats
     stats_parser = subparsers.add_parser("stats")
+    stats_parser.set_defaults(require_book_num=True)
     stats_parser.set_defaults(func=novel_stats)
 
     # novel today
@@ -414,4 +420,7 @@ def novel_tool():
 
     parser, remaining_args = novel_parser()
     args = parser.parse_args(remaining_args)
+    if args.require_book_num and args.config.get("book_num") is None:
+        raise SyntaxError(f"{sys.argv}: specify -b <Book Num>!")
+    print(f"{args.require_book_num} {args.config.get("book_num")}")
     args.func(args)

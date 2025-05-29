@@ -188,17 +188,20 @@ def frontmatter_parser():
 
     # frontmatter check
     check_parser = subparsers.add_parser("check")
+    check_parser.set_defaults(require_book_num=True)
     check_parser.add_argument("path", nargs="+")
     check_parser.set_defaults(func=frontmatter_check)
 
     # frontmatter diff
     diff_parser = subparsers.add_parser("diff")
+    diff_parser.set_defaults(require_book_num=True)
     diff_parser.add_argument("-o", "--outline", default=get_primary_outline_path(config))
     diff_parser.add_argument("path", nargs="+")
     diff_parser.set_defaults(func=frontmatter_diff)
 
     # frontmatter query
     query_parser = subparsers.add_parser("query")
+    query_parser.set_defaults(require_book_num=True)
     query_parser.add_argument("-f", "--field", required=True)
     query_parser.add_argument("-g", "--grep")
     query_parser.add_argument(
@@ -213,6 +216,7 @@ def frontmatter_parser():
 
     # frontmatter update
     update_parser = subparsers.add_parser("update")
+    update_parser.set_defaults(require_book_num=True)
     update_parser.add_argument("-f", "--fix", action="store_true")
     update_parser.add_argument("-n", "--noop", action="store_true")
     update_parser.add_argument("-o", "--outline", default=get_primary_outline_path(config))
@@ -227,4 +231,6 @@ def frontmatter_tool():
 
     parser, remaining_args = frontmatter_parser()
     args = parser.parse_args(remaining_args)
+    if args.require_book_num and args.config.get("book_num") is None:
+        raise SyntaxError(f"{sys.argv}: specify -b <Book Num>!")
     args.func(args)
