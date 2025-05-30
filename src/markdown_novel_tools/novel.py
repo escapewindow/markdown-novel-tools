@@ -102,72 +102,6 @@ def novel_beats(args):
         print(stderr, file=sys.stderr)
 
 
-def novel_sync(args):
-    """Sync the various outline files."""
-    if args.path:
-        path = Path(args.path)
-    else:
-        path = get_primary_outline_path(args.config)
-
-    valid_primary_outline_filenames = get_valid_primary_outline_filenames(args.config)
-    if path.name not in valid_primary_outline_filenames:
-        raise Exception(
-            f"{path} is not in {valid_primary_outline_filenames}; quitting before we break beat order."
-        )
-
-    if args.artifact_dir:
-        parent = Path(args.artifact_dir)
-    else:
-        parent = path.parent
-
-    parent.mkdir(parents=True, exist_ok=True)
-    full_path = parent / f"book{args.config['book_num']}-full.md"
-    if path.name == f"book{args.config['book_num']}-scenes.md":
-        contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
-        write_to_file(full_path, contents)
-        print(f"{stats}\n", file=sys.stderr)
-    elif not os.path.exists(full_path):
-        shutil.copyfile(path, full_path)
-
-    # POVS
-    contents, stats = _beats_helper(
-        full_path, column="POV", file_headers=True, multi_table_output=True, stats=True
-    )
-    write_to_file(parent / f"book{args.config['book_num']}-povs.md", contents)
-    print(f"{stats}\n", file=sys.stderr)
-
-    # Arc
-    contents, stats = _beats_helper(
-        full_path,
-        column="Arc",
-        file_headers=True,
-        multi_table_output=True,
-        split_column=["Arc", "Beat"],
-        stats=True,
-    )
-    write_to_file(parent / f"book{args.config['book_num']}-arcs.md", contents)
-    print(f"{stats}\n", file=sys.stderr)
-
-    # Scene
-    contents, stats = _beats_helper(
-        full_path, column="Scene", file_headers=True, multi_table_output=True, stats=True
-    )
-    write_to_file(parent / f"book{args.config['book_num']}-scenes.md", contents)
-    print(f"{stats}\n", file=sys.stderr)
-
-    # Questions etc.
-    contents, stats = _beats_helper(
-        full_path,
-        column="Beat",
-        file_headers=True,
-        filter=["Question", "Promise", "Reveal", "Goal", "SubGoal", "Death"],
-        split_column=["Arc", "Beat"],
-        stats=True,
-    )
-    write_to_file(parent / f"book{args.config['book_num']}-questions.md", contents)
-    print(f"{stats}\n", file=sys.stderr)
-
-
 def novel_convert(args):
     """Convert a novel to a different file format."""
     if args.format in ("pdf", "epub", "chapter-pdf", "shunn-docx", "shunn-md", "simple-pdf"):
@@ -279,6 +213,72 @@ Total words: {stats['total']['words']}
         sys.exit(len(errors))
 
 
+def novel_sync(args):
+    """Sync the various outline files."""
+    if args.path:
+        path = Path(args.path)
+    else:
+        path = get_primary_outline_path(args.config)
+
+    valid_primary_outline_filenames = get_valid_primary_outline_filenames(args.config)
+    if path.name not in valid_primary_outline_filenames:
+        raise Exception(
+            f"{path} is not in {valid_primary_outline_filenames}; quitting before we break beat order."
+        )
+
+    if args.artifact_dir:
+        parent = Path(args.artifact_dir)
+    else:
+        parent = path.parent
+
+    parent.mkdir(parents=True, exist_ok=True)
+    full_path = parent / f"book{args.config['book_num']}-full.md"
+    if path.name == f"book{args.config['book_num']}-scenes.md":
+        contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
+        write_to_file(full_path, contents)
+        print(f"{stats}\n", file=sys.stderr)
+    elif not os.path.exists(full_path):
+        shutil.copyfile(path, full_path)
+
+    # POVS
+    contents, stats = _beats_helper(
+        full_path, column="POV", file_headers=True, multi_table_output=True, stats=True
+    )
+    write_to_file(parent / f"book{args.config['book_num']}-povs.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
+
+    # Arc
+    contents, stats = _beats_helper(
+        full_path,
+        column="Arc",
+        file_headers=True,
+        multi_table_output=True,
+        split_column=["Arc", "Beat"],
+        stats=True,
+    )
+    write_to_file(parent / f"book{args.config['book_num']}-arcs.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
+
+    # Scene
+    contents, stats = _beats_helper(
+        full_path, column="Scene", file_headers=True, multi_table_output=True, stats=True
+    )
+    write_to_file(parent / f"book{args.config['book_num']}-scenes.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
+
+    # Questions etc.
+    contents, stats = _beats_helper(
+        full_path,
+        column="Beat",
+        file_headers=True,
+        filter=["Question", "Promise", "Reveal", "Goal", "SubGoal", "Death"],
+        split_column=["Arc", "Beat"],
+        stats=True,
+    )
+    write_to_file(parent / f"book{args.config['book_num']}-questions.md", contents)
+    print(f"{stats}\n", file=sys.stderr)
+
+
 def novel_today(args):
     """Get daily stats."""
     # pylint: disable=unused-argument
@@ -369,6 +369,11 @@ def novel_parser():
     convert_parser.add_argument("--artifact-dir", default="_output")
     convert_parser.add_argument("filename", nargs="+")
     convert_parser.set_defaults(func=novel_convert)
+
+    # novel lint
+    lint_parser = subparsers.add_parser("lint")
+    lint_parser.add_argument("path")
+    lint_parser.set_defaults(func=novel_lint)
 
     # novel new
     new_parser = subparsers.add_parser("new")
