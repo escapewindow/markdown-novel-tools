@@ -10,14 +10,17 @@ import yaml
 
 from markdown_novel_tools.config import add_config_parser_args, get_config, get_primary_outline_path
 from markdown_novel_tools.constants import MANUSCRIPT_REGEX
-from markdown_novel_tools.mdfile import FRONTMATTER_VALIDATOR, get_markdown_file
+from markdown_novel_tools.mdfile import (
+    FRONTMATTER_VALIDATOR,
+    get_markdown_file,
+    write_markdown_file,
+)
 from markdown_novel_tools.outline import build_table_from_file, get_yaml_from_table
 from markdown_novel_tools.utils import (
     diff_yaml,
     find_markdown_files,
     output_diff,
     print_object_one_line_per,
-    yaml_string,
 )
 
 
@@ -74,18 +77,7 @@ def frontmatter_diff(args):
         output_diff(diff)
 
 
-def _write_updated_frontmatter(path, markdown_file):
-    """Helper function to update the frontmatter of a markdown file."""
-    with open(path, "w", encoding="utf-8") as fh:
-        fh.write(
-            f"""---
-{yaml_string(markdown_file.parsed_yaml).rstrip()}
----
-{markdown_file.body}"""
-        )
-
-
-def _fix_frontmatter(old_frontmatter):
+def fix_frontmatter(old_frontmatter):
     """Fix frontmatter.
 
     This is a hardcode-heavy function, and is largely here to convert from one schema to another.
@@ -124,7 +116,7 @@ def frontmatter_update(args):
 
         markdown_file = get_markdown_file(path)
         if args.fix:
-            markdown_file.parsed_yaml = _fix_frontmatter(markdown_file.parsed_yaml)
+            markdown_file.parsed_yaml = fix_frontmatter(markdown_file.parsed_yaml)
         markdown_file.parsed_yaml["summary"] = outline_summary
         new_yaml = yaml_string(markdown_file.parsed_yaml).rstrip()
 
@@ -138,7 +130,7 @@ def frontmatter_update(args):
             )
             output_diff(diff)
         else:
-            _write_updated_frontmatter(path, markdown_file)
+            write_markdown_file(path, markdown_file)
 
     frontmatter_check(args)
 

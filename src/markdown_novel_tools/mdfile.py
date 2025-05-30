@@ -13,7 +13,7 @@ from cerberus import Validator
 from git import InvalidGitRepositoryError, Repo
 
 from markdown_novel_tools.constants import ALPHANUM_REGEX, DEBUG, MANUSCRIPT_REGEX
-from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikilink
+from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikilink, yaml_string
 
 # Schema {{{1
 FRONTMATTER_SCHEMA = {
@@ -375,3 +375,14 @@ Today:
     {current_stats["manuscript"]["words"] - stats["manuscript"]["words"]} manuscript words
     {current_stats["total"]["files"] - stats["total"]["files"]} total files
     {current_stats["total"]["words"] - stats["total"]["words"]} total words"""
+
+
+def write_markdown_file(path, markdown_file):
+    """Helper function to update the frontmatter of a markdown file."""
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write(
+            f"""---
+{yaml_string(markdown_file.parsed_yaml).rstrip()}
+---
+{markdown_file.body}"""
+        )

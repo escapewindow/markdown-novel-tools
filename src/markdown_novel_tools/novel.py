@@ -27,8 +27,13 @@ from markdown_novel_tools.convert import (
     get_output_basestr,
     single_markdown_to_pdf,
 )
-from markdown_novel_tools.frontmatter import frontmatter_check
-from markdown_novel_tools.mdfile import get_markdown_file, walk_previous_revision, walk_repo_dir
+from markdown_novel_tools.frontmatter import fix_frontmatter, frontmatter_check
+from markdown_novel_tools.mdfile import (
+    get_markdown_file,
+    walk_previous_revision,
+    walk_repo_dir,
+    write_markdown_file,
+)
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
 from markdown_novel_tools.shunn import shunn_docx, shunn_md
@@ -133,19 +138,34 @@ def novel_lint(args):
     exit_code = 0
     for path in files:
         markdown_file = get_markdown_file(path)
+        is_manuscript = markdown_file.manuscript_info["is_manuscript"]
         line_num = 0
+        body = ""
         for line in markdown_file.body.splitlines():
             line_num += 1
             if "[[[" in line:
-                errors = f"{errors}\n{path} line {line_num}: found [[["
-            if markdown_file.manuscript_info["is_manuscript"]:
+                if args.fix:
+                    line = re.sub(r"\[\[\[+", "[[", line)
+                else:
+                    errors = f"{errors}\n{path} line {line_num}: found [[["
+            if is_manuscript:
                 if re.match(r"^\s*-", line):
-                    errors = f"{errors}\n{path} line {line_num}: starts with -"
-    exit_code = frontmatter_check(args, strict=False)
-    if errors:
-        print(errors)
-        exit_code = 1
-    sys.exit(exit_code)
+                    if args.fix:
+                        continue
+                    else:
+                        errors = f"{errors}\n{path} line {line_num}: starts with -"
+            body = f"{body}{line}\n"
+        if args.fix:
+            if is_manuscript:
+                markdown_file.parsed_yaml = fix_frontmatter(markdown_file.parsed_yaml)
+            markdown_file.body = body
+            write_markdown_file(path, markdown_file)
+    if not args.fix:
+        exit_code = frontmatter_check(args, strict=False)
+        if errors:
+            print(errors)
+            exit_code = 1
+        sys.exit(exit_code)
 
 
 def novel_new(args):
@@ -396,6 +416,7 @@ def novel_parser():
 
     # novel lint
     lint_parser = subparsers.add_parser("lint")
+    lint_parser.add_argument("-f", "--fix", action="store_true")
     lint_parser.add_argument("path")
     lint_parser.set_defaults(func=novel_lint)
 
