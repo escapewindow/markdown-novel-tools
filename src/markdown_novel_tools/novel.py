@@ -397,7 +397,6 @@ def novel_parser():
 
     # novel replace
     replace_parser = subparsers.add_parser("replace")
-    replace_parser.set_defaults(require_book_num=True)
     replace_parser.add_argument("-l", "--list", action=argparse.BooleanOptionalAction)
     replace_parser.add_argument("from_")
     replace_parser.add_argument("to")
