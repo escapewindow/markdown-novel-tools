@@ -420,7 +420,14 @@ def novel_tool():
 
     parser, remaining_args = novel_parser()
     args = parser.parse_args(remaining_args)
-    if args.require_book_num and args.config.get("book_num") is None:
-        raise SyntaxError(f"{sys.argv}: specify -b <Book Num>!")
-    print(f"{args.require_book_num} {args.config.get("book_num")}")
+    if (
+        hasattr(args, "require_book_num")
+        and args.require_book_num
+        and args.config.get("book_num") is None
+    ):
+        print(f"{sys.argv}: specify -b <Book Num>!")
+        raise SystemExit(1)
+    if not hasattr(args, "func"):
+        print(parser.format_help())
+        raise SystemExit(1)
     args.func(args)

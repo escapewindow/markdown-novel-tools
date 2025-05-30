@@ -144,5 +144,4 @@ def get_config():
     }
     config = _get_new_config_val(config, user_config, repl_dict=repl_dict)
     config.setdefault("book_num", book_num)
-    print(config["book_num"] is None)
     return config, remaining_args
