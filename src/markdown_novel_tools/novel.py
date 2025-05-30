@@ -5,6 +5,7 @@ import argparse
 import json
 import os
 import pprint
+import re
 import shutil
 import sys
 from pathlib import Path
@@ -26,11 +27,12 @@ from markdown_novel_tools.convert import (
     get_output_basestr,
     single_markdown_to_pdf,
 )
-from markdown_novel_tools.mdfile import walk_previous_revision, walk_repo_dir
+from markdown_novel_tools.frontmatter import frontmatter_check
+from markdown_novel_tools.mdfile import get_markdown_file, walk_previous_revision, walk_repo_dir
 from markdown_novel_tools.outline import build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
 from markdown_novel_tools.shunn import shunn_docx, shunn_md
-from markdown_novel_tools.utils import write_to_file
+from markdown_novel_tools.utils import find_markdown_files, write_to_file
 
 
 def _beats_helper(
@@ -122,6 +124,28 @@ def novel_convert(args):
         convert_simple_pdf(args)
     else:
         convert_full(args)
+
+
+def novel_lint(args):
+    """Get the stats for the manuscript"""
+    files = find_markdown_files(args.path)
+    errors = ""
+    exit_code = 0
+    for path in files:
+        markdown_file = get_markdown_file(path)
+        line_num = 0
+        for line in markdown_file.body.splitlines():
+            line_num += 1
+            if "[[[" in line:
+                errors = f"{errors}\n{path} line {line_num}: found [[["
+            if markdown_file.manuscript_info["is_manuscript"]:
+                if re.match(r"^\s*-", line):
+                    errors = f"{errors}\n{path} line {line_num}: starts with -"
+    exit_code = frontmatter_check(args, strict=False)
+    if errors:
+        print(errors)
+        exit_code = 1
+    sys.exit(exit_code)
 
 
 def novel_new(args):

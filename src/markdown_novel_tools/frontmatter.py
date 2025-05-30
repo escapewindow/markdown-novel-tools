@@ -22,17 +22,24 @@ from markdown_novel_tools.utils import (
 
 
 # Frontmatter {{{1
-def frontmatter_check(args):
+def frontmatter_check(args, strict=None):
     """Check frontmatter schema."""
 
+    if strict is None:
+        strict = args.strict
+    has_errors = 0
     files = find_markdown_files(args.path)
     for path in files:
         markdown_file = get_markdown_file(path)
-        FRONTMATTER_VALIDATOR.validate(markdown_file.parsed_yaml)
-        if FRONTMATTER_VALIDATOR.errors:
-            print(f"{os.path.basename(path)}\n{FRONTMATTER_VALIDATOR.errors}", file=sys.stderr)
-            if args.strict:
-                sys.exit(1)
+        if markdown_file.manuscript_info["is_manuscript"]:
+            FRONTMATTER_VALIDATOR.validate(markdown_file.parsed_yaml)
+            if FRONTMATTER_VALIDATOR.errors:
+                print(f"{os.path.basename(path)}\n{FRONTMATTER_VALIDATOR.errors}", file=sys.stderr)
+                if strict:
+                    sys.exit(1)
+                has_errors = 1
+        # TODO non-manuscript frontmatter validator
+    return has_errors
 
 
 def frontmatter_diff(args):

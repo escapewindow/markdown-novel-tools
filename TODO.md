@@ -22,7 +22,6 @@
   - [ ] this could be specifiable to see the intermediate artifacts if wanted
 
 # Enhancements
-- [ ] non-yaml frontmatter support
 - [ ] script(s) to add to outline
   - [ ] differentiate between script-added beats and manually-sorted beats - script-added requires human intervention
 - [ ] move contents of TODO.md to github issues
