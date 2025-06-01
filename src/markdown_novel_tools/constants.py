@@ -19,7 +19,7 @@ cssClass: "wide-table"
 DEFAULT_CONFIG = {
     "timezone": "US/Mountain",
     "outline": {
-        "outline_dir": "outline/Book {book_num}/",
+        "outline_dir": "outline/book{book_num}/",
         "primary_outline_file": "book{book_num}-scenes.md",
     },
     "convert": {
