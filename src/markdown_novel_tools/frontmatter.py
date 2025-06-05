@@ -21,6 +21,7 @@ from markdown_novel_tools.utils import (
     find_markdown_files,
     output_diff,
     print_object_one_line_per,
+    yaml_string,
 )
 
 
