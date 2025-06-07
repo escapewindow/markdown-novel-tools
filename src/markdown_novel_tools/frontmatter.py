@@ -96,6 +96,9 @@ def fix_frontmatter(old_frontmatter):
         "summary",
     ):
         new_frontmatter[key] = old_frontmatter.get(key)
+    for key in ("todo",):
+        if key in old_frontmatter:
+            new_frontmatter[key] = old_frontmatter[key]
     return new_frontmatter
 
 
