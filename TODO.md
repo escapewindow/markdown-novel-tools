@@ -14,6 +14,7 @@
 - [ ] Table schema
   - [ ] Define the schema
   - [ ] script to check/fix outline file(s)
+- [ ] outline convert tags and aliases
 
 # Tests
 - [ ] 100% test coverage
