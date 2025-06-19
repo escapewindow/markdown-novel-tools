@@ -18,7 +18,6 @@ from markdown_novel_tools.config import (
     get_css_path,
     get_markdown_template_choices,
     get_primary_outline_path,
-    get_valid_primary_outline_filenames,
 )
 from markdown_novel_tools.convert import (
     convert_chapter,
@@ -182,10 +181,10 @@ def novel_new(args):
 def novel_outline_convert(args):
     """Convert the outline to something shareable."""
     path = get_primary_outline_path(args.config)
-    valid_primary_outline_filenames = get_valid_primary_outline_filenames(args.config)
-    if path.name not in valid_primary_outline_filenames:
-        raise Exception(
-            f"{path} is not in {valid_primary_outline_filenames}; quitting before we break beat order."
+    if "arcs" in path.name:
+        print(
+            f"WARNING: If {path} is an `arcs` file, you are in danger of scrambling the beat order!",
+            file=sys.stderr,
         )
 
     output_basestr = get_output_basestr(args)
@@ -264,12 +263,6 @@ def novel_sync(args):
     else:
         path = get_primary_outline_path(args)
 
-    valid_primary_outline_filenames = get_valid_primary_outline_filenames(args.config)
-    if path.name not in valid_primary_outline_filenames:
-        raise Exception(
-            f"{path} is not in {valid_primary_outline_filenames}; quitting before we break beat order."
-        )
-
     if args.artifact_dir:
         parent = Path(args.artifact_dir)
     else:
@@ -289,6 +282,11 @@ def novel_sync(args):
         "questions": outline_path.format(outline_type="questions"),
     }
     # TODO hacky
+    if "arcs" in path.name:
+        print(
+            f"WARNING: If {path} is an `arcs` file, you are in danger of scrambling the beat order!",
+            file=sys.stderr,
+        )
     if path == paths["scenes"]:
         contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
         write_to_file(full_path, contents)
