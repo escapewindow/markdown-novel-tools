@@ -50,7 +50,11 @@ DEFAULT_CONFIG = {
 
 
 # Outline {{{1
-VALID_PRIMARY_OUTLINE_FILENAMES = ("book{book_num}-scenes.md", "book{book_num}-full.md")
+VALID_PRIMARY_OUTLINE_FILENAMES = (
+    "book{book_num}-scenes.md",
+    "book{book_num}-full.md",
+    "book{book_num}-povs.md",
+)
 
 OUTLINE_HTML_HEADER = """<html><head><style>
     table, th, td {
