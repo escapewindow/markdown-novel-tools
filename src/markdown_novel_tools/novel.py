@@ -269,9 +269,9 @@ def novel_sync(args):
         parent = path.parent
 
     if args.outline_name:
-        outline_path = parent / args.outline_name
+        outline_path = str(parent / args.outline_name)
     else:
-        outline_path = parent / args.config["outline"]["outline_name"]
+        outline_path = str(parent / args.config["outline"]["outline_name"])
 
     parent.mkdir(parents=True, exist_ok=True)
     paths = {
@@ -289,25 +289,25 @@ def novel_sync(args):
         )
     if path == paths["scenes"]:
         contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
-        write_to_file(full_path, contents)
+        write_to_file(paths["full"], contents)
         print(f"{stats}\n", file=sys.stderr)
     elif path == paths["povs"]:
-        contents, stats = _beats_helper(full_path, column="POV", file_headers=True, stats=True)
-        write_to_file(full_path, contents)
+        contents, stats = _beats_helper(paths["full"], column="POV", file_headers=True, stats=True)
+        write_to_file(paths["full"], contents)
         print(f"{stats}\n", file=sys.stderr)
-    elif not os.path.exists(full_path):
-        shutil.copyfile(path, full_path)
+    elif not os.path.exists(paths["full"]):
+        shutil.copyfile(path, paths["full"])
 
     # POVS
     contents, stats = _beats_helper(
-        full_path, column="POV", file_headers=True, multi_table_output=True, stats=True
+        paths["full"], column="POV", file_headers=True, multi_table_output=True, stats=True
     )
     write_to_file(paths["povs"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Arc
     contents, stats = _beats_helper(
-        full_path,
+        paths["full"],
         column="Arc",
         file_headers=True,
         multi_table_output=True,
@@ -319,14 +319,14 @@ def novel_sync(args):
 
     # Scene
     contents, stats = _beats_helper(
-        full_path, column="Scene", file_headers=True, multi_table_output=True, stats=True
+        paths["full"], column="Scene", file_headers=True, multi_table_output=True, stats=True
     )
     write_to_file(paths["scenes"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Questions etc.
     contents, stats = _beats_helper(
-        full_path,
+        paths["full"],
         column="Beat",
         file_headers=True,
         filter=["Question", "Promise", "Reveal", "Goal", "SubGoal", "Death"],
