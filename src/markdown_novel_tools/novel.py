@@ -262,7 +262,7 @@ def novel_sync(args):
     if args.path:
         path = Path(args.path)
     else:
-        path = get_primary_outline_path(args.config)
+        path = get_primary_outline_path(args)
 
     valid_primary_outline_filenames = get_valid_primary_outline_filenames(args.config)
     if path.name not in valid_primary_outline_filenames:
@@ -275,10 +275,26 @@ def novel_sync(args):
     else:
         parent = path.parent
 
+    if args.outline_name:
+        outline_path = parent / args.outline_name
+    else:
+        outline_path = parent / args.config["outline"]["outline_name"]
+
     parent.mkdir(parents=True, exist_ok=True)
-    full_path = parent / f"book{args.config['book_num']}-full.md"
-    if path.name == f"book{args.config['book_num']}-scenes.md":
+    paths = {
+        "full": outline_path.format(outline_type="full"),
+        "scenes": outline_path.format(outline_type="scenes"),
+        "povs": outline_path.format(outline_type="povs"),
+        "arcs": outline_path.format(outline_type="arcs"),
+        "questions": outline_path.format(outline_type="questions"),
+    }
+    # TODO hacky
+    if path == paths["scenes"]:
         contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
+        write_to_file(full_path, contents)
+        print(f"{stats}\n", file=sys.stderr)
+    elif path == paths["povs"]:
+        contents, stats = _beats_helper(full_path, column="POV", file_headers=True, stats=True)
         write_to_file(full_path, contents)
         print(f"{stats}\n", file=sys.stderr)
     elif not os.path.exists(full_path):
@@ -288,7 +304,7 @@ def novel_sync(args):
     contents, stats = _beats_helper(
         full_path, column="POV", file_headers=True, multi_table_output=True, stats=True
     )
-    write_to_file(parent / f"book{args.config['book_num']}-povs.md", contents)
+    write_to_file(paths["povs"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Arc
@@ -300,14 +316,14 @@ def novel_sync(args):
         split_column=["Arc", "Beat"],
         stats=True,
     )
-    write_to_file(parent / f"book{args.config['book_num']}-arcs.md", contents)
+    write_to_file(paths["arcs"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Scene
     contents, stats = _beats_helper(
         full_path, column="Scene", file_headers=True, multi_table_output=True, stats=True
     )
-    write_to_file(parent / f"book{args.config['book_num']}-scenes.md", contents)
+    write_to_file(paths["scenes"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Questions etc.
@@ -319,7 +335,7 @@ def novel_sync(args):
         split_column=["Arc", "Beat"],
         stats=True,
     )
-    write_to_file(parent / f"book{args.config['book_num']}-questions.md", contents)
+    write_to_file(paths["questions"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
 
@@ -395,6 +411,11 @@ def novel_parser():
     sync_parser = subparsers.add_parser("sync", help="Sync the various outline files.")
     sync_parser.set_defaults(require_book_num=True)
     sync_parser.add_argument("--artifact-dir", help="Defaults to the parent of PATH")
+    sync_parser.add_argument(
+        "--outline-name",
+        default=config["outline"]["outline_name"],
+        help="The template string for each outline. Include the `{outline_type}` string.",
+    )
     sync_parser.add_argument(
         "path", nargs="?", help="Defaults to the config or default primary outline path."
     )

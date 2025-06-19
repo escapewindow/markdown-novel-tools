@@ -21,6 +21,7 @@ DEFAULT_CONFIG = {
     "outline": {
         "outline_dir": "outline/book{book_num}/",
         "primary_outline_file": "book{book_num}-scenes.md",
+        "outline_name": "book{book_num}-{{outline_type}}.md",
     },
     "convert": {
         "metadata_path": {
