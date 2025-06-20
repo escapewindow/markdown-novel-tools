@@ -261,7 +261,7 @@ def novel_sync(args):
     if args.path:
         path = Path(args.path)
     else:
-        path = get_primary_outline_path(args)
+        path = get_primary_outline_path(args.config)
 
     if args.artifact_dir:
         parent = Path(args.artifact_dir)
@@ -275,11 +275,11 @@ def novel_sync(args):
 
     parent.mkdir(parents=True, exist_ok=True)
     paths = {
-        "full": outline_path.format(outline_type="full"),
-        "scenes": outline_path.format(outline_type="scenes"),
-        "povs": outline_path.format(outline_type="povs"),
-        "arcs": outline_path.format(outline_type="arcs"),
-        "questions": outline_path.format(outline_type="questions"),
+        "full": Path(outline_path.format(outline_type="full")),
+        "scenes": Path(outline_path.format(outline_type="scenes")),
+        "povs": Path(outline_path.format(outline_type="povs")),
+        "arcs": Path(outline_path.format(outline_type="arcs")),
+        "questions": Path(outline_path.format(outline_type="questions")),
     }
     # TODO hacky
     if "arcs" in path.name:
