@@ -67,31 +67,12 @@ class MarkdownFile:
         if DEBUG:
             print(f"{path}: ", end="")
 
-        self.yaml, self.body = self.get_frontmatter_and_body(contents)
+        self.yaml, self.body = get_frontmatter_and_body(contents)
         self.count_words(self.body)
         self.parse_yaml()
 
         if DEBUG:
             pprint(vars(self))
-
-    def get_frontmatter_and_body(self, contents):
-        """Get the frontmatter and body of a markdown file."""
-        in_comment = False
-        frontmatter = ""
-        body = ""
-
-        for line in contents.splitlines():
-            if line == "---":
-                in_comment = not in_comment
-                continue
-            if in_comment:
-                if self.hack_yaml:
-                    frontmatter = f"{frontmatter}{unwikilink(line)}\n"
-                else:
-                    frontmatter = f"{frontmatter}{line}\n"
-            else:
-                body = f"{body}{line}\n"
-        return frontmatter, body
 
     def count_words(self, body):
         """Count the words in a markdown file, skipping the header and any
@@ -272,6 +253,26 @@ class Book:
 
 
 # Functions {{{1
+def get_frontmatter_and_body(self, contents):
+    """Get the frontmatter and body of a markdown file."""
+    in_comment = False
+    frontmatter = ""
+    body = ""
+
+    for line in contents.splitlines():
+        if line == "---":
+            in_comment = not in_comment
+            continue
+        if in_comment:
+            if self.hack_yaml:
+                frontmatter = f"{frontmatter}{unwikilink(line)}\n"
+            else:
+                frontmatter = f"{frontmatter}{line}\n"
+        else:
+            body = f"{body}{line}\n"
+    return frontmatter, body
+
+
 def get_markdown_file(path, contents=None, hack_yaml=False):
     """Get the markdown file"""
     if contents is None:

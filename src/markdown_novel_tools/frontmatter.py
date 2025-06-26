@@ -83,7 +83,10 @@ def fix_frontmatter(old_frontmatter):
 
     This is a hardcode-heavy function, and is largely here to convert from one schema to another.
     """
-    new_frontmatter = {}
+    new_frontmatter = {
+        "tags": [],
+        "aliases": [],
+    }
     for key in (
         "title",
         "tags",

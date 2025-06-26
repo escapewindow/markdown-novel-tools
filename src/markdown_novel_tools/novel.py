@@ -74,6 +74,12 @@ def _beats_helper(
         sys.exit(1)
 
 
+def _write_to_file_helper(path, contents, header=None):
+    """Preserve existing header."""
+    # TODO
+    return write_to_file(path, contents)
+
+
 def novel_beats(args):
     """Print an outline's beats in the desired form."""
     if not args.path:
@@ -282,17 +288,18 @@ def novel_sync(args):
         "questions": Path(outline_path.format(outline_type="questions")),
     }
     # TODO hacky
+    contents = stats = ""
     if "arcs" in path.name:
         print(
             f"WARNING: If {path} is an `arcs` file, you are in danger of scrambling the beat order!",
             file=sys.stderr,
         )
-    if path == paths["scenes"]:
+        contents, stats = _beats_helper(path, column="Arcs", file_headers=True, stats=True)
+    elif path == paths["scenes"]:
         contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
-        write_to_file(paths["full"], contents)
-        print(f"{stats}\n", file=sys.stderr)
     elif path == paths["povs"]:
         contents, stats = _beats_helper(paths["full"], column="POV", file_headers=True, stats=True)
+    if contents and stats:
         write_to_file(paths["full"], contents)
         print(f"{stats}\n", file=sys.stderr)
     elif not os.path.exists(paths["full"]):

@@ -142,6 +142,7 @@ def get_beats(
     stdout = ""
     stderr = ""
     if file_headers:
+        # TODO read header from original file; otherwise set tags and aliases to []
         stdout += f"{OUTLINE_FILE_HEADER}\n"
 
     if format_ == "yaml":

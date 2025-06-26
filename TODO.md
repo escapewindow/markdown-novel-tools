@@ -29,6 +29,7 @@
 - [ ] tempdir for conversion
   - [ ] start using a tempdir to avoid polluting the artifact dir
   - [ ] this could be specifiable to see the intermediate artifacts if wanted
+- [ ] _write_to_file_helper to preserve headers if exists
 
 # Enhancements
 - [ ] script(s) to add to outline
