@@ -15,6 +15,7 @@
   - [ ] Define the schema
   - [ ] script to check/fix outline file(s)
 - [ ] outline convert tags and aliases
+- [ ] Add book num to scene number, allow for creating multi-book outlines
 
 # Tests
 - [ ] 100% test coverage
