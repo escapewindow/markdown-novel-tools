@@ -67,7 +67,7 @@ class MarkdownFile:
         if DEBUG:
             print(f"{path}: ", end="")
 
-        self.yaml, self.body = get_frontmatter_and_body(contents)
+        self.yaml, self.body = get_frontmatter_and_body(contents, hack_yaml=self.hack_yaml)
         self.count_words(self.body)
         self.parse_yaml()
 
@@ -253,7 +253,7 @@ class Book:
 
 
 # Functions {{{1
-def get_frontmatter_and_body(self, contents):
+def get_frontmatter_and_body(contents, hack_yaml=False):
     """Get the frontmatter and body of a markdown file."""
     in_comment = False
     frontmatter = ""
@@ -264,7 +264,7 @@ def get_frontmatter_and_body(self, contents):
             in_comment = not in_comment
             continue
         if in_comment:
-            if self.hack_yaml:
+            if hack_yaml:
                 frontmatter = f"{frontmatter}{unwikilink(line)}\n"
             else:
                 frontmatter = f"{frontmatter}{line}\n"
