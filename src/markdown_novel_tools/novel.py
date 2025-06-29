@@ -239,7 +239,7 @@ def novel_stats(args):
     if not os.path.exists(artifact_dir):
         os.mkdir(artifact_dir)
 
-    books, stats, errors = walk_repo_dir()
+    books, stats, errors = walk_repo_dir(args.config)
     for i, book in books.items():
         book_stats = book.stats()
         path = artifact_dir / f"book{i}.json"

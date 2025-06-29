@@ -281,12 +281,15 @@ def get_markdown_file(path, contents=None, hack_yaml=False):
     return MarkdownFile(path, contents, hack_yaml)
 
 
-def update_stats(path, contents, books, stats, hack_yaml=False):
+def update_stats(config, path, contents, books, stats, hack_yaml=False):
     """Update the stats with the markdown file at `path`."""
     md_file = MarkdownFile(path, contents, hack_yaml)
     stats["total"]["files"] += 1
     stats["total"]["words"] += md_file.manuscript_info["total_words"]
-    if md_file.manuscript_info["is_manuscript"]:
+    if (
+        md_file.manuscript_info["is_manuscript"]
+        and md_file.manuscript_info["book_num"] == config["book_num"]
+    ):
         stats["manuscript"]["files"] += 1
         stats["manuscript"]["words"] += md_file.manuscript_info["manuscript_words"]
     book_num = md_file.manuscript_info.get("book_num")
@@ -314,7 +317,7 @@ def init_books_stats():
     return books, stats
 
 
-def walk_repo_dir():
+def walk_repo_dir(config):
     """Walk the current directory to find the books, stats, and errors."""
     books, stats = init_books_stats()
     errors = ""
@@ -332,7 +335,7 @@ def walk_repo_dir():
                 path = os.path.join(root, file_)
                 with open(path, encoding="utf-8") as fh:
                     contents = fh.read()
-                error = update_stats(path, contents, books, stats)
+                error = update_stats(config, path, contents, books, stats)
                 if error:
                     errors += error
         for skip in (".git", ".obsidian"):
@@ -369,7 +372,7 @@ def walk_previous_revision(config, current_stats):
     for blob in previous_commit.tree.traverse():
         if blob.name.endswith(".md"):
             contents = blob.data_stream.read().decode("utf-8")
-            update_stats(blob.path, contents, books, stats, hack_yaml=True)
+            update_stats(config, blob.path, contents, books, stats, hack_yaml=True)
     return f"""Previous revision: {previous_commit.hexsha}
 Today:
     {current_stats["manuscript"]["files"] - stats["manuscript"]["files"]} manuscript files
