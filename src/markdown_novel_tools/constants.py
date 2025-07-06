@@ -25,8 +25,7 @@ DEFAULT_CONFIG = {
     },
     "convert": {
         "metadata_path": {
-            "default": "skeleton/book{book_num}-metadata.txt",
-            "shunn-docx": "skeleton/book{book_num}-metadata-docx.txt",
+            "default": "skeleton/Book {book_num} Metadata.txt",
         },
         "frontmatter_files": [
             "skeleton/Book {book_num} Copyright.md",
