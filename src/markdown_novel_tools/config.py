@@ -38,6 +38,16 @@ def get_primary_outline_path(config):
 
 def get_metadata_path(config, format_="default"):
     """Get the `novel convert` metadata path for a given format."""
+    from pprint import pprint
+
+    pprint(config)
+    print(format_)
+    print(
+        config["convert"]["metadata_path"].get(
+            format_, config["convert"]["metadata_path"]["default"]
+        )
+    )
+
     return Path(
         config["convert"]["metadata_path"].get(
             format_, config["convert"]["metadata_path"]["default"]
