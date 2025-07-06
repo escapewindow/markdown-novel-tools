@@ -38,16 +38,6 @@ def get_primary_outline_path(config):
 
 def get_metadata_path(config, format_="default"):
     """Get the `novel convert` metadata path for a given format."""
-    from pprint import pprint
-
-    pprint(config)
-    print(format_)
-    print(
-        config["convert"]["metadata_path"].get(
-            format_, config["convert"]["metadata_path"]["default"]
-        )
-    )
-
     return Path(
         config["convert"]["metadata_path"].get(
             format_, config["convert"]["metadata_path"]["default"]
@@ -98,7 +88,10 @@ def _get_new_config_val(
     if user_config_val is None:
         return _replace_values(config_val, repl_dict)
     if config_val is None:
-        return
+        if use_default_keys:
+            return
+        else:
+            return _replace_values(user_config_val, repl_dict)
     if type(config_val) is not type(user_config_val):
         error = f"{type(user_config_val)} is not {type(config_val)}!"
         if key_name is not None:
