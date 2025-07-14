@@ -8,7 +8,6 @@ from pathlib import Path
 DEBUG = 0
 
 OUTLINE_FILE_HEADER = """---
-cssClass: "wide-table"
 ---
 
 # Outline
