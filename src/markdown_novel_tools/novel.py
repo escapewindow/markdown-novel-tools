@@ -50,6 +50,7 @@ def _beats_helper(
     stats=False,
     target_table_num=None,
     format_=None,
+    beats_type="outline",
 ):
     """Shared logic from novel_beats and novel_sync"""
     table = build_table_from_file(
@@ -68,6 +69,7 @@ def _beats_helper(
             multi_table_output=multi_table_output,
             stats=stats,
             format_=format_,
+            beats_type=beats_type,
         )
     else:
         print("No table found!", file=sys.stderr)
@@ -212,12 +214,18 @@ def novel_outline_convert(args):
         split_column=["Arc", "Beat"],
         stats=True,
         format_="html",
+        beats_type="arcs",
     )
     write_to_file(parent / f"{output_basestr}-arcs.html", contents)
 
     # Scene
     contents, stats = _beats_helper(
-        path, column="Scene", multi_table_output=True, stats=True, format_="html"
+        path,
+        column="Scene",
+        multi_table_output=True,
+        stats=True,
+        format_="html",
+        beats_type="scenes",
     )
     write_to_file(parent / f"{output_basestr}-scenes.html", contents)
 
@@ -307,7 +315,12 @@ def novel_sync(args):
 
     # POVS
     contents, stats = _beats_helper(
-        paths["full"], column="POV", file_headers=True, multi_table_output=True, stats=True
+        paths["full"],
+        column="POV",
+        file_headers=True,
+        multi_table_output=True,
+        stats=True,
+        beats_type="povs",
     )
     write_to_file(paths["povs"], contents)
     print(f"{stats}\n", file=sys.stderr)
@@ -320,13 +333,19 @@ def novel_sync(args):
         multi_table_output=True,
         split_column=["Arc", "Beat"],
         stats=True,
+        beats_type="arcs",
     )
     write_to_file(paths["arcs"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Scene
     contents, stats = _beats_helper(
-        paths["full"], column="Scene", file_headers=True, multi_table_output=True, stats=True
+        paths["full"],
+        column="Scene",
+        file_headers=True,
+        multi_table_output=True,
+        stats=True,
+        beats_type="scenes",
     )
     write_to_file(paths["scenes"], contents)
     print(f"{stats}\n", file=sys.stderr)
@@ -339,6 +358,7 @@ def novel_sync(args):
         filter=["Question", "Promise", "Reveal", "Goal", "SubGoal", "Death"],
         split_column=["Arc", "Beat"],
         stats=True,
+        beats_type="questions",
     )
     write_to_file(paths["questions"], contents)
     print(f"{stats}\n", file=sys.stderr)

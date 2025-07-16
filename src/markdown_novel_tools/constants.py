@@ -7,12 +7,6 @@ from pathlib import Path
 
 DEBUG = 0
 
-OUTLINE_FILE_HEADER = """---
----
-
-# Outline
-"""
-
 # Config {{{1
 
 DEFAULT_CONFIG = {

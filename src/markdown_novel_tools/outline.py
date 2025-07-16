@@ -12,7 +12,6 @@ from itertools import zip_longest
 from urllib.parse import quote
 
 from markdown_novel_tools.constants import (
-    OUTLINE_FILE_HEADER,
     OUTLINE_HTML_HEADER,
     SPECIAL_CHAR_REGEX,
     TABLE_DIVIDER_REGEX,
@@ -130,6 +129,18 @@ def get_line_parts(line, split_column=None):
     return parts
 
 
+def get_outline_file_header(beats_type):
+    tags = {"outline", beats_type.lower()}
+    return f"""---
+tags: {list(tags)}
+aliases: []
+---
+
+# {beats_type.capitalize()}
+
+"""
+
+
 def get_beats(
     table,
     filter=None,
@@ -137,13 +148,14 @@ def get_beats(
     multi_table_output=False,
     stats=False,
     format_=None,
+    beats_type="outline",
 ):
     """Return the output."""
     stdout = ""
     stderr = ""
     if file_headers:
         # TODO read header from original file; otherwise set tags and aliases to []
-        stdout += f"{OUTLINE_FILE_HEADER}\n"
+        stdout += get_outline_file_header(beats_type)
 
     if format_ == "yaml":
         stdout = f"{stdout}{get_yaml_from_table(table, _filter=filter)}"
