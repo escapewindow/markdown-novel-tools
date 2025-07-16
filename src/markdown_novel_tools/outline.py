@@ -132,7 +132,7 @@ def get_line_parts(line, split_column=None):
 def get_outline_file_header(beats_type):
     tags = {"outline", beats_type.lower()}
     return f"""---
-tags: {list(tags)}
+tags: {sorted(list(tags))}
 aliases: []
 ---
 
