@@ -176,9 +176,13 @@ def convert_chapter(args, per_chapter_callback=None, output_basestr=None):
     mkdir(artifact_dir, clean=args.clean)
 
     chapter_markdown = []
+    chapter_count = 0
     for chapter_num, contents in chapters.items():
+        chapter_count += 1
         output_basestr = output_basestr or get_output_basestr(args)
         chapter_md = artifact_dir / f"{output_basestr}-chapter{chapter_num}.md"
+        if chapter_count == len(chapters):
+            contents = f"""{contents}\n\n<span style="font-variant:small-caps;">[END]</span>"""
         with open(chapter_md, "w", encoding="utf-8") as fh:
             fh.write(contents)
         chapter_markdown.append(chapter_md)
