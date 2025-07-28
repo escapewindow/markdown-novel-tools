@@ -48,6 +48,9 @@ def simplify_markdown(contents, ignore_blank_lines=True, plaintext=True):
         if not plaintext:
             # em-dash
             line = re.sub(r"""([^-])(\s+-\s+|--)([^-]|$)""", r"\1&mdash;\3", line)
+            # nbsp between single quote and double quote
+            line = re.sub(r"'\"", r"'&nbsp;\"", line)
+            line = re.sub(r"\"'", r"\"&nbsp;'", line)
         simplified_contents = f"{simplified_contents}{line}\n"
     return simplified_contents
 
