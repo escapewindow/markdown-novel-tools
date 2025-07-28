@@ -66,4 +66,6 @@ OUTLINE_SCENE_REGEX = re.compile(
     r"""^((?P<book_num>\d*)\.)?(?P<chapter_num>\d+)\.(?P<scene_num>\d+)$"""
 )
 
+SCENE_SPLIT_REGEX = re.compile(r"""^\s{4,}\* \* \*""")
+
 TABLE_DIVIDER_REGEX = re.compile(r"""^[|\-\s]*$""")

@@ -18,7 +18,7 @@ import yaml
 from num2words import num2words
 
 from markdown_novel_tools.config import get_css_path, get_metadata_path
-from markdown_novel_tools.constants import ALPHANUM_REGEX, MANUSCRIPT_REGEX
+from markdown_novel_tools.constants import ALPHANUM_REGEX, MANUSCRIPT_REGEX, SCENE_SPLIT_REGEX
 from markdown_novel_tools.utils import find_markdown_files, get_git_revision, local_time, mkdir
 
 
@@ -27,7 +27,7 @@ def unwikilink(string):
     return re.sub(r"""\[\[([^\]\|]+\|)?([^\]]+)\]\]""", r"\2", string)
 
 
-def simplify_markdown(contents, ignore_blank_lines=True, plaintext=True):
+def simplify_markdown(contents, ignore_blank_lines=True, plaintext=True, scene_split_string=None):
     """Simplify the markdown - remove frontmatter, unwikilink."""
     in_meta = False
     simplified_contents = ""
@@ -51,6 +51,8 @@ def simplify_markdown(contents, ignore_blank_lines=True, plaintext=True):
             # nbsp between single quote and double quote
             line = re.sub(r"'\"", r"'&nbsp;\"", line)
             line = re.sub(r"\"'", r"\"&nbsp;'", line)
+            if scene_split_string:
+                line = re.sub(SCENE_SPLIT_REGEX, scene_split_string, line)
         simplified_contents = f"{simplified_contents}{line}\n"
     return simplified_contents
 
@@ -76,22 +78,6 @@ def _header_helper(title, heading_link, style="chapter-only"):
             header = f"""# {header_pre} {{#{heading_link}}}\n\n"""
             toc_link = f"- [{header_pre}](#{heading_link})\n"
     return header, toc_link
-
-
-def _doc_header_helper(title):
-    m = MANUSCRIPT_REGEX.match(title)
-    if m:
-        info = {}
-        for attr in ("chapter_num", "scene_num", "POV"):
-            info[attr] = m[attr]
-        if int(info["scene_num"]) > 1:
-            # header = "\n\n<br /><br /><center>#</center><br /><br />\n\n"
-            header = "\n\n<br /><br /><center>&ast;&nbsp;&nbsp;&nbsp;&ast;&nbsp;&nbsp;&nbsp;&ast;</center><br /><br />\n\n"
-        elif info:
-            header = f"""# Chapter {num2words(info["chapter_num"]).capitalize()} - {info["POV"]}"""
-            if int(info["chapter_num"]) > 1:
-                header = f"\n\\newpage\n\n{header}"
-    return header
 
 
 def get_header_and_toc(path, format_, heading_num):
@@ -174,14 +160,16 @@ def convert_chapter(args, per_chapter_callback=None, output_basestr=None):
                 chapter_num,
                 f"{metadata}\n\n# Chapter {num2words(chapter_num).capitalize()}{separator}{m["POV"]}\n\n",
             )
+            scene_split_string = f"{'&nbsp;' * 60}#"
             with open(path, encoding="utf-8") as fh:
                 simplified_contents = simplify_markdown(
                     fh.read(),
                     ignore_blank_lines=ignore_blank_lines,
                     plaintext=plaintext,
+                    scene_split_string=scene_split_string,
                 )
                 if not first:
-                    chapters[chapter_num] = f"{chapters[chapter_num]}\n\n{'&nbsp;' * 60}#\n\n"
+                    chapters[chapter_num] = f"{chapters[chapter_num]}\n\n{scene_split_string}\n\n"
                 chapters[chapter_num] = f"{chapters[chapter_num]}{simplified_contents}\n"
             first = False
 
