@@ -18,7 +18,13 @@ import yaml
 from num2words import num2words
 
 from markdown_novel_tools.config import get_css_path, get_metadata_path
-from markdown_novel_tools.constants import ALPHANUM_REGEX, MANUSCRIPT_REGEX, SCENE_SPLIT_REGEX
+from markdown_novel_tools.constants import (
+    ALPHANUM_REGEX,
+    MANUSCRIPT_REGEX,
+    SCENE_SPLIT_ASTERISK,
+    SCENE_SPLIT_POUND,
+    SCENE_SPLIT_REGEX,
+)
 from markdown_novel_tools.utils import find_markdown_files, get_git_revision, local_time, mkdir
 
 
@@ -69,7 +75,7 @@ def _header_helper(title, heading_link, style="chapter-only"):
         for attr in ("chapter_num", "scene_num", "POV"):
             info[attr] = m[attr]
         if int(info["scene_num"]) > 1:
-            header = "\n\n<br /><br /><center>&ast;&nbsp;&nbsp;&nbsp;&ast;&nbsp;&nbsp;&nbsp;&ast;</center><br /><br />\n\n"
+            header = f"\n\n<br /><br /><center>{SCENE_SPLIT_ASTERISK}</center><br /><br />\n\n"
             toc_link = ""
         elif info:
             header_pre = (
@@ -160,13 +166,12 @@ def convert_chapter(args, per_chapter_callback=None, output_basestr=None):
                 chapter_num,
                 f"{metadata}\n\n# Chapter {num2words(chapter_num).capitalize()}{separator}{m["POV"]}\n\n",
             )
-            scene_split_string = f"{'&nbsp;' * 60}#"
             with open(path, encoding="utf-8") as fh:
                 simplified_contents = simplify_markdown(
                     fh.read(),
                     ignore_blank_lines=ignore_blank_lines,
                     plaintext=plaintext,
-                    scene_split_string=scene_split_string,
+                    scene_split_string=SCENE_SPLIT_HASH,
                 )
                 if not first:
                     chapters[chapter_num] = f"{chapters[chapter_num]}\n\n{scene_split_string}\n\n"
