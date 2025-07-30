@@ -171,10 +171,10 @@ def convert_chapter(args, per_chapter_callback=None, output_basestr=None):
                     fh.read(),
                     ignore_blank_lines=ignore_blank_lines,
                     plaintext=plaintext,
-                    scene_split_string=SCENE_SPLIT_HASH,
+                    scene_split_string=SCENE_SPLIT_POUND,
                 )
                 if not first:
-                    chapters[chapter_num] = f"{chapters[chapter_num]}\n\n{scene_split_string}\n\n"
+                    chapters[chapter_num] = f"{chapters[chapter_num]}\n\n{SCENE_SPLIT_POUND}\n\n"
                 chapters[chapter_num] = f"{chapters[chapter_num]}{simplified_contents}\n"
             first = False
 
