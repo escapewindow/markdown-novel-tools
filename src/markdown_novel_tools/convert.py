@@ -55,8 +55,8 @@ def simplify_markdown(contents, ignore_blank_lines=True, plaintext=True, scene_s
             # em-dash
             line = re.sub(r"""([^-])(\s+-\s+|--)([^-]|$)""", r"\1&mdash;\3", line)
             # nbsp between single quote and double quote
-            line = re.sub(r"'\"", r"'&nbsp;\"", line)
-            line = re.sub(r"\"'", r"\"&nbsp;'", line)
+            line = re.sub(r"'\"", r"'&nbsp;&#8221;", line)
+            line = re.sub(r"\"'", r"&#8220;&nbsp;'", line)
             if scene_split_string:
                 line = re.sub(SCENE_SPLIT_REGEX, scene_split_string, line)
         simplified_contents = f"{simplified_contents}{line}\n"
