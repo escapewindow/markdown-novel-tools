@@ -146,11 +146,11 @@ def convert_simple_pdf(args):
 def get_format_convert_config(format_):
     """Specify each format's convert config. Might be easier to read if it's explicit?"""
     convert_config = {
-        ignore_blank_lines: False,
-        plaintext: False,
-        title_separator: r"&mdash;",
-        scene_split_string: SCENE_SPLIT_POUND,
-        build_toc: False,
+        "ignore_blank_lines": False,
+        "plaintext": False,
+        "title_separator": r"&mdash;",
+        "scene_split_string": SCENE_SPLIT_POUND,
+        "build_toc": False,
     }
     if format_ == "text":
         convert_config["ignore_blank_lines"] = True
@@ -255,7 +255,7 @@ def convert_chapter(
 def get_front_back_matter(matter_config, convert_config, toc):
     contents = ""
     toc = ""
-    for title, path in chapters.items():
+    for title, path in matter_config.items():
         with open(path, encoding="utf-8") as fh:
             simplified_contents = simplify_markdown(
                 fh.read(),
@@ -292,7 +292,7 @@ def convert_full(args):
     contents = f"{contents}{front_contents}"
     for chapter_contents in chapters.values():
         contents = f"{contents}{chapter_contents}\n"
-    front_contents, toc = get_front_back_matter(
+    back_contents, toc = get_front_back_matter(
         args.config["convert"]["backmatter_files"], convert_config, toc
     )
     contents = f"{contents}{back_contents}"
