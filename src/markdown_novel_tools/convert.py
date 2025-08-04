@@ -86,15 +86,8 @@ def _header_helper(title, heading_link, style="chapter-only"):
     return header, toc_link
 
 
-def get_header_and_toc(path, format_, heading_num, book_num):
+def get_header_and_toc(path, format_, heading_num, title):
     """Get the header and table of contents for the converted file."""
-    title = (
-        os.path.basename(path)
-        .replace(".md", "")
-        .replace("_", "-")
-        .replace(f"book{book_num}", "")
-        .capitalize()
-    )  # TODO regex
     heading_link = f"heading-{heading_num}"
     header = ""
     if format_ == "pdf":
@@ -145,10 +138,52 @@ def get_output_basestr(
     return format_string.format(**repl_dict)
 
 
-def convert_chapter(args, per_chapter_callback=None, output_basestr=None):
+def single_markdown_to_pdf(
+    args,
+    basename,
+    from_,
+    toc=False,
+    artifact_dir=None,
+    css_path=None,
+):
+    """Create a pdf from each chapter"""
+    output_pdf = Path(artifact_dir or args.artifact_dir) / f"{basename}.pdf"
+    css = css_path or get_css_path(args.config, variant="manuscript_pdf_css_path")
+    cmd = [
+        "pandoc",
+        from_,
+        "--pdf-engine=weasyprint",
+        "--css",
+        css,
+        "-o",
+        output_pdf,
+    ]
+    if toc:
+        cmd.append("--toc")
+
+    subprocess.check_call(cmd)
+
+
+def convert_simple_pdf(args):
+    """Create a non-outline, non-manuscript pdf from a markdown file."""
+    mkdir(args.artifact_dir, clean=args.clean)
+    for from_ in args.filename:
+        output_basestr = re.sub(r"\.md", "", os.path.basename(from_))
+
+        single_markdown_to_pdf(
+            args,
+            output_basestr,
+            from_,
+            toc=False,
+            artifact_dir=args.artifact_dir,
+            css_path=get_css_path(args.config, variant="misc_pdf_css_path"),
+        )
+
+
+def convert_chapter(
+    args, per_chapter_callback=None, output_basestr=None, plaintext=False, ignore_blank_lines=False
+):
     """Convert chapters into their own files."""
-    ignore_blank_lines = False
-    plaintext = False
     separator = "&mdash;"
     artifact_dir = Path(args.artifact_dir)
     chapters = {}
@@ -199,48 +234,6 @@ def convert_chapter(args, per_chapter_callback=None, output_basestr=None):
             per_chapter_callback(args, output_basestr, chapter_md)
 
 
-def single_markdown_to_pdf(
-    args,
-    basename,
-    from_,
-    toc=False,
-    artifact_dir=None,
-    css_path=None,
-):
-    """Create a pdf from each chapter"""
-    output_pdf = Path(artifact_dir or args.artifact_dir) / f"{basename}.pdf"
-    css = css_path or get_css_path(args.config, variant="manuscript_pdf_css_path")
-    cmd = [
-        "pandoc",
-        from_,
-        "--pdf-engine=weasyprint",
-        "--css",
-        css,
-        "-o",
-        output_pdf,
-    ]
-    if toc:
-        cmd.append("--toc")
-
-    subprocess.check_call(cmd)
-
-
-def convert_simple_pdf(args):
-    """Create a non-outline, non-manuscript pdf from a markdown file."""
-    mkdir(args.artifact_dir, clean=args.clean)
-    for from_ in args.filename:
-        output_basestr = re.sub(r"\.md", "", os.path.basename(from_))
-
-        single_markdown_to_pdf(
-            args,
-            output_basestr,
-            from_,
-            toc=False,
-            artifact_dir=args.artifact_dir,
-            css_path=get_css_path(args.config, variant="misc_pdf_css_path"),
-        )
-
-
 def convert_full(args):
     """Convert the full manuscript."""
     contents = ""
@@ -251,11 +244,9 @@ def convert_full(args):
     new_image = ""
     artifact_dir = Path(args.artifact_dir)
     metadata_path = get_metadata_path(args.config, args.format)
-    file_sources = (
-        args.config["convert"]["frontmatter_files"]
-        + args.filename
-        + args.config["convert"]["backmatter_files"]
-    )
+    file_sources = args.filename
+    # args.config["convert"]["frontmatter_files"]
+    # args.config["convert"]["backmatter_files"]
 
     if args.format == "text":
         ignore_blank_lines = True
@@ -270,9 +261,7 @@ def convert_full(args):
     for base_path in file_sources:
         for path in find_markdown_files(base_path):
             heading_num += 1
-            header, toc_link = get_header_and_toc(
-                path, args.format, heading_num, args.config["book_num"]
-            )
+            header, toc_link = get_header_and_toc(path, args.format, heading_num, "title")  # TODO
             contents += header
             if toc_link:
                 toc += toc_link

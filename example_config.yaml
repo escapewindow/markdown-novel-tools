@@ -8,9 +8,9 @@ convert:
     default: skeleton/book{book_num}-metadata.txt
     shunn-docx: skeleton/book{book_num}-metadata-docx.txt
   frontmatter_files:
-    - skeleton/Book {book_num} Copyright.md
-    - skeleton/Book {book_num} Dedication.md
-  backmatter_files: []
+    Copyright: skeleton/Book {book_num} Copyright.md
+    Dedication: skeleton/Book {book_num} Dedication.md
+  backmatter_files: {}
   css:
     # css_dir: path/to/css/
     manuscript_pdf_css_path: "pdf-light.css"

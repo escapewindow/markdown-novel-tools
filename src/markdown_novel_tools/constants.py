@@ -21,11 +21,11 @@ DEFAULT_CONFIG = {
             "default": "skeleton/book{book_num}-metadata.txt",
             "shunn-docx": "skeleton/book{book_num}-metadata-docx.txt",
         },
-        "frontmatter_files": [
-            "skeleton/Book {book_num} Copyright.md",
-            "skeleton/Book {book_num} Dedication.md",
-        ],
-        "backmatter_files": [],
+        "frontmatter_files": {
+            "Copyright": "skeleton/Book {book_num} Copyright.md",
+            "Dedication": "skeleton/Book {book_num} Dedication.md",
+        },
+        "backmatter_files": {},
         "css": {
             # TODO works in develop env, need an install fix
             "css_dir": str(Path(__file__).parent.parent.parent / "data" / "css"),
