@@ -33,7 +33,9 @@ def unwikilink(string):
     return re.sub(r"""\[\[([^\]\|]+\|)?([^\]]+)\]\]""", r"\2", string)
 
 
-def simplify_markdown(contents, ignore_blank_lines=True, plaintext=True, scene_split_string=None):
+def simplify_markdown(
+    contents, ignore_blank_lines=True, plaintext=True, scene_split_string=None, **kwargs
+):
     """Simplify the markdown - remove frontmatter, unwikilink."""
     in_meta = False
     simplified_contents = ""
@@ -198,7 +200,9 @@ def _get_converted_chapter_markdown_and_toc(
                 f"Chapter {num2words(chapter_num).capitalize()}{title_separator}{m["POV"]}",
             )
             if build_toc:
-                chapter_title, toc = (chapter_title, f"heading-{chapter_num}", toc)
+                chapter_title, toc = _get_title_and_toc(
+                    chapter_title, f"heading-{chapter_num}", toc
+                )
 
             chapter_title = f"# {chapter_title}\n\n"
             if metadata:
@@ -248,6 +252,23 @@ def convert_chapter(
             per_chapter_callback(args, output_basestr, chapter_md)
 
 
+def get_front_back_matter(matter_config, convert_config, toc):
+    contents = ""
+    toc = ""
+    for title, path in chapters.items():
+        with open(path, encoding="utf-8") as fh:
+            simplified_contents = simplify_markdown(
+                fh.read(),
+                **convert_config,
+            )
+        if convert_config["build_toc"]:
+            heading_link = title.replace(" ", "-").lower()
+            heading_link = f"heading-{heading_link}"
+            title, toc = _get_title_and_toc(title, heading_link, toc)
+        contents = f"{contents}# {title}\n\n{simplified_contents}\n\n"
+    return contents, toc
+
+
 def convert_full(args):
     """Convert the full manuscript."""
     contents = ""
@@ -265,11 +286,16 @@ def convert_full(args):
         args.filename, metadata=metadata, **convert_config
     )
 
-    # Frontmatter
-    # args.config["convert"]["frontmatter_files"]
-    # Chapters
-    # Backmatter
-    # args.config["convert"]["backmatter_files"]
+    front_contents, toc = get_front_back_matter(
+        args.config["convert"]["frontmatter_files"], convert_config, toc
+    )
+    contents = f"{contents}{front_contents}"
+    for chapter_contents in chapters.values():
+        contents = f"{contents}{chapter_contents}\n"
+    front_contents, toc = get_front_back_matter(
+        args.config["convert"]["backmatter_files"], convert_config, toc
+    )
+    contents = f"{contents}{back_contents}"
 
     if convert_config["build_toc"]:
         contents = f"{toc}\n\n{contents}"
