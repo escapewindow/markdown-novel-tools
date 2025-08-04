@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Convert an obsidian markdown file to text.
 
 I'm using a custom script because the various Obsidian community pandoc
@@ -22,6 +21,7 @@ from markdown_novel_tools.constants import (
     ALPHANUM_REGEX,
     MANUSCRIPT_REGEX,
     SCENE_SPLIT_ASTERISK,
+    SCENE_SPLIT_PLAINTEXT,
     SCENE_SPLIT_POUND,
     SCENE_SPLIT_REGEX,
 )
@@ -61,45 +61,6 @@ def simplify_markdown(contents, ignore_blank_lines=True, plaintext=True, scene_s
                 line = re.sub(SCENE_SPLIT_REGEX, scene_split_string, line)
         simplified_contents = f"{simplified_contents}{line}\n"
     return simplified_contents
-
-
-def _header_helper(title, heading_link, style="chapter-only"):
-    header = f"""# {title} {{#{heading_link}}}\n\n"""
-    toc_link = f"- [{title}](#{heading_link})\n"
-    allowed_styles = ("chapter-only", "chapter-and-scene")
-    if style not in allowed_styles:
-        raise ValueError(f"_header_helper: {style} not in {allowed_styles}!")
-    m = MANUSCRIPT_REGEX.match(title)
-    if m and style == "chapter-only":
-        info = {}
-        for attr in ("chapter_num", "scene_num", "POV"):
-            info[attr] = m[attr]
-        if int(info["scene_num"]) > 1:
-            header = f"\n\n<br /><br /><center>{SCENE_SPLIT_ASTERISK}</center><br /><br />\n\n"
-            toc_link = ""
-        elif info:
-            header_pre = (
-                f"""Chapter {num2words(info["chapter_num"]).capitalize()} - {info["POV"]}"""
-            )
-            header = f"""# {header_pre} {{#{heading_link}}}\n\n"""
-            toc_link = f"- [{header_pre}](#{heading_link})\n"
-    return header, toc_link
-
-
-def get_header_and_toc(path, format_, heading_num, title):
-    """Get the header and table of contents for the converted file."""
-    heading_link = f"heading-{heading_num}"
-    header = ""
-    if format_ == "pdf":
-        header, toc_link = _header_helper(title, heading_link, style="chapter-and-scene")
-    elif format_ == "epub":
-        header, toc_link = _header_helper(title, heading_link, style="chapter-only")
-    elif format_ in ("text"):
-        header = f"# {title}\n\n"
-        toc_link = ""
-    else:
-        raise ValueError(f"Unknown format {format_}!")
-    return header, toc_link
 
 
 def munge_metadata(path, artifact_dir):
@@ -180,19 +141,51 @@ def convert_simple_pdf(args):
         )
 
 
-def convert_chapter(
-    args, per_chapter_callback=None, output_basestr=None, plaintext=False, ignore_blank_lines=False
-):
-    """Convert chapters into their own files."""
-    separator = "&mdash;"
-    artifact_dir = Path(args.artifact_dir)
-    chapters = {}
-    metadata_path = get_metadata_path(args.config, args.format)
-    with open(metadata_path, encoding="utf-8") as fh:
-        metadata = fh.read()
+def get_format_convert_config(format_):
+    """Specify each format's convert config. Might be easier to read if it's explicit?"""
+    convert_config = {
+        ignore_blank_lines: False,
+        plaintext: False,
+        title_separator: r"&mdash;",
+        scene_split_string: SCENE_SPLIT_POUND,
+        build_toc: False,
+    }
+    if format_ == "text":
+        convert_config["ignore_blank_lines"] = True
+    if format_ in ("markdown", "text"):
+        convert_config["plaintext"] = True
+        convert_config["scene_split_string"] = SCENE_SPLIT_PLAINTEXT
+    if format_ in ("epub", "pdf"):
+        convert_config["scene_split_string"] = SCENE_SPLIT_ASTERISK
+    if format_ == "epub":
+        convert_config["build_toc"] = True
+    return convert_config
 
+
+def _get_title_and_toc(title, heading_link, toc):
+    """Helper function to build a atable of contents and links"""
+    toc = f"{toc}- [{chapter_title}](#{heading_link})\n"
+    title = f"""{title} {{#{heading_link}}}"""
+    return title, toc
+
+
+def _get_converted_chapter_markdown_and_toc(
+    paths,
+    build_toc=False,
+    ignore_blank_lines=False,
+    metadata="",
+    plaintext=False,
+    scene_split_string=SCENE_SPLIT_POUND,
+    title_separator=r"&mdash;",
+):
+    """Helper function to convert all novel markdown files in a path"""
+    chapters = {}
+    toc = ""
+    if build_toc:
+        toc = "# Table of Contents\n\n"
     first = True
-    for base_path in args.filename:
+
+    for base_path in paths:
         for path in find_markdown_files(base_path):
             m = MANUSCRIPT_REGEX.match(os.path.basename(path))
             if not m:
@@ -201,23 +194,46 @@ def convert_chapter(
             chapter_num = m["chapter_num"]
             if chapters.get(chapter_num) is None:
                 first = True
-            chapters.setdefault(
-                chapter_num,
-                f"{metadata}\n\n# Chapter {num2words(chapter_num).capitalize()}{separator}{m["POV"]}\n\n",
+            chapter_title = (
+                f"Chapter {num2words(chapter_num).capitalize()}{title_separator}{m["POV"]}",
             )
+            if build_toc:
+                chapter_title, toc = (chapter_title, f"heading-{chapter_num}", toc)
+
+            chapter_title = f"# {chapter_title}\n\n"
+            if metadata:
+                chapter_title = f"{metadata}\n\n{chapter_title}"
+            chapters.setdefault(chapter_num, chapter_title)
             with open(path, encoding="utf-8") as fh:
                 simplified_contents = simplify_markdown(
                     fh.read(),
                     ignore_blank_lines=ignore_blank_lines,
                     plaintext=plaintext,
-                    scene_split_string=SCENE_SPLIT_POUND,
+                    scene_split_string=scene_split_string,
                 )
                 if not first:
-                    chapters[chapter_num] = f"{chapters[chapter_num]}\n\n{SCENE_SPLIT_POUND}\n\n"
+                    chapters[chapter_num] = f"{chapters[chapter_num]}\n\n{scene_split_string}\n\n"
                 chapters[chapter_num] = f"{chapters[chapter_num]}{simplified_contents}\n"
             first = False
+    return chapters, toc
+
+
+def convert_chapter(
+    args, per_chapter_callback=None, output_basestr=None, plaintext=False, ignore_blank_lines=False
+):
+    """Convert chapters into their own files."""
+    separator = "&mdash;"
+    artifact_dir = Path(args.artifact_dir)
+    metadata_path = get_metadata_path(args.config, args.format)
+    with open(metadata_path, encoding="utf-8") as fh:
+        metadata = fh.read()
 
     mkdir(artifact_dir, clean=args.clean)
+
+    convert_config = get_format_convert_config(args.format)
+    chapters, _ = _get_converted_chapter_markdown_and_toc(
+        args.filename, metadata=metadata, **convert_config
+    )
 
     chapter_markdown = []
     chapter_count = 0
@@ -227,8 +243,6 @@ def convert_chapter(
         chapter_md = artifact_dir / f"{output_basestr}-chapter{chapter_num}.md"
         if chapter_count == len(chapters):
             contents = f"""{contents}\n\n<span style="font-variant:small-caps;">[END]</span>"""
-        with open(chapter_md, "w", encoding="utf-8") as fh:
-            fh.write(contents)
         chapter_markdown.append(chapter_md)
         if per_chapter_callback is not None:
             per_chapter_callback(args, output_basestr, chapter_md)
@@ -237,44 +251,27 @@ def convert_chapter(
 def convert_full(args):
     """Convert the full manuscript."""
     contents = ""
-    toc = "# Table of Contents\n\n"
     heading_num = 0
-    ignore_blank_lines = False
     orig_image = ""
     new_image = ""
     artifact_dir = Path(args.artifact_dir)
     metadata_path = get_metadata_path(args.config, args.format)
-    file_sources = args.filename
-    # args.config["convert"]["frontmatter_files"]
-    # args.config["convert"]["backmatter_files"]
-
-    if args.format == "text":
-        ignore_blank_lines = True
     if args.format in ("pdf", "epub"):
         metadata, orig_image, new_image = munge_metadata(metadata_path, artifact_dir=artifact_dir)
         contents += metadata
-    if args.format in ("markdown", "text"):
-        plaintext = True
-    else:
-        plaintext = False
 
-    for base_path in file_sources:
-        for path in find_markdown_files(base_path):
-            heading_num += 1
-            header, toc_link = get_header_and_toc(path, args.format, heading_num, "title")  # TODO
-            contents += header
-            if toc_link:
-                toc += toc_link
-            with open(path, encoding="utf-8") as fh:
-                simplified_contents = simplify_markdown(
-                    fh.read(),
-                    ignore_blank_lines=ignore_blank_lines,
-                    plaintext=plaintext,
-                )
-                contents += simplified_contents
-            contents += "\n"
+    convert_config = get_format_convert_config(args.format)
+    chapters, toc = _get_converted_chapter_markdown_and_toc(
+        args.filename, metadata=metadata, **convert_config
+    )
 
-    if args.format == "epub":
+    # Frontmatter
+    # args.config["convert"]["frontmatter_files"]
+    # Chapters
+    # Backmatter
+    # args.config["convert"]["backmatter_files"]
+
+    if convert_config["build_toc"]:
         contents = f"{toc}\n\n{contents}"
 
     bin_dir = Path("bin")
