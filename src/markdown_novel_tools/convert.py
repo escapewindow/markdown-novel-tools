@@ -86,10 +86,14 @@ def _header_helper(title, heading_link, style="chapter-only"):
     return header, toc_link
 
 
-def get_header_and_toc(path, format_, heading_num):
+def get_header_and_toc(path, format_, heading_num, book_num):
     """Get the header and table of contents for the converted file."""
     title = (
-        os.path.basename(path).replace(".md", "").replace("_", "-").replace("Book 1 ", "")
+        os.path.basename(path)
+        .replace(".md", "")
+        .replace("_", "-")
+        .replace(f"book{book_num}", "")
+        .capitalize()
     )  # TODO regex
     heading_link = f"heading-{heading_num}"
     header = ""
@@ -247,7 +251,11 @@ def convert_full(args):
     new_image = ""
     artifact_dir = Path(args.artifact_dir)
     metadata_path = get_metadata_path(args.config, args.format)
-    file_sources = args.config["convert"]["frontmatter_files"] + args.filename
+    file_sources = (
+        args.config["convert"]["frontmatter_files"]
+        + args.filename
+        + args.config["convert"]["backmatter_files"]
+    )
 
     if args.format == "text":
         ignore_blank_lines = True
@@ -262,7 +270,9 @@ def convert_full(args):
     for base_path in file_sources:
         for path in find_markdown_files(base_path):
             heading_num += 1
-            header, toc_link = get_header_and_toc(path, args.format, heading_num)
+            header, toc_link = get_header_and_toc(
+                path, args.format, heading_num, args.config["book_num"]
+            )
             contents += header
             if toc_link:
                 toc += toc_link

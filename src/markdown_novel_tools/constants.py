@@ -25,6 +25,7 @@ DEFAULT_CONFIG = {
             "skeleton/Book {book_num} Copyright.md",
             "skeleton/Book {book_num} Dedication.md",
         ],
+        "backmatter_files": [],
         "css": {
             # TODO works in develop env, need an install fix
             "css_dir": str(Path(__file__).parent.parent.parent / "data" / "css"),
