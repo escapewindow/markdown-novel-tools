@@ -164,7 +164,7 @@ def get_format_convert_config(format_):
 
 def _get_title_and_toc(title, heading_link, toc):
     """Helper function to build a atable of contents and links"""
-    toc = f"{toc}- [{chapter_title}](#{heading_link})\n"
+    toc = f"{toc}- [{title}](#{heading_link})\n"
     title = f"""{title} {{#{heading_link}}}"""
     return title, toc
 
@@ -181,8 +181,6 @@ def _get_converted_chapter_markdown_and_toc(
     """Helper function to convert all novel markdown files in a path"""
     chapters = {}
     toc = ""
-    if build_toc:
-        toc = "# Table of Contents\n\n"
     first = True
 
     for base_path in paths:
@@ -267,6 +265,7 @@ def get_front_back_matter(matter_config, convert_config, toc):
             heading_link = f"heading-{heading_link}"
             title, toc = _get_title_and_toc(title, heading_link, toc)
         contents = f"{contents}# {title}\n\n{simplified_contents}\n\n"
+
     return contents, toc
 
 
@@ -278,26 +277,28 @@ def convert_full(args):
     new_image = ""
     artifact_dir = Path(args.artifact_dir)
     metadata_path = get_metadata_path(args.config, args.format)
+    metadata = ""
     if args.format in ("pdf", "epub"):
         metadata, orig_image, new_image = munge_metadata(metadata_path, artifact_dir=artifact_dir)
-        contents += metadata
 
     convert_config = get_format_convert_config(args.format)
     chapters, toc = _get_converted_chapter_markdown_and_toc(args.filename, **convert_config)
 
-    front_contents, toc = get_front_back_matter(
+    front_contents, front_toc = get_front_back_matter(
         args.config["convert"]["frontmatter_files"], convert_config, toc
     )
     contents = f"{contents}{front_contents}"
     for chapter_contents in chapters.values():
         contents = f"{contents}{chapter_contents}\n"
-    back_contents, toc = get_front_back_matter(
+    back_contents, back_toc = get_front_back_matter(
         args.config["convert"]["backmatter_files"], convert_config, toc
     )
     contents = f"{contents}{back_contents}"
 
     if convert_config["build_toc"]:
+        toc = f"# Table of Contents\n\n{front_toc}{toc}{back_toc}"
         contents = f"{toc}\n\n{contents}"
+    contents = f"{metadata}{contents}"
 
     bin_dir = Path("bin")
     mkdir(artifact_dir, clean=args.clean)
