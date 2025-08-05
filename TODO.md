@@ -25,8 +25,8 @@
 - [ ] Documentation
 
 # Conversion
-- [ ] epub backmatter
-- [ ] epub ' - ' to emdash
+- [X] epub backmatter
+- [X] epub ' - ' to emdash
 - [ ] tempdir for conversion
   - [ ] start using a tempdir to avoid polluting the artifact dir
   - [ ] this could be specifiable to see the intermediate artifacts if wanted
