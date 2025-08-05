@@ -152,8 +152,6 @@ def get_format_convert_config(format_):
         "scene_split_string": SCENE_SPLIT_POUND,
         "build_toc": False,
     }
-    if format_ == "text":
-        convert_config["ignore_blank_lines"] = True
     if format_ in ("markdown", "text"):
         convert_config["plaintext"] = True
         convert_config["scene_split_string"] = SCENE_SPLIT_PLAINTEXT
@@ -244,12 +242,15 @@ def convert_chapter(
     for chapter_num, contents in chapters.items():
         chapter_count += 1
         output_basestr = output_basestr or get_output_basestr(args)
-        chapter_md = artifact_dir / f"{output_basestr}-chapter{chapter_num}.md"
+        chapter_output_basestr = f"{output_basestr}-chapter{chapter_num}"
+        chapter_md = artifact_dir / f"{chapter_output_basestr}.md"
         if chapter_count == len(chapters):
             contents = f"""{contents}\n\n<span style="font-variant:small-caps;">[END]</span>"""
+        with open(chapter_md, "w", encoding="utf-8") as fh:
+            fh.write(contents)
         chapter_markdown.append(chapter_md)
         if per_chapter_callback is not None:
-            per_chapter_callback(args, output_basestr, chapter_md)
+            per_chapter_callback(args, chapter_output_basestr, chapter_md)
 
 
 def get_front_back_matter(matter_config, convert_config, toc):
@@ -282,9 +283,7 @@ def convert_full(args):
         contents += metadata
 
     convert_config = get_format_convert_config(args.format)
-    chapters, toc = _get_converted_chapter_markdown_and_toc(
-        args.filename, metadata=metadata, **convert_config
-    )
+    chapters, toc = _get_converted_chapter_markdown_and_toc(args.filename, **convert_config)
 
     front_contents, toc = get_front_back_matter(
         args.config["convert"]["frontmatter_files"], convert_config, toc
