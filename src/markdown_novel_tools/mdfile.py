@@ -17,14 +17,14 @@ from markdown_novel_tools.utils import local_time, round_to_one_decimal, unwikil
 
 # Schema {{{1
 FRONTMATTER_SCHEMA = {
-    "title": {"type": "string", "empty": False, "required": True},
+    "title": {"type": "string"},
     "tags": {"type": "list", "schema": {"type": "string"}, "required": True},
     "aliases": {"type": "list", "schema": {"type": "string"}, "required": True},
+    "pov": {"type": "string"},
     "locations": {"type": "list", "schema": {"type": "string", "empty": False}, "required": True},
     "characters": {"type": "list", "schema": {"type": "string", "empty": False}, "required": True},
-    "pov": {"type": "string", "empty": False, "required": True},
-    "hook": {"type": "string", "empty": False, "required": True},
-    "cliffhanger": {"type": "string", "required": True},
+    "hook": {"type": "string"},
+    "cliffhanger": {"type": "string"},
     "summary": {
         "type": "list",
         "schema": {"type": "string", "empty": False, "required": True},
