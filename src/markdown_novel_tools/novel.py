@@ -294,6 +294,7 @@ def novel_sync(args):
         "povs": Path(outline_path.format(outline_type="povs")),
         "arcs": Path(outline_path.format(outline_type="arcs")),
         "questions": Path(outline_path.format(outline_type="questions")),
+        "beats": Path(outline_path.format(outline_type="beats")),
     }
     # TODO hacky
     contents = stats = ""
@@ -361,6 +362,26 @@ def novel_sync(args):
         beats_type="questions",
     )
     write_to_file(paths["questions"], contents)
+    print(f"{stats}\n", file=sys.stderr)
+
+    # Beats - regex is hacky but I don't have a way to split and filter by different columns
+    contents, stats = _beats_helper(
+        paths["full"],
+        column="Arc",
+        file_headers=True,
+        multi_table_output=True,
+        split_column=["Arc", "Beat"],
+        stats=True,
+        beats_type="beats",
+    )
+    parsed_contents = ""
+    for line in contents.splitlines():
+        if line.startswith("|") and not re.search(
+            r"""(Hook|Plot Turn 1|Pinch 1|Midpoint|Pinch 2|Plot Turn 2|Resolution)""", line
+        ):
+            continue
+        parsed_contents = f"{parsed_contents}\n{line}"
+    write_to_file(paths["beats"], parsed_contents)
     print(f"{stats}\n", file=sys.stderr)
 
 
