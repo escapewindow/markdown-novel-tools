@@ -375,12 +375,28 @@ def novel_sync(args):
         beats_type="beats",
     )
     parsed_contents = ""
+    in_table = False
+    table_contents = ""
     for line in contents.splitlines():
-        if line.startswith("|") and not re.search(
-            r"""(Hook|Plot Turn 1|Pinch 1|Midpoint|Pinch 2|Plot Turn 2|Resolution)""", line
-        ):
-            continue
-        parsed_contents = f"{parsed_contents}\n{line}"
+        if line.startswith("|"):
+            if not in_table:
+                in_table = True
+            elif not line.startswith("|-") and not re.search(
+                r"""(Hook|Plot Turn 1|Pinch 1|Midpoint|Pinch 2|Plot Turn 2|Resolution)""", line
+            ):
+                continue
+            table_contents = f"{table_contents}{line}\n"
+        else:
+            if in_table:
+                if table_contents.count("\n") > 2:
+                    parsed_contents = f"{parsed_contents}{table_contents}"
+                parsed_contents = f"{parsed_contents}\n"
+                in_table = False
+                table_contents = ""
+            else:
+                parsed_contents = f"{parsed_contents}{line}\n"
+    if table_contents.count("\n") > 2:
+        parsed_contents = f"{parsed_contents}{table_contents}"
     write_to_file(paths["beats"], parsed_contents)
     print(f"{stats}\n", file=sys.stderr)
 
