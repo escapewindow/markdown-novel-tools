@@ -19,6 +19,7 @@ from markdown_novel_tools.config import (
     get_markdown_template_choices,
     get_primary_outline_path,
 )
+from markdown_novel_tools.constants import BEATS_REGEX
 from markdown_novel_tools.convert import (
     convert_chapter,
     convert_full,
@@ -382,7 +383,8 @@ def novel_sync(args):
             if not in_table:
                 in_table = True
             elif not line.startswith("|-") and not re.search(
-                r"""(Hook|Plot Turn 1|Pinch 1|Midpoint|Pinch 2|Plot Turn 2|Resolution)""", line
+                BEATS_REGEX,
+                line,
             ):
                 continue
             table_contents = f"{table_contents}{line}\n"
