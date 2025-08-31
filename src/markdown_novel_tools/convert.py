@@ -193,7 +193,7 @@ def _get_converted_chapter_markdown_and_toc(
             if chapters.get(chapter_num) is None:
                 first = True
             chapter_title = (
-                f"Chapter {num2words(chapter_num).capitalize()}{title_separator}{m["POV"]}"
+                f"Chapter {num2words(chapter_num).capitalize()}{title_separator}{m['POV']}"
             )
             if build_toc:
                 chapter_title, toc = _get_title_and_toc(

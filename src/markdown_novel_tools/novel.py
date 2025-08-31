@@ -408,7 +408,8 @@ def novel_today(args):
     # pylint: disable=unused-argument
     commits = commits_today(args.config)
 
-    print(f"""{"\n".join(commits[::-1])}""")
+    commit_string = "\n".join(commits[::-1])
+    print(f"""{commit_string}""")
     print(f"""{len(commits)} commits today.""")
 
 
