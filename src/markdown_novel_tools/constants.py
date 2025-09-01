@@ -71,6 +71,10 @@ BEATS_REGEX = re.compile(
     r"""[ ,/](Hook|Plot Turn 1|Pinch 1|Midpoint|Pinch 2|Plot Turn 2|Resolution)[ ,/][^|]*|\s+$"""
 )
 
+QUESTIONS_REGEX = re.compile(
+    r"""[ ,/](Question|Promise|Reveal|Goal|SubGoal|Death)[ ,/][^|]*|\s+$"""
+)
+
 SCENE_SPLIT_REGEX = re.compile(r"""^\s{4,}\* \* \*""")
 
 TABLE_DIVIDER_REGEX = re.compile(r"""^[|\-\s]*$""")

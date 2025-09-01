@@ -19,7 +19,7 @@ from markdown_novel_tools.config import (
     get_markdown_template_choices,
     get_primary_outline_path,
 )
-from markdown_novel_tools.constants import BEATS_REGEX
+from markdown_novel_tools.constants import BEATS_REGEX, QUESTIONS_REGEX
 from markdown_novel_tools.convert import (
     convert_chapter,
     convert_full,
@@ -271,6 +271,35 @@ Total words: {stats['total']['words']}
         sys.exit(len(errors))
 
 
+def arc_grep(beats_contents, regex):
+    """Grep through the contents of the arc"""
+    parsed_contents = ""
+    in_table = False
+    table_contents = ""
+    for line in beats_contents.splitlines():
+        if line.startswith("|"):
+            if not in_table:
+                in_table = True
+            elif not line.startswith("|-") and not re.search(
+                regex,
+                line,
+            ):
+                continue
+            table_contents = f"{table_contents}{line}\n"
+        else:
+            if in_table:
+                if table_contents.count("\n") > 2:
+                    parsed_contents = f"{parsed_contents}{table_contents}"
+                parsed_contents = f"{parsed_contents}\n"
+                in_table = False
+                table_contents = ""
+            else:
+                parsed_contents = f"{parsed_contents}{line}\n"
+    if table_contents.count("\n") > 2:
+        parsed_contents = f"{parsed_contents}{table_contents}"
+    return parsed_contents
+
+
 def novel_sync(args):
     """Sync the various outline files."""
     if args.path:
@@ -353,20 +382,21 @@ def novel_sync(args):
     print(f"{stats}\n", file=sys.stderr)
 
     # Questions etc.
-    contents, stats = _beats_helper(
+    arc_contents, stats = _beats_helper(
         paths["full"],
-        column="Beat",
+        column="Arc",
         file_headers=True,
-        filter=["Question", "Promise", "Reveal", "Goal", "SubGoal", "Death"],
+        multi_table_output=True,
         split_column=["Arc", "Beat"],
         stats=True,
         beats_type="questions",
     )
-    write_to_file(paths["questions"], contents)
+    parsed_contents = arc_grep(arc_contents, QUESTIONS_REGEX)
+    write_to_file(paths["questions"], parsed_contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Beats - regex is hacky but I don't have a way to split and filter by different columns
-    contents, stats = _beats_helper(
+    arc_contents, stats = _beats_helper(
         paths["full"],
         column="Arc",
         file_headers=True,
@@ -375,30 +405,7 @@ def novel_sync(args):
         stats=True,
         beats_type="beats",
     )
-    parsed_contents = ""
-    in_table = False
-    table_contents = ""
-    for line in contents.splitlines():
-        if line.startswith("|"):
-            if not in_table:
-                in_table = True
-            elif not line.startswith("|-") and not re.search(
-                BEATS_REGEX,
-                line,
-            ):
-                continue
-            table_contents = f"{table_contents}{line}\n"
-        else:
-            if in_table:
-                if table_contents.count("\n") > 2:
-                    parsed_contents = f"{parsed_contents}{table_contents}"
-                parsed_contents = f"{parsed_contents}\n"
-                in_table = False
-                table_contents = ""
-            else:
-                parsed_contents = f"{parsed_contents}{line}\n"
-    if table_contents.count("\n") > 2:
-        parsed_contents = f"{parsed_contents}{table_contents}"
+    parsed_contents = arc_grep(arc_contents, BEATS_REGEX)
     write_to_file(paths["beats"], parsed_contents)
     print(f"{stats}\n", file=sys.stderr)
 
