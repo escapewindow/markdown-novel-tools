@@ -52,6 +52,9 @@ h6 {
     font-weight: 100;
     color: red;
 }
+dd {
+  margin-bottom: 10px;
+}
 a {
     color: grey;
     margin: 0;
