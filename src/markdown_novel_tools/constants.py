@@ -80,6 +80,8 @@ SCENE_SPLIT_REGEX = re.compile(r"""^\s{4,}\* \* \*""")
 TABLE_DIVIDER_REGEX = re.compile(r"""^[|\-\s]*$""")
 
 # Strings {{{1
-SCENE_SPLIT_ASTERISK = r"\n\n<br /><br /><center>\n&ast;&nbsp;&nbsp;&nbsp;&ast;&nbsp;&nbsp;&nbsp;&ast;\n</center><br /><br />\n\n"
+SCENE_SPLIT_ASTERISK = (
+    r"\n<center>\n&ast;&nbsp;&nbsp;&nbsp;&ast;&nbsp;&nbsp;&nbsp;&ast;\n</center>\n"
+)
 SCENE_SPLIT_PLAINTEXT = "    * * *"
 SCENE_SPLIT_POUND = f"{'&nbsp;' * 60}#"
