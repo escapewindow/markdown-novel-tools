@@ -40,8 +40,8 @@ DEFAULT_CONFIG = {
     "markdown_template_dir": str(
         Path(__file__).parent.parent.parent / "data" / "markdown-templates"
     ),
-    "find_files_by_name_cmd": ["fd", "-s", "-F"],
-    "find_files_by_content_cmd": ["rg", "-F", "-l"],
+    "find_files_by_name_cmd": ["fd", "-s"],
+    "find_files_by_content_cmd": ["rg", "-l"],
 }
 
 
