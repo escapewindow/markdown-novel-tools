@@ -19,7 +19,7 @@ from markdown_novel_tools.config import (
     get_markdown_template_choices,
     get_primary_outline_path,
 )
-from markdown_novel_tools.constants import BEATS_REGEX, QUESTIONS_REGEX
+from markdown_novel_tools.constants import BEATS_REGEX, LINKS_REGEX, QUESTIONS_REGEX
 from markdown_novel_tools.convert import (
     convert_chapter,
     convert_full,
@@ -174,6 +174,20 @@ def novel_lint(args):
             print(errors)
             exit_code = 1
         sys.exit(exit_code)
+
+
+def novel_links(args):
+    """Get the obsidian links for the manuscript"""
+    files = find_markdown_files(args.path)
+    links = set()
+    errors = ""
+    exit_code = 0
+    for path in files:
+        markdown_file = get_markdown_file(path)
+        for link in re.findall(LINKS_REGEX, markdown_file.body):
+            links.add(link)
+    for link in sorted(links, key=str.lower):
+        print(link)
 
 
 def novel_new(args):
@@ -512,6 +526,11 @@ def novel_parser():
     lint_parser.add_argument("-f", "--fix", action="store_true")
     lint_parser.add_argument("path")
     lint_parser.set_defaults(func=novel_lint)
+
+    # novel links
+    links_parser = subparsers.add_parser("links")
+    links_parser.add_argument("path")
+    links_parser.set_defaults(func=novel_links)
 
     # novel new
     new_parser = subparsers.add_parser("new")

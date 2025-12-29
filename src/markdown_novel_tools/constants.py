@@ -57,7 +57,12 @@ OUTLINE_HTML_HEADER = """<html><head><style>
 
 # Regex {{{1
 ALPHANUM_REGEX = re.compile(r"""\w""")
-SPECIAL_CHAR_REGEX = re.compile(r"""[^A-Za-z0-9 ]""")
+
+BEATS_REGEX = re.compile(
+    r"""[ ,/](Hook|Plot Turn 1|Pinch 1|Midpoint|Pinch 2|Plot Turn 2|Resolution)[ ,/][^|]*|\s+$"""
+)
+
+LINKS_REGEX = re.compile(r"""\[\[([^\[\]]+)\]\]""")
 
 MANUSCRIPT_REGEX = re.compile(
     r"""^(?P<book_num>\d+)[-_](?P<chapter_num>\d+)[-_](?P<scene_num>\d+) - (?P<POV>\S+)"""
@@ -67,15 +72,13 @@ OUTLINE_SCENE_REGEX = re.compile(
     r"""^((?P<book_num>\d*)\.)?(?P<chapter_num>\d+)\.(?P<scene_num>\d+)$"""
 )
 
-BEATS_REGEX = re.compile(
-    r"""[ ,/](Hook|Plot Turn 1|Pinch 1|Midpoint|Pinch 2|Plot Turn 2|Resolution)[ ,/][^|]*|\s+$"""
-)
-
 QUESTIONS_REGEX = re.compile(
     r"""[ ,/](Question|Promise|Reveal|Goal|SubGoal|Death)[ ,/][^|]*|\s+$"""
 )
 
 SCENE_SPLIT_REGEX = re.compile(r"""^\s{4,}\* \* \*""")
+
+SPECIAL_CHAR_REGEX = re.compile(r"""[^A-Za-z0-9 ]""")
 
 TABLE_DIVIDER_REGEX = re.compile(r"""^[|\-\s]*$""")
 
