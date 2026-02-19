@@ -384,9 +384,7 @@ Today:
 def write_markdown_file(path, markdown_file):
     """Helper function to update the frontmatter of a markdown file."""
     with open(path, "w", encoding="utf-8") as fh:
-        fh.write(
-            f"""---
+        fh.write(f"""---
 {yaml_string(markdown_file.parsed_yaml).rstrip()}
 ---
-{markdown_file.body}"""
-        )
+{markdown_file.body}""")
