@@ -85,19 +85,24 @@ def munge_metadata(path, artifact_dir):
 
 
 def get_output_basestr(
-    args, format_string="book{book_num}-{datestr}-{subtitle}{revstr}", repl_dict=None
+    args, format_string="book{book_num}-{datestr}-{subtitle_dash}{revstr}", repl_dict=None
 ):
     """Get the basestr for the name of our output file."""
     if repl_dict is None:
-        repl_dict = {"book_num": args.config["book_num"]}
+        repl_dict = {
+            "book_num": args.config["book_num"],
+            "subtitle": "",
+            "subtitle_dash": "",
+        }
         if "{revstr}" in format_string:
             repl_dict["revstr"] = get_git_revision()
         if "{datestr}" in format_string:
             repl_dict["datestr"] = local_time(
                 time.time(), timezone=args.config["timezone"]
             ).strftime("%Y.%m.%d")
-        if "{subtitle}" in format_string:
-            repl_dict["subtitle"] = f"{args.subtitle}-" or ""
+        if args.subtitle:
+            repl_dict["subtitle"] = args.subtitle
+            repl_dict["subtitle_dash"] = f"{args.subtitle}-"
     return format_string.format(**repl_dict)
 
 
@@ -302,7 +307,10 @@ def convert_full(args):
 
     bin_dir = Path("bin")
     mkdir(artifact_dir, clean=args.clean)
-    subtitle = args.subtitle or ""
+    subtitle = subtitle_dash = ""
+    if args.subtitle:
+        subtitle = args.subtitle
+        subtitle_dash = f"{subtitle}-"
     revstr = get_git_revision()
     datestr = local_time(time.time(), timezone=args.config["timezone"]).strftime("%Y.%m.%d")
     output_basestr = get_output_basestr(
@@ -311,6 +319,7 @@ def convert_full(args):
             "datestr": datestr,
             "revstr": revstr,
             "subtitle": subtitle,
+            "subtitle_dash": subtitle_dash,
             "book_num": args.config["book_num"],
         },
     )
