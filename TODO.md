@@ -25,12 +25,13 @@
 - [ ] Documentation
 
 # Conversion
-- [X] epub backmatter
-- [X] epub ' - ' to emdash
+- [x] epub backmatter
+- [x] epub ' - ' to emdash
 - [ ] tempdir for conversion
   - [ ] start using a tempdir to avoid polluting the artifact dir
   - [ ] this could be specifiable to see the intermediate artifacts if wanted
 - [ ] _write_to_file_helper to preserve headers if exists
+- [ ] Munge epub title with date or subtitle for drafts
 
 # Enhancements
 - [ ] script(s) to add to outline
