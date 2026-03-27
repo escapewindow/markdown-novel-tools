@@ -24,3 +24,17 @@ aliases: []
 # Arcs
 
 """
+
+
+def test_beats():
+    pass
+
+
+def test_build_table_from_file():
+    pass
+
+
+def test_get_markdown_table_header():
+    header = "| foo | bar | baz | longer bit |"
+    line = "|-----|-----|-----|------------|"
+    assert outline.get_markdown_table_header(header) == f"{header}\n{line}"
