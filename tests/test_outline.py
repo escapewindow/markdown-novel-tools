@@ -16,7 +16,9 @@ def test_get_line_parts():
 
 
 def test_get_outline_file_header():
-    assert outline.get_outline_file_header("arcs") == """---
+    assert (
+        outline.get_outline_file_header("arcs")
+        == """---
 tags: ['arcs', 'outline']
 aliases: []
 ---
@@ -24,6 +26,7 @@ aliases: []
 # Arcs
 
 """
+    )
 
 
 def test_beats():
@@ -38,3 +41,19 @@ def test_get_markdown_table_header():
     header = "| foo | bar | baz | longer bit |"
     line = "|-----|-----|-----|------------|"
     assert outline.get_markdown_table_header(header) == f"{header}\n{line}"
+
+
+def test_header_text_to_header_anchor():
+    pass
+
+
+def test_get_markdown_from_table():
+    pass
+
+
+def test_get_yaml_from_table():
+    pass
+
+
+def test_get_html_from_table():
+    pass
