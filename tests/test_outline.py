@@ -13,8 +13,16 @@ def test_outline_to_yaml():
     pass
 
 
-def test_get_line_parts():
-    pass
+@pytest.mark.parametrize(
+    "line, split_column, expected",
+    (
+        ("| One | Two | Three | Four |", [], ["One", "Two", "Three", "Four"]),
+        ("| One | Two,Three | Four | Five |", [1], ["One", "Two", "Three", "Four", "Five"]),
+        ("| One | Two,Three | Four | Five |", [], ["One", "Two,Three", "Four", "Five"]),
+    ),
+)
+def test_get_line_parts(line, split_column, expected):
+    assert outline.get_line_parts(line, split_column=split_column) == expected
 
 
 def test_get_outline_file_header():
