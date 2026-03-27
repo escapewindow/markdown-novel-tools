@@ -1,5 +1,7 @@
 """Test outline."""
 
+import pytest
+
 import markdown_novel_tools.outline as outline
 
 
@@ -40,8 +42,17 @@ def test_get_markdown_table_header():
     assert outline.get_markdown_table_header(header) == f"{header}\n{line}"
 
 
-def test_header_text_to_header_anchor():
-    pass
+@pytest.mark.parametrize(
+    "header_text, expected",
+    (
+        ("Test", "test"),
+        ("Test___", "test"),
+        ("Can't stop", "cant-stop"),
+        ("Won't ???Stop", "wont-stop"),
+    ),
+)
+def test_header_text_to_header_anchor(header_text, expected):
+    assert outline.header_text_to_header_anchor(header_text) == expected
 
 
 def test_get_markdown_from_table():
