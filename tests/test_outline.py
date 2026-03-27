@@ -4,13 +4,17 @@ import pytest
 
 import markdown_novel_tools.outline as outline
 
+from . import TEST_DATA_DIR
+
 
 def test_table():
     pass
 
 
 def test_outline_to_yaml():
-    pass
+    from_ = r'"[[foo]] "bar": blah de blah"'
+    to = "foo bar - blah de blah"
+    assert outline._outline_to_yaml(from_) == to
 
 
 @pytest.mark.parametrize(
