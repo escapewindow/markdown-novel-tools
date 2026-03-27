@@ -16,9 +16,7 @@ def test_get_line_parts():
 
 
 def test_get_outline_file_header():
-    assert (
-        outline.get_outline_file_header("arcs")
-        == """---
+    assert outline.get_outline_file_header("arcs") == """---
 tags: ['arcs', 'outline']
 aliases: []
 ---
@@ -26,7 +24,6 @@ aliases: []
 # Arcs
 
 """
-    )
 
 
 def test_beats():
