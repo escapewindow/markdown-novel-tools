@@ -124,9 +124,8 @@ def get_line_parts(line, split_column=None):
     for i, part in enumerate(line.strip("|").split("|")):
         part = part.strip()
         if split_column and i in split_column:
-            parts.extend([x.strip() for x in part.split(",")])
-        else:
-            parts.append(part)
+            part = [x.strip() for x in part.split(",")]
+        parts.append(part)
     return parts
 
 

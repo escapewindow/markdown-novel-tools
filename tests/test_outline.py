@@ -17,7 +17,7 @@ def test_outline_to_yaml():
     "line, split_column, expected",
     (
         ("| One | Two | Three | Four |", [], ["One", "Two", "Three", "Four"]),
-        ("| One | Two,Three | Four | Five |", [1], ["One", "Two", "Three", "Four", "Five"]),
+        ("| One | Two,Three | Four | Five |", [1], ["One", ["Two", "Three"], "Four", "Five"]),
         ("| One | Two,Three | Four | Five |", [], ["One", "Two,Three", "Four", "Five"]),
     ),
 )
