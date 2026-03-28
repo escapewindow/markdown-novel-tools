@@ -23,8 +23,14 @@ aliases: []
 | Neo learns Kung Fu. He spars with Morpheus and lands a punch.                  | Neo     | 05.02 | Kung Fu,Morpheus        |           |
 | Some rules can be broken in the Matrix.                                        | Neo     | 05.02 | The Matrix,Spoon        |           |
 | Neo fails his first jump. Trinity is crushed. He might not be The One.         | Neo     | 05.03 | The One,Spoon,Trinity   |           |
+| If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | The Matrix,Exits        |           |
 | Morpheus Everyone who has fought an Agent has died. But Neo will prevail.      | Neo     | 06.01 | The One,Agents,Morpheus |           |
 | Sentinel almost takes out the Nebuchadnezzar.                                  | Neo     | 06.02 | Agents                  |           |
 | Cypher regrets taking the red pill.                                            | Neo     | 07.01 | Judas,The Matrix        |           |
-| Morpheus found five other potential "One"s. They all died.               | Neo     | 07.01 | The One,Morpheus        |           |
 | Cypher is a traitor, selling out Morpheus to return to the Matrix.             | Cypher  | 07.02 | Judas                   |           |
+| Trinity is hesitant to tell Neo what the Oracle told her.                      | Neo     | 08.01 | Oracle,Trinity          |           |
+| The truth is, there is no spoon. It is only yourself that bends.               | Neo     | 08.02 | Spoon                   |           |
+| Oracle confirms Neo is not The One.                                            | Neo     | 08.02 | Oracle,The One          |           |
+| Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.02 | Oracle,Morpheus,The One |           |
+| Neo must decide whether he or Morpheus will die.                               | Neo     | 08.02 | Oracle,Morpheus,The One |           |
+| Agents find them and cut the hardline.                                         | Neo     | 09.01 | Agents,Judas,Exits      |           |
