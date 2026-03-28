@@ -25,17 +25,22 @@ aliases: []
 | Neo fails his first jump. Trinity is crushed. He might not be The One.         | Neo     | 05.03 | The One,Spoon,Trinity          |           |
 | If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | The Matrix,Exits               |           |
 | Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | The One,Agents,Morpheus        |           |
-| Sentinel almost takes out the Nebuchadnezzar.                                  | Neo     | 06.02 | Agents                         |           |
+| Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | The One,Agents,Morpheus        |           |
+| Sentinel almost takes out the Nebuchadnezzar.                                  | Neo     | 06.02 | Agents,Zion                    |           |
 | Cypher regrets taking the red pill.                                            | Neo     | 07.01 | Judas,The Matrix               |           |
-| Cypher is a traitor, selling out Morpheus to return to the Matrix.             | Cypher  | 07.02 | Judas                          |           |
-| Trinity is hesitant to tell Neo what the Oracle told her.                      | Neo     | 08.01 | Oracle,Trinity                 |           |
-| The truth is, there is no spoon. It is only yourself that bends.               | Neo     | 08.02 | Spoon                          |           |
-| Oracle confirms Neo is not The One.                                            | Neo     | 08.02 | Oracle,The One                 |           |
-| Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.02 | Oracle,Morpheus,The One        |           |
-| Neo must decide whether he or Morpheus will die.                               | Neo     | 08.02 | Oracle,Morpheus,The One        |           |
+| Cypher is a traitor, selling out Morpheus and Zion to return to the Matrix.    | Cypher  | 07.02 | Judas,Zion                     |           |
+| The truth is, there is no spoon. It is only yourself that bends.               | Neo     | 08.01 | Spoon                          |           |
+| Oracle confirms Neo is not The One.                                            | Neo     | 08.01 | Oracle,The One                 |           |
+| Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | Oracle,Morpheus,The One        |           |
+| Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | Oracle,Morpheus,The One        |           |
 | Agents find them and cut the hardline.                                         | Neo     | 09.01 | Agents,Judas,Exits             |           |
 | As prophesied, Morpheus sacrifices himself to save Neo.                        | Neo     | 09.01 | Morpheus,The One               |           |
 | Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Judas,Exits                    |           |
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas,The One,Morpheus,Trinity |           |
-| Tank kills Cypher and pulls Trinity out of the Matrix.                         | Cypher  | 10.01 | Judas,Exits                    |           |
-| Trinity admits her love for Neo.                                               | Trinity | 10.01 | Trinity,The One                |           |
+| Tank kills Cypher and pulls Trinity and Neo out of the Matrix.                 | Cypher  | 10.01 | Judas,Exits                    |           |
+| Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Morpheus,Agents,Zion           |           |
+| Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Trinity,The One,Oracle         |           |
+| Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Morpheus,Agents,Oracle         |           |
+| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Kung Fu,Spoon,Agents,Morpheus  |           |
+| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Kung Fu         |           |
+| Trinity admits her love for Neo.                                               | Trinity | 99.01 | Trinity,The One                |           |
