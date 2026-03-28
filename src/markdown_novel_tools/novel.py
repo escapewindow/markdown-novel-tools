@@ -447,7 +447,7 @@ def novel_parser():
 
     # novel beats
     beats_parser = subparsers.add_parser("beats")
-    beats_parser.set_defaults(require_book_num=True)
+    beats_parser.set_defaults(require_book_num=False)
     beats_parser.add_argument(
         "--column",
         help="Which column to sort by, if any. First column is 0, 2nd is 1, etc.",
@@ -495,7 +495,7 @@ def novel_parser():
     beats_parser.set_defaults(func=novel_beats)
 
     sync_parser = subparsers.add_parser("sync", help="Sync the various outline files.")
-    sync_parser.set_defaults(require_book_num=True)
+    sync_parser.set_defaults(require_book_num=False)
     sync_parser.add_argument("--artifact-dir", help="Defaults to the parent of PATH")
     sync_parser.add_argument(
         "--outline-name",
