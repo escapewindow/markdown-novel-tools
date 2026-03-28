@@ -19,10 +19,10 @@ aliases: []
 | Morpheus offers Neo a choice. Neo chooses to learn the truth about the Matrix. | Neo     | 03.01 | The Matrix,Morpheus            |           |
 | Neo is reborn and sees the Matrix in its ugly reality.                         | Neo     | 04.01 | The Matrix                     |           |
 | Morpheus shows Neo the Matrix's origins. The Matrix is control.                | Neo     | 05.02 | Morpheus,The Matrix            |           |
-| The Oracle prophesied the return of The One. Morpheus believes it is Neo.      | Neo     | 05.02 | Morpheus,The One,Oracle        |           |
+| The Oracle prophesied the return of the One. Morpheus believes it is Neo.      | Neo     | 05.02 | Morpheus,The One,Oracle        |           |
 | Neo learns Kung Fu. He spars with Morpheus and lands a punch.                  | Neo     | 05.02 | Kung Fu,Morpheus               |           |
 | Some rules can be broken in the Matrix.                                        | Neo     | 05.02 | The Matrix,Spoon               |           |
-| Neo fails his first jump. Trinity is crushed. He might not be The One.         | Neo     | 05.03 | The One,Spoon,Trinity          |           |
+| Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | The One,Spoon,Trinity          |           |
 | If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | The Matrix,Exits               |           |
 | Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | The One,Agents,Morpheus        |           |
 | Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | The One,Agents,Morpheus        |           |
@@ -30,12 +30,15 @@ aliases: []
 | Cypher regrets taking the red pill.                                            | Neo     | 07.01 | Judas,The Matrix               |           |
 | Cypher is a traitor, selling out Morpheus and Zion to return to the Matrix.    | Cypher  | 07.02 | Judas,Zion                     |           |
 | The truth is, there is no spoon. It is only yourself that bends.               | Neo     | 08.01 | Spoon                          |           |
-| Oracle confirms Neo is not The One.                                            | Neo     | 08.01 | Oracle,The One                 |           |
+| Oracle confirms Neo is not the One.                                            | Neo     | 08.01 | Oracle,The One                 |           |
 | Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | Oracle,Morpheus,The One        |           |
 | Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | Oracle,Morpheus,The One        |           |
-| Agents find them and cut the hardline.                                         | Neo     | 09.01 | Agents,Judas,Exits             |           |
+| Agents find them, cut the hardline, and brick up the windows.                  | Neo     | 09.01 | Agents,Judas,Exits             |           |
+| Mouse dies in the Matrix.                                                      | Neo     | 09.01 | Exits,The Matrix,Agents,Deaths |           |
 | As prophesied, Morpheus sacrifices himself to save Neo.                        | Neo     | 09.01 | Morpheus,The One               |           |
-| Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Judas,Exits                    |           |
+| Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Judas,Exits,Deaths             |           |
+| Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | The Matrix,Judas,Deaths        |           |
+| Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix,Judas,Deaths        |           |
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas,The One,Morpheus,Trinity |           |
 | Tank kills Cypher and pulls Trinity and Neo out of the Matrix.                 | Cypher  | 10.01 | Judas,Exits                    |           |
 | Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Morpheus,Agents,Zion           |           |
@@ -43,4 +46,13 @@ aliases: []
 | Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Morpheus,Agents,Oracle         |           |
 | Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Kung Fu,Spoon,Agents,Morpheus  |           |
 | Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Kung Fu         |           |
-| Trinity admits her love for Neo.                                               | Trinity | 99.01 | Trinity,The One                |           |
+| Neo: The Oracle told me... Morpheus: Exactly what you needed to hear.          | Neo     | 12.02 | The One,Morpheus,Oracle        |           |
+| Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Trinity,Oracle                 |           |
+| Morpheus and Trinity leave the Matrix. Agent Smith catches Neo.                | Neo     | 13.01 | Exits,Trinity,Morpheus         |           |
+| Neo fights Agent Smith rather than run.                                        | Neo     | 13.01 | The One,Agents                 |           |
+| Sentinels close in on the Nebuchadnezzar. Neo is still stuck in the Matrix.    | Trinity | 13.01 | Zion,Exits,The Matrix          |           |
+| Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | Deaths,The One,Agents          |           |
+| Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | Trinity,The One                |           |
+| Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | The One,Agents,Deaths          |           |
+| Neo exits the Matrix right before Morpheus activates the EMP.                  | Neo     | 13.02 | Zion,Exits                     |           |
+| Neo brings hope to the people in the Matrix.                                   | Neo     | 14.01 | The One,The Matrix             |           |
