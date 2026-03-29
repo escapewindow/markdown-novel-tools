@@ -154,7 +154,7 @@ def test_table_order_invalid():
 
 
 def test_filter_order():
-    """Build a table; get_markdown_from_table should result in the same file."""
+    """Build a table; change the column order and filter by scene."""
     full_path = TEST_DATA_DIR / "test-simple.md"
     second_scene_path = TEST_DATA_DIR / "test-simple-second-scene.md"
     with open(second_scene_path) as fh:
@@ -164,4 +164,20 @@ def test_filter_order():
         order=["Description", "POV", "Beat", "Scene", "Arc"],
         column="Scene",
     )
-    mdoutput = outline.get_beats(table, filter=["02.01"], file_headers=True, beats_type="scenes")
+    # mdoutput = outline.get_beats(table, filter=["02.01"], file_headers=True, beats_type="scenes")
+    mdoutput = outline.get_markdown_from_table(table, _filter=["02.01"], multi_table=True)
+    header = outline.get_outline_file_header("scenes")
+    with open("f", "w") as fh:
+        fh.write(f"{header}{mdoutput}")
+    assert f"{header}{mdoutput}" == contents
+
+
+# def test_filter_split_column():
+#     """Build a table; get_markdown_from_table should result in the same file."""
+#     full_path = TEST_DATA_DIR / "test-simple.md"
+#     split_path = TEST_DATA_DIR / "test-simple-split_column.md"
+#     with open(split_path) as fh:
+#         contents = fh.read()
+#     table = outline.build_table_from_file(full_path, column="Beat", split_column="Arc,Beat")
+#     mdoutput = outline.get_beats(table, filter=["02.01"], file_headers=True, beats_type="scenes")
+#     assert mdoutput == contents
