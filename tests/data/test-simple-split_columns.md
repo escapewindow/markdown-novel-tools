@@ -1,13 +1,15 @@
 ---
-tags: ['outline', 'scenes']
+tags: ['beats', 'outline']
 aliases: []
 ---
 
-# Scenes
+# Beats
 
-- 02.01 [github](#0201) [obsidian](#02.01)
+- Hook [github](#hook) [obsidian](#Hook)
 
-## 02.01
-| Description                               | POV     | Scene | Arc             | Beat      |
-|-------------------------------------------|---------|-------|-----------------|-----------|
-| Neo: Whoa.                                | Neo     | 02.01 | Spoon           |           |
+## Hook
+| Description                                 | POV     | Scene | Arc     | Beat          |
+|---------------------------------------------|---------|-------|---------|---------------|
+| Trinity took an extra shift to watch Neo.   | Trinity | 01.01 | The One | Hook          |
+| Trinity took an extra shift to watch Neo.   | Trinity | 01.01 | Trinity | Hook          |
+| Neo - surprised - tests the mdash and dies. | Neo     | 13.02 | Mdash   | Hook          |
