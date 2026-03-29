@@ -80,7 +80,7 @@ class Table:
             print(error_message, file=sys.stderr)
             sys.exit(1)
 
-    def add_line(self, line):
+    def add_line(self, line, also_split_by_slash=False):
         """Add a line or lines, depending on self.split_columns.
 
         If self.split_columns, the parts will be a list, where the line was split by ','. If we have multiple columns, zip them together.
@@ -112,7 +112,9 @@ class Table:
                     new_parts[column_key] = val
                 comma_zipped_lines.append(new_parts)
                 additional_lines.extend(
-                    _help_add_line(comma_zipped_lines, list(self.split_columns))
+                    _help_add_line(
+                        comma_zipped_lines, list(self.split_columns), also_split_by_slash
+                    )
                 )
             for line in additional_lines:
                 self.do_add_line(line)
@@ -138,7 +140,7 @@ class Table:
                 self.max_width[count] = value
 
 
-def _help_add_line(lines, split_columns):
+def _help_add_line(lines, split_columns, also_split_by_slash):
     """Take a list of comma-split line parts, and further split them by slash.
 
     if lines is
@@ -154,7 +156,7 @@ def _help_add_line(lines, split_columns):
 
     if not split_columns, or if the split column(s) have no / characters, then return the original lines.
     """
-    if split_columns:
+    if split_columns and also_split_by_slash:
         new_lines = []
         column_key = split_columns.pop(0)
         for line_parts in lines:
@@ -165,7 +167,7 @@ def _help_add_line(lines, split_columns):
                     new_lines.append(new_parts)
             else:
                 new_lines = lines
-        lines = _help_add_line(new_lines, split_columns)
+        lines = _help_add_line(new_lines, split_columns, also_split_by_slash)
     return lines
 
 
@@ -177,7 +179,7 @@ def _outline_to_yaml(line):
 def get_line_parts(line, split_columns=None):
     """Split a markdown table into column parts.
 
-    If split_columns, then also split the appropriate column(s) by ',' and '/'.
+    If split_columns, then also split the appropriate column(s) by ','
 
     For example,
 
@@ -259,7 +261,14 @@ def get_beats(
     return stdout, stderr
 
 
-def build_table_from_file(path, column=None, order=None, split_columns=None, target_table_num=None):
+def build_table_from_file(
+    path,
+    column=None,
+    order=None,
+    split_columns=None,
+    also_split_by_slash=False,
+    target_table_num=None,
+):
     """Parse the given filehandle's table(s)."""
     in_table = False
     cur_table_num = 0
@@ -292,7 +301,7 @@ def build_table_from_file(path, column=None, order=None, split_columns=None, tar
             if TABLE_DIVIDER_REGEX.match(line):
                 continue
             if table is not None:
-                table.add_line(line)
+                table.add_line(line, also_split_by_slash=also_split_by_slash)
     return table
 
 

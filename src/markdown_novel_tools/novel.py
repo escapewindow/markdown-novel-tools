@@ -48,6 +48,7 @@ def _beats_helper(
     multi_table_output=False,
     order=None,
     split_columns=None,
+    also_split_by_slash=False,
     stats=False,
     target_table_num=None,
     format_=None,
@@ -59,6 +60,7 @@ def _beats_helper(
         column=column,
         order=order,
         split_columns=split_columns,
+        also_split_by_regex=also_split_by_regex,
         target_table_num=target_table_num,
     )
 
@@ -107,6 +109,7 @@ def novel_beats(args):
         multi_table_output=args.multi_table_output,
         order=args.order,
         split_columns=args.split_column,
+        also_split_by_regex=args.also_split_by_regex,
         stats=args.stats,
         target_table_num=args.table,
         format_=args.format,
@@ -402,6 +405,7 @@ def novel_sync(args):
         file_headers=True,
         multi_table_output=True,
         split_columns=["Arc", "Beat"],
+        also_split_by_slash=True,
         stats=True,
         beats_type="questions",
     )
@@ -416,6 +420,7 @@ def novel_sync(args):
         file_headers=True,
         multi_table_output=True,
         split_columns=["Arc", "Beat"],
+        also_split_by_slash=True,
         stats=True,
         beats_type="beats",
     )
@@ -479,6 +484,7 @@ def novel_parser():
         help="Markdown table, yaml header, or html table mode.",
     )
     beats_parser.add_argument("--split-column", help="Split column by commas.")
+    beats_parser.add_argument("--also-split-by-slash", help="Split column by slash.", default=False)
     beats_parser.add_argument(
         "--file-headers",
         "--fh",

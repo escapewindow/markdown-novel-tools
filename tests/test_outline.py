@@ -169,13 +169,24 @@ def test_filter_order():
     assert f"{header}{mdoutput}" == contents
 
 
-def test_filter_split_columns():
+@pytest.mark.parametrize(
+    "expected_file, also_split_by_slash",
+    (
+        (TEST_DATA_DIR / "test-simple-split_columns.md", True),
+        (TEST_DATA_DIR / "test-simple-split_columns-noslash.md", False),
+    ),
+)
+def test_filter_split_columns(expected_file, also_split_by_slash):
     """Build a table; get_markdown_from_table should result in the same file."""
     full_path = TEST_DATA_DIR / "test-simple.md"
-    split_path = TEST_DATA_DIR / "test-simple-split_columns.md"
-    with open(split_path) as fh:
+    with open(expected_file) as fh:
         contents = fh.read()
-    table = outline.build_table_from_file(full_path, column="Beat", split_columns=["Beat", "Arc"])
+    table = outline.build_table_from_file(
+        full_path,
+        column="Beat",
+        split_columns=["Beat", "Arc"],
+        also_split_by_slash=also_split_by_slash,
+    )
     mdoutput = outline.get_markdown_from_table(table, _filter=["Hook"], multi_table=True)
     header = outline.get_outline_file_header("beats")
     assert f"{header}{mdoutput}" == contents
