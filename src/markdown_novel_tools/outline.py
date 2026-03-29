@@ -102,14 +102,20 @@ class Table:
         orig_parts = get_line_parts(line, self.split_columns)
         if self.split_columns:
             splits = dict()
-            lines = []
+            additional_lines = []
             for column_key in self.split_columns:
                 splits[column_key] = orig_parts[column_key]
             for partial_parts in zip_longest(*list(splits.values()), fillvalue=""):
                 new_parts = orig_parts[:]
+                comma_zipped_lines = []
                 for column_key, val in zip(self.split_columns, partial_parts):
                     new_parts[column_key] = val
-                self.do_add_line(new_parts)
+                comma_zipped_lines.append(new_parts)
+                additional_lines.extend(
+                    _help_add_line(comma_zipped_lines, list(self.split_columns))
+                )
+            for line in additional_lines:
+                self.do_add_line(line)
         else:
             self.do_add_line(orig_parts)
 
@@ -130,6 +136,37 @@ class Table:
         for count, value in enumerate(widths):
             if value > self.max_width[count]:
                 self.max_width[count] = value
+
+
+def _help_add_line(lines, split_columns):
+    """Take a list of comma-split line parts, and further split them by slash.
+
+    if lines is
+
+        ["one", "two", "three/four"]
+
+    and split_columns is 2, then return
+
+        [
+            ["one", "two", "three"],
+            ["one", "two", "four"],
+        ]
+
+    if not split_columns, or if the split column(s) have no / characters, then return the original lines.
+    """
+    if split_columns:
+        new_lines = []
+        column_key = split_columns.pop(0)
+        for line_parts in lines:
+            if "/" in line_parts[column_key]:
+                for slash_split_part in line_parts[column_key].split("/"):
+                    new_parts = line_parts[:]
+                    new_parts[column_key] = slash_split_part
+                    new_lines.append(new_parts)
+            else:
+                new_lines = lines
+        lines = _help_add_line(new_lines, split_columns)
+    return lines
 
 
 def _outline_to_yaml(line):

@@ -166,8 +166,6 @@ def test_filter_order():
     # mdoutput = outline.get_beats(table, filter=["02.01"], file_headers=True, beats_type="scenes")
     mdoutput = outline.get_markdown_from_table(table, _filter=["02.01"], multi_table=True)
     header = outline.get_outline_file_header("scenes")
-    with open("f", "w") as fh:
-        fh.write(f"{header}{mdoutput}")
     assert f"{header}{mdoutput}" == contents
 
 
