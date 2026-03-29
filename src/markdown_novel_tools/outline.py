@@ -22,21 +22,21 @@ from markdown_novel_tools.utils import split_by_char
 class Table:
     """Table object."""
 
-    def __init__(self, line, column=None, order=None, split_column=None):
+    def __init__(self, line, column=None, order=None, split_columns=None):
         """Init Table object."""
         parts = get_line_parts(line)
         self.line_obj = namedtuple("Line", parts)
         self.max_width = [len(x) for x in parts]
-        self.split_column = split_column
+        self.split_columns = split_columns
         self.order = self.line_obj._fields
         self.column = self.get_column(column)
         if order is not None:
             self.verify_field_names(order, "order")
             self.order = tuple(order)
-        if split_column is not None:
-            for i, val in enumerate(split_column):
-                split_column[i] = self.get_column(val)
-            self.split_column = tuple(split_column)
+        if split_columns is not None:
+            for i, val in enumerate(split_columns):
+                split_columns[i] = self.get_column(val)
+            self.split_columns = tuple(split_columns)
         self.parsed_lines = {}
         self.line_count = 0
         self.column_values = set()
@@ -81,15 +81,15 @@ class Table:
             sys.exit(1)
 
     def add_line(self, line):
-        """Add a line or lines, depending on split_column."""
-        orig_parts = get_line_parts(line, self.split_column)
-        if self.split_column:
+        """Add a line or lines, depending on split_columns."""
+        orig_parts = get_line_parts(line, self.split_columns)
+        if self.split_columns:
             splits = {}
-            for key in self.split_column:
+            for key in self.split_columns:
                 splits[key] = orig_parts[key]
             for partial_parts in zip_longest(*list(splits.values()), fillvalue=""):
                 new_parts = orig_parts[:]
-                for key, val in zip(self.split_column, partial_parts):
+                for key, val in zip(self.split_columns, partial_parts):
                     new_parts[key] = val
                 self.do_add_line(new_parts)
         else:
@@ -120,13 +120,13 @@ def _outline_to_yaml(line):
     return line.strip('"').replace("[[", "").replace("]]", "").replace('"', "").replace(":", " -")
 
 
-def get_line_parts(line, split_column=None):
+def get_line_parts(line, split_columns=None):
     """Split a markdown table by pipes, return the list and their widths"""
     line = line.strip()
     parts = []
     for i, part in enumerate(line.strip("|").split("|")):
         part = part.strip()
-        if split_column and i in split_column:
+        if split_columns and i in split_columns:
             part = [x.strip() for x in part.split(",")]
         parts.append(part)
     return parts
@@ -184,7 +184,7 @@ def get_beats(
     return stdout, stderr
 
 
-def build_table_from_file(path, column=None, order=None, split_column=None, target_table_num=None):
+def build_table_from_file(path, column=None, order=None, split_columns=None, target_table_num=None):
     """Parse the given filehandle's table(s)."""
     in_table = False
     cur_table_num = 0
@@ -204,7 +204,7 @@ def build_table_from_file(path, column=None, order=None, split_column=None, targ
                             line,
                             column=column,
                             order=order,
-                            split_column=split_column,
+                            split_columns=split_columns,
                         )
                     else:
                         table.verify_header(line, line_num)

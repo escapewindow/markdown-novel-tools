@@ -47,7 +47,7 @@ def _beats_helper(
     file_headers=False,
     multi_table_output=False,
     order=None,
-    split_column=None,
+    split_columns=None,
     stats=False,
     target_table_num=None,
     format_=None,
@@ -58,7 +58,7 @@ def _beats_helper(
         path,
         column=column,
         order=order,
-        split_column=split_column,
+        split_columns=split_columns,
         target_table_num=target_table_num,
     )
 
@@ -106,7 +106,7 @@ def novel_beats(args):
         file_headers=args.file_headers,
         multi_table_output=args.multi_table_output,
         order=args.order,
-        split_column=args.split_column,
+        split_columns=args.split_column,
         stats=args.stats,
         target_table_num=args.table,
         format_=args.format,
@@ -226,7 +226,7 @@ def novel_outline_convert(args):
         path,
         column="Arc",
         multi_table_output=True,
-        split_column=["Arc", "Beat"],
+        split_columns=["Arc", "Beat"],
         stats=True,
         format_="html",
         beats_type="arcs",
@@ -376,7 +376,7 @@ def novel_sync(args):
         column="Arc",
         file_headers=True,
         multi_table_output=True,
-        split_column=["Arc", "Beat"],
+        split_columns=["Arc", "Beat"],
         stats=True,
         beats_type="arcs",
     )
@@ -401,7 +401,7 @@ def novel_sync(args):
         column="Arc",
         file_headers=True,
         multi_table_output=True,
-        split_column=["Arc", "Beat"],
+        split_columns=["Arc", "Beat"],
         stats=True,
         beats_type="questions",
     )
@@ -415,7 +415,7 @@ def novel_sync(args):
         column="Arc",
         file_headers=True,
         multi_table_output=True,
-        split_column=["Arc", "Beat"],
+        split_columns=["Arc", "Beat"],
         stats=True,
         beats_type="beats",
     )
