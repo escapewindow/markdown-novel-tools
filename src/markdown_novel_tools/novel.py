@@ -60,7 +60,7 @@ def _beats_helper(
         column=column,
         order=order,
         split_columns=split_columns,
-        also_split_by_regex=also_split_by_regex,
+        also_split_by_slash=also_split_by_slash,
         target_table_num=target_table_num,
     )
 
@@ -109,7 +109,7 @@ def novel_beats(args):
         multi_table_output=args.multi_table_output,
         order=args.order,
         split_columns=args.split_column,
-        also_split_by_regex=args.also_split_by_regex,
+        also_split_by_slash=args.also_split_by_slash,
         stats=args.stats,
         target_table_num=args.table,
         format_=args.format,
