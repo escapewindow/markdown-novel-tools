@@ -118,3 +118,30 @@ def test_beats_bad_format():
     table = outline.build_table_from_file(path)
     with pytest.raises(Exception):
         outline.get_beats(table, format_="invalid format")
+
+
+def test_table_from_multi():
+    """Parse scenes, which is multi-table, and compare against full outline"""
+    scenes_path = TEST_DATA_DIR / "matrix-scenes.md"
+    full_path = TEST_DATA_DIR / "matrix-full.md"
+    table = outline.build_table_from_file(scenes_path)
+    with open(full_path) as fh:
+        full_contents = fh.read()
+    header = outline.get_outline_file_header("outline")
+    mdoutput = outline.get_markdown_from_table(table)
+    assert f"{header}{mdoutput}" == full_contents
+
+
+def test_table_to_multi():
+    """Parse full, and compare against scenes, which is multi-table"""
+    full_path = TEST_DATA_DIR / "matrix-full.md"
+    scenes_path = TEST_DATA_DIR / "matrix-scenes.md"
+    table = outline.build_table_from_file(full_path, column="Scene")
+    with open(scenes_path) as fh:
+        scenes_contents = fh.read()
+    header = outline.get_outline_file_header("scenes")
+    mdoutput = outline.get_markdown_from_table(
+        table,
+        multi_table=True,
+    )
+    assert f"{header}{mdoutput}" == scenes_contents
