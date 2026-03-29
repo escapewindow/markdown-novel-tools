@@ -7,8 +7,25 @@ import markdown_novel_tools.outline as outline
 from . import TEST_DATA_DIR
 
 
-def test_table():
-    pass
+@pytest.mark.parametrize(
+    "column, expected, throws",
+    (
+        (2, 2, False),
+        ("POV", 1, False),
+        (20, None, IndexError),
+        ("Fake column name", None, ValueError),
+    ),
+)
+def test_table_get_column(column, expected, throws):
+    path = TEST_DATA_DIR / "matrix-full.md"
+    with open(path) as fh:
+        contents = fh.read()
+    table = outline.build_table_from_file(path)
+    if throws:
+        with pytest.raises(throws):
+            table.get_column(column)
+    else:
+        assert table.get_column(column) == expected
 
 
 def test_outline_to_yaml():
@@ -42,14 +59,6 @@ aliases: []
 
 def test_get_beats():
     pass
-
-
-def test_build_table_from_file():
-    path = TEST_DATA_DIR / "matrix-full.md"
-    with open(path) as fh:
-        contents = fh.read()
-    table = outline.build_table_from_file(path)
-    assert table.get_column("POV") == 1
 
 
 def test_get_markdown_table_header():
