@@ -200,9 +200,10 @@ def test_filter_order():
 @pytest.mark.parametrize(
     "expected_file, also_split_by_slash, filter_",
     (
-        (TEST_DATA_DIR / "test-simple-split_columns.md", True, []),
+        (TEST_DATA_DIR / "test-simple-split_columns.md", True, ["Hook"]),
         (TEST_DATA_DIR / "test-simple-split_columns-noslash.md", False, []),
         (TEST_DATA_DIR / "test-simple-filter.md", False, ["Hook/Question"]),
+        (TEST_DATA_DIR / "test-simple-filter.md", False, ["Question"]),
     ),
 )
 def test_filter_split_columns(expected_file, also_split_by_slash, filter_):
@@ -216,6 +217,8 @@ def test_filter_split_columns(expected_file, also_split_by_slash, filter_):
         split_columns=["Beat", "Arc"],
         also_split_by_slash=also_split_by_slash,
     )
-    mdoutput = outline.get_markdown_from_table(table, filter_=["Hook"], multi_table=True)
+    mdoutput = outline.get_markdown_from_table(table, filter_=filter_, multi_table=True)
     header = outline.get_outline_file_header("beats")
+    with open("f", "w") as fh:
+        fh.write(f"{header}{mdoutput}")
     assert f"{header}{mdoutput}" == contents

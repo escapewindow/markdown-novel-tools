@@ -124,7 +124,7 @@ class Table:
     def do_add_line(self, parts):
         """Add a line"""
         line_obj = self.line_obj(*parts)
-        column_name = ""
+        column_name = None
         if self.column:
             column_name = parts[self.column]
             self.column_values.add(column_name)
@@ -339,9 +339,11 @@ def get_markdown_from_table(table, filter_=None, multi_table=False):
     for k, v in sorted(table.parsed_lines.items()):
         if filter_:
             filter_key = split_by_char(k, "/")
-            if set(filter_key).isdisjoint(set(_filter)):
+            filter_key.append(k)
+            if set(filter_key).isdisjoint(set(filter_)):
                 continue
         if multi_table:
+            k = k or "None"
             body = f"{body}\n## {k}\n{get_markdown_table_header(header)}\n"
             toc = (
                 f"{toc}- {k} [github](#{header_text_to_header_anchor(k)}) [obsidian](#{quote(k)})\n"
@@ -358,7 +360,7 @@ def get_yaml_from_table(table, filter_=None):
     """Return all the appropriate lines in yaml format."""
     yaml_output = ""
     for k, v in sorted(table.parsed_lines.items()):
-        if filter_ and set(split_by_char(k, "/")).isdisjoint(set(_filter)):
+        if filter_ and set(split_by_char(k, "/")).isdisjoint(set(filter_)):
             continue
         for line in v:
             output = _outline_to_yaml(line.Description)
@@ -387,7 +389,7 @@ def get_html_from_table(table, filter_=None, multi_table=False):
     for k, v in sorted(table.parsed_lines.items()):
         if filter_:
             filter_key = split_by_char(k, "/")
-            if set(filter_key).isdisjoint(set(_filter)):
+            if set(filter_key).isdisjoint(set(filter_)):
                 continue
         if multi_table:
             body = f"{body}\n<h2>{k}</h2>\n{table_header}\n"
