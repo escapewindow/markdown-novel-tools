@@ -92,21 +92,21 @@ Num beats: 49"""
 
 
 def test_table_yaml_simple():
-    path = TEST_DATA_DIR / "matrix-simple.md"
+    path = TEST_DATA_DIR / "test-simple.md"
     table = outline.build_table_from_file(path)
     yamloutput = outline.get_yaml_from_table(table)
     beats_stdout, _ = outline.get_beats(table, format_="yaml")
-    with open(TEST_DATA_DIR / "matrix-simple.yaml") as fh:
+    with open(TEST_DATA_DIR / "test-simple.yaml") as fh:
         expected = fh.read()
     assert yamloutput == expected
     assert yamloutput == beats_stdout
 
 
 def test_table_html_simple():
-    path = TEST_DATA_DIR / "matrix-simple.md"
+    path = TEST_DATA_DIR / "test-simple.md"
     table = outline.build_table_from_file(path)
     htmloutput = outline.get_html_from_table(table)
-    with open(TEST_DATA_DIR / "matrix-simple.html") as fh:
+    with open(TEST_DATA_DIR / "test-simple.html") as fh:
         expected = fh.read()
     assert htmloutput == expected
     beats_stdout, _ = outline.get_beats(table, format_="html")
@@ -114,7 +114,7 @@ def test_table_html_simple():
 
 
 def test_beats_bad_format():
-    path = TEST_DATA_DIR / "matrix-simple.md"
+    path = TEST_DATA_DIR / "test-simple.md"
     table = outline.build_table_from_file(path)
     with pytest.raises(Exception):
         outline.get_beats(table, format_="invalid format")
