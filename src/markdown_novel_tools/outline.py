@@ -238,12 +238,12 @@ def get_beats(
         stdout += get_outline_file_header(beats_type)
 
     if format_ == "yaml":
-        stdout = f"{stdout}{get_yaml_from_table(table, _filter=filter)}"
+        stdout = f"{stdout}{get_yaml_from_table(table, filter_=filter)}"
     elif format_ is None or format_ == "markdown":
-        stdout = f"{stdout}{get_markdown_from_table(table, _filter=filter, multi_table=multi_table_output)}"
+        stdout = f"{stdout}{get_markdown_from_table(table, filter_=filter, multi_table=multi_table_output)}"
     elif format_ == "html":
         # No markdown file headers in html
-        stdout = get_html_from_table(table, _filter=filter, multi_table=multi_table_output)
+        stdout = get_html_from_table(table, filter_=filter, multi_table=multi_table_output)
     else:
         raise Exception(f"Unknown format {format_}!")
 
@@ -326,7 +326,7 @@ def header_text_to_header_anchor(header_text):
     return anchor
 
 
-def get_markdown_from_table(table, _filter=None, multi_table=False):
+def get_markdown_from_table(table, filter_=None, multi_table=False):
     """Return all the appropriate lines in markdown format."""
     widths = dict(zip(list(table.line_obj._fields), table.max_width))
     header = "|"
@@ -337,7 +337,7 @@ def get_markdown_from_table(table, _filter=None, multi_table=False):
     if not multi_table:
         body = f"{body}{get_markdown_table_header(header)}\n"
     for k, v in sorted(table.parsed_lines.items()):
-        if _filter:
+        if filter_:
             filter_key = split_by_char(k, "/")
             if set(filter_key).isdisjoint(set(_filter)):
                 continue
@@ -354,11 +354,11 @@ def get_markdown_from_table(table, _filter=None, multi_table=False):
     return f"{toc}{body}"
 
 
-def get_yaml_from_table(table, _filter=None):
+def get_yaml_from_table(table, filter_=None):
     """Return all the appropriate lines in yaml format."""
     yaml_output = ""
     for k, v in sorted(table.parsed_lines.items()):
-        if _filter and set(split_by_char(k, "/")).isdisjoint(set(_filter)):
+        if filter_ and set(split_by_char(k, "/")).isdisjoint(set(_filter)):
             continue
         for line in v:
             output = _outline_to_yaml(line.Description)
@@ -375,7 +375,7 @@ def get_yaml_from_table(table, _filter=None):
     return yaml_output
 
 
-def get_html_from_table(table, _filter=None, multi_table=False):
+def get_html_from_table(table, filter_=None, multi_table=False):
     """Return all the appropriate lines in html format."""
     table_header = "<table><tr>\n"
     for o in table.order:
@@ -385,7 +385,7 @@ def get_html_from_table(table, _filter=None, multi_table=False):
     if not multi_table:
         body = f"{body}{table_header}\n"
     for k, v in sorted(table.parsed_lines.items()):
-        if _filter:
+        if filter_:
             filter_key = split_by_char(k, "/")
             if set(filter_key).isdisjoint(set(_filter)):
                 continue

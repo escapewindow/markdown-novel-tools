@@ -61,7 +61,7 @@ def frontmatter_diff(args):
             continue
 
         outline_summary = get_yaml_from_table(
-            table, _filter=[f"{m['chapter_num']}.{m['scene_num']}"]
+            table, filter_=[f"{m['chapter_num']}.{m['scene_num']}"]
         )
 
         markdown_file = get_markdown_file(path)
@@ -114,7 +114,7 @@ def frontmatter_update(args):
             continue
 
         outline_summary = yaml.safe_load(
-            get_yaml_from_table(table, _filter=[f"{m['chapter_num']}.{m['scene_num']}"])
+            get_yaml_from_table(table, filter_=[f"{m['chapter_num']}.{m['scene_num']}"])
         )
 
         markdown_file = get_markdown_file(path)

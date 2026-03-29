@@ -192,19 +192,20 @@ def test_filter_order():
         column="Scene",
     )
     # mdoutput = outline.get_beats(table, filter=["02.01"], file_headers=True, beats_type="scenes")
-    mdoutput = outline.get_markdown_from_table(table, _filter=["02.01"], multi_table=True)
+    mdoutput = outline.get_markdown_from_table(table, filter_=["02.01"], multi_table=True)
     header = outline.get_outline_file_header("scenes")
     assert f"{header}{mdoutput}" == contents
 
 
 @pytest.mark.parametrize(
-    "expected_file, also_split_by_slash",
+    "expected_file, also_split_by_slash, filter_",
     (
-        (TEST_DATA_DIR / "test-simple-split_columns.md", True),
-        (TEST_DATA_DIR / "test-simple-split_columns-noslash.md", False),
+        (TEST_DATA_DIR / "test-simple-split_columns.md", True, []),
+        (TEST_DATA_DIR / "test-simple-split_columns-noslash.md", False, []),
+        (TEST_DATA_DIR / "test-simple-filter.md", False, ["Hook/Question"]),
     ),
 )
-def test_filter_split_columns(expected_file, also_split_by_slash):
+def test_filter_split_columns(expected_file, also_split_by_slash, filter_):
     """Build a table; get_markdown_from_table should result in the same file."""
     full_path = TEST_DATA_DIR / "test-simple.md"
     with open(expected_file) as fh:
@@ -215,6 +216,6 @@ def test_filter_split_columns(expected_file, also_split_by_slash):
         split_columns=["Beat", "Arc"],
         also_split_by_slash=also_split_by_slash,
     )
-    mdoutput = outline.get_markdown_from_table(table, _filter=["Hook"], multi_table=True)
+    mdoutput = outline.get_markdown_from_table(table, filter_=["Hook"], multi_table=True)
     header = outline.get_outline_file_header("beats")
     assert f"{header}{mdoutput}" == contents
