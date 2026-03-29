@@ -172,6 +172,15 @@ def write_to_file(path, contents):
         fh.write(contents)
 
 
+def to_list(arg):
+    if isinstance(arg, (tuple, str)):
+        return list(arg)
+    elif isinstance(arg, list):
+        return arg
+    else:
+        raise ValueError(f"Unsupported instance type {type(arg)}")
+
+
 def unwikilink(string, remove=("[[", "]]", "#")):
     """Remove the [[ ]] from a string. Also # for tags."""
     for repl in remove:

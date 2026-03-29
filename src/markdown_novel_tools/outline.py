@@ -16,7 +16,7 @@ from markdown_novel_tools.constants import (
     SPECIAL_CHAR_REGEX,
     TABLE_DIVIDER_REGEX,
 )
-from markdown_novel_tools.utils import split_by_char
+from markdown_novel_tools.utils import split_by_char, to_list
 
 
 class Table:
@@ -85,6 +85,7 @@ class Table:
         orig_parts = get_line_parts(line, self.split_columns)
         if self.split_columns:
             splits = {}
+            lines = []
             for key in self.split_columns:
                 splits[key] = orig_parts[key]
             for partial_parts in zip_longest(*list(splits.values()), fillvalue=""):
@@ -98,11 +99,10 @@ class Table:
     def do_add_line(self, parts):
         """Add a line"""
         line_obj = self.line_obj(*parts)
+        key = ""
         if self.column:
             key = parts[self.column]
-        else:
-            key = "default"
-        self.column_values.add(key)
+        self.column_values.update(set(to_list(key)))
         self.parsed_lines.setdefault(key, []).append(line_obj)
 
         self.update_max_width([len(x) for x in parts])
@@ -121,13 +121,34 @@ def _outline_to_yaml(line):
 
 
 def get_line_parts(line, split_columns=None):
-    """Split a markdown table by pipes, return the list and their widths"""
+    """Split a markdown table into column parts.
+
+    If split_columns, then also split the appropriate column(s) by ',' and '/'.
+
+    For example,
+
+        line = "| foo | a,b,c/d |"
+
+    If not split_columns,
+
+        return ["foo", "a,b,c/d"]
+
+    Otherwise if split_columns is ["1"],
+
+        return ["foo", ["a", "b", ["c", "d"]]]
+    """
     line = line.strip()
     parts = []
     for i, part in enumerate(line.strip("|").split("|")):
         part = part.strip()
         if split_columns and i in split_columns:
-            part = [x.strip() for x in part.split(",")]
+            # Split by ',': ["a", "b", "c/d"]
+            comma_line_parts = [x.strip() for x in part.split(",")]
+            #            # Split by '/': ["a", "b", ["c", "d"]]
+            #            for j, k in enumerate(comma_line_parts):
+            #                if "/" in k:
+            #                    comma_line_parts[j] = k.split("/")
+            part = comma_line_parts
         parts.append(part)
     return parts
 
