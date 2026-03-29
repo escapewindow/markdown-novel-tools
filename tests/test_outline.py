@@ -151,3 +151,24 @@ def test_table_order_invalid():
     path = TEST_DATA_DIR / "test-simple.md"
     with pytest.raises(SystemExit):
         outline.build_table_from_file(path, order=["invalid", "column", "names"])
+
+
+def test_filter_order():
+    """Build a table; get_markdown_from_table should result in the same file."""
+    full_path = TEST_DATA_DIR / "test-simple.md"
+    second_scene_path = TEST_DATA_DIR / "test-simple-second-scene.md"
+    with open(full_path) as fh:
+        contents = fh.read()
+    table = outline.build_table_from_file(
+        full_path,
+        #        order=["Description", "POV", "Beat", "Scene", "Arc"],
+        column="Scene",
+    )
+    header = outline.get_outline_file_header("scenes")
+    mdoutput = outline.get_markdown_from_table(
+        table,
+        _filter="02.01",
+    )
+    with open("f", "w") as fh:
+        fh.write(mdoutput)
+    assert mdoutput == contents

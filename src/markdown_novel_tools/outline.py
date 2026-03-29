@@ -254,6 +254,8 @@ def get_markdown_from_table(table, _filter=None, multi_table=False):
         body = f"{body}{get_markdown_table_header(header)}\n"
     for k, v in sorted(table.parsed_lines.items()):
         if _filter:
+            with open("f2", "a") as fh:
+                fh.write(f"{k}\n")
             filter_key = split_by_char(k, "/")
             if set(filter_key).isdisjoint(set(_filter)):
                 continue

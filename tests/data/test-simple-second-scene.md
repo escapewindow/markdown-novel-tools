@@ -1,0 +1,14 @@
+---
+tags: ['outline', 'scenes']
+aliases: []
+---
+
+# Scenes
+
+- 02.01 [github](#0201) [obsidian](#02.01)
+
+## 02.01
+
+| Description | POV | Beat | Scene | Arc   |
+|-------------|-----|------|-------|-------|
+| Neo: Whoa.  | Neo |      | 02.01 | Spoon |
