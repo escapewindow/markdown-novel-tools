@@ -145,3 +145,9 @@ def test_table_to_multi():
         multi_table=True,
     )
     assert f"{header}{mdoutput}" == scenes_contents
+
+
+def test_table_order_invalid():
+    path = TEST_DATA_DIR / "test-simple.md"
+    with pytest.raises(SystemExit):
+        outline.build_table_from_file(path, order=["invalid", "column", "names"])
