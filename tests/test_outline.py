@@ -152,6 +152,12 @@ def test_table_order_invalid():
         outline.build_table_from_file(path, order=["invalid", "column", "names"])
 
 
+def test_table_from_multi_invalid_headers():
+    path = TEST_DATA_DIR / "test-multi-broken.md"
+    with pytest.raises(SystemExit):
+        outline.build_table_from_file(path)
+
+
 def test_filter_order():
     """Build a table; change the column order and filter by scene."""
     full_path = TEST_DATA_DIR / "test-simple.md"
