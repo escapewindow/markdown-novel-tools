@@ -135,7 +135,7 @@ def get_line_parts(line, split_columns=None):
 
     Otherwise if split_columns is ["1"],
 
-        return ["foo", ["a", "b", ["c", "d"]]]
+        return ["foo", ["a", "b", "c/d"]]
     """
     line = line.strip()
     parts = []
