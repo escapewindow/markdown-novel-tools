@@ -96,10 +96,8 @@ def test_table_yaml_simple():
     table = outline.build_table_from_file(path)
     yamloutput = outline.get_yaml_from_table(table)
     beats_stdout, _ = outline.get_beats(table, format_="yaml")
-    expected = """- Trinity took an extra shift to watch Neo. (The One Hook, Trinity Hook)
-- Neo - Whoa. (Spoon)
-- Neo - surprised - tests the mdash. (Mdash)
-"""
+    with open(TEST_DATA_DIR / "matrix-simple.yaml") as fh:
+        expected = fh.read()
     assert yamloutput == expected
     assert yamloutput == beats_stdout
 
@@ -108,38 +106,8 @@ def test_table_html_simple():
     path = TEST_DATA_DIR / "matrix-simple.md"
     table = outline.build_table_from_file(path)
     htmloutput = outline.get_html_from_table(table)
-    table_header = """<table><tr>
-  <th>Description</th>
-  <th>POV</th>
-  <th>Scene</th>
-  <th>Arc</th>
-  <th>Beat</th>
-</tr>"""
-    expected = f"""{outline.OUTLINE_HTML_HEADER}{table_header}
-<tr>
-  <td>Trinity took an extra shift to watch Neo.</td>
-  <td>Trinity</td>
-  <td>01.01</td>
-  <td>The One,Trinity</td>
-  <td>Hook,Hook</td>
-</tr>
-<tr>
-  <td>Neo: Whoa.</td>
-  <td>Neo</td>
-  <td>02.01</td>
-  <td>Spoon</td>
-  <td></td>
-</tr>
-<tr>
-  <td>Neo&mdash;surprised&mdash;tests the mdash.</td>
-  <td>Neo</td>
-  <td>13.02</td>
-  <td>Mdash</td>
-  <td></td>
-</tr>
-</table>
-</body></html>
-"""
+    with open(TEST_DATA_DIR / "matrix-simple.html") as fh:
+        expected = fh.read()
     assert htmloutput == expected
     beats_stdout, _ = outline.get_beats(table, format_="html")
     assert beats_stdout == expected
