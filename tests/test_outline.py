@@ -129,9 +129,12 @@ def test_table_from_multi():
     header = outline.get_outline_file_header("outline")
     mdoutput = outline.get_markdown_from_table(table)
     assert f"{header}{mdoutput}" == full_contents
+    beats_stdout, beats_stderr = outline.get_beats(table, file_headers=True, stats=True)
+    assert beats_stdout == full_contents
+    assert beats_stderr == """Num beats: 49"""
 
 
-def test_table_to_multi():
+def test_full_table_to_scenes():
     """Parse full, and compare against scenes, which is multi-table"""
     full_path = TEST_DATA_DIR / "matrix-full.md"
     scenes_path = TEST_DATA_DIR / "matrix-scenes.md"
@@ -144,6 +147,19 @@ def test_table_to_multi():
         multi_table=True,
     )
     assert f"{header}{mdoutput}" == scenes_contents
+    beats_stdout, beats_stderr = outline.get_beats(
+        table,
+        file_headers=True,
+        stats=True,
+        beats_type="scenes",
+        multi_table_output=True,
+    )
+    assert beats_stdout == scenes_contents
+    assert (
+        beats_stderr
+        == """Num values: 22 ['01.01', '01.02', '02.01', '02.02', '02.03', '03.01', '04.01', '05.02', '05.03', '06.01', '06.02', '07.01', '07.02', '08.01', '09.01', '10.01', '11.01', '12.01', '12.02', '13.01', '13.02', '14.01']
+Num beats: 49"""
+    )
 
 
 def test_table_order_invalid():
