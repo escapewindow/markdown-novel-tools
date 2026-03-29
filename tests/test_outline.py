@@ -40,12 +40,16 @@ aliases: []
 """
 
 
-def test_beats():
+def test_get_beats():
     pass
 
 
 def test_build_table_from_file():
-    pass
+    path = TEST_DATA_DIR / "matrix-full.md"
+    with open(path) as fh:
+        contents = fh.read()
+    table = outline.build_table_from_file(path)
+    assert table.get_column("POV") == 1
 
 
 def test_get_markdown_table_header():
@@ -68,7 +72,14 @@ def test_header_text_to_header_anchor(header_text, expected):
 
 
 def test_get_markdown_from_table():
-    pass
+    path = TEST_DATA_DIR / "matrix-full.md"
+    with open(path) as fh:
+        contents = fh.read()
+    table = outline.build_table_from_file(path)
+    mdoutput = outline.get_markdown_from_table(table)
+    with open(TEST_DATA_DIR / "test_output.md", "w") as fh:
+        fh.write(mdoutput)
+    assert outline.get_markdown_from_table(table) == contents
 
 
 def test_get_yaml_from_table():
