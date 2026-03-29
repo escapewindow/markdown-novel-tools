@@ -398,7 +398,7 @@ def novel_sync(args):
     write_to_file(paths["scenes"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
-    # Questions etc.
+    # Questions - regex is hacky but I don't have a way to split and filter by different columns
     arc_contents, stats = _beats_helper(
         paths["full"],
         column="Arc",
