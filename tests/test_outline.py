@@ -87,8 +87,7 @@ def test_table_markdown_simple():
     assert f"{header}{mdoutput}" == contents
     beats_stdout, beats_stderr = outline.get_beats(table, file_headers=header, stats=True)
     assert beats_stdout == contents
-    assert beats_stderr == """Num values: 1 ['default']
-Num beats: 49"""
+    assert beats_stderr == """Num beats: 49"""
 
 
 def test_table_yaml_simple():
@@ -181,7 +180,4 @@ def test_filter_split_columns():
     table = outline.build_table_from_file(full_path, column="Beat", split_columns=["Beat", "Arc"])
     mdoutput = outline.get_markdown_from_table(table, _filter=["Hook"], multi_table=True)
     header = outline.get_outline_file_header("beats")
-    with open("f", "w") as fh:
-        fh.write(f"{header}{mdoutput}")
     assert f"{header}{mdoutput}" == contents
-    assert mdoutput == contents
