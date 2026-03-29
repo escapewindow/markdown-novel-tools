@@ -57,10 +57,6 @@ aliases: []
 """
 
 
-def test_get_beats():
-    pass
-
-
 def test_get_markdown_table_header():
     header = "| foo | bar | baz | longer bit |"
     line = "|-----|-----|-----|------------|"
@@ -108,7 +104,7 @@ def test_table_yaml_simple():
     assert yamloutput == beats_stdout
 
 
-def test_get_html_from_table():
+def test_table_html_simple():
     path = TEST_DATA_DIR / "matrix-simple.md"
     table = outline.build_table_from_file(path)
     htmloutput = outline.get_html_from_table(table)
@@ -145,3 +141,12 @@ def test_get_html_from_table():
 </body></html>
 """
     assert htmloutput == expected
+    beats_stdout, _ = outline.get_beats(table, format_="html")
+    assert beats_stdout == expected
+
+
+def test_beats_bad_format():
+    path = TEST_DATA_DIR / "matrix-simple.md"
+    table = outline.build_table_from_file(path)
+    with pytest.raises(Exception):
+        outline.get_beats(table, format_="invalid format")
