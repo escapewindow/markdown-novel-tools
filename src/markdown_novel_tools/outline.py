@@ -100,8 +100,11 @@ class Table:
         line_obj = self.line_obj(*parts)
         if self.column:
             key = parts[self.column]
-            self.column_values.add(key)
-            self.parsed_lines.setdefault(key, []).append(line_obj)
+        else:
+            key = "default"
+        self.column_values.add(key)
+        self.parsed_lines.setdefault(key, []).append(line_obj)
+
         self.update_max_width([len(x) for x in parts])
         self.line_count += 1
 

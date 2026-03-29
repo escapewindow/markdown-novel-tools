@@ -88,7 +88,8 @@ def test_get_markdown_from_table():
     mdoutput = outline.get_markdown_from_table(table)
     with open(TEST_DATA_DIR / "test_output.md", "w") as fh:
         fh.write(mdoutput)
-    assert outline.get_markdown_from_table(table) == contents
+    header = outline.get_outline_file_header("outline")
+    assert f"{header}{outline.get_markdown_from_table(table)}" == contents
 
 
 def test_get_yaml_from_table():
