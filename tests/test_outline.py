@@ -81,19 +81,24 @@ def test_header_text_to_header_anchor(header_text, expected):
 
 
 def test_get_markdown_from_table():
+    """Build a table; get_markdown_from_table should result in the same file."""
     path = TEST_DATA_DIR / "matrix-full.md"
     with open(path) as fh:
         contents = fh.read()
     table = outline.build_table_from_file(path)
     mdoutput = outline.get_markdown_from_table(table)
-    with open(TEST_DATA_DIR / "test_output.md", "w") as fh:
-        fh.write(mdoutput)
     header = outline.get_outline_file_header("outline")
-    assert f"{header}{outline.get_markdown_from_table(table)}" == contents
+    assert f"{header}{mdoutput}" == contents
 
 
 def test_get_yaml_from_table():
-    pass
+    path = TEST_DATA_DIR / "matrix-full.md"
+    table = outline.build_table_from_file(path)
+    yamloutput = outline.get_yaml_from_table(table)
+    assert (
+        yamloutput.splitlines()[0]
+        == "- Trinity took an extra shift to watch Neo. (The One Hook, Trinity Hook)"
+    )
 
 
 def test_get_html_from_table():
