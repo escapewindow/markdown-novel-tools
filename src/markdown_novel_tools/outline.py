@@ -81,17 +81,34 @@ class Table:
             sys.exit(1)
 
     def add_line(self, line):
-        """Add a line or lines, depending on split_columns."""
+        """Add a line or lines, depending on self.split_columns.
+
+        If self.split_columns, the parts will be a list, where the line was split by ','. If we have multiple columns, zip them together.
+
+        So if we have split_columns of [2, 3] and the line_parts are
+
+            [ "a", "b", ["c", "d", "e"], ["f", "g"]]
+
+        then we zip those two columns together and get multiple lines:
+
+            [
+                ["a", "b", "c", "f"],
+                ["a", "b", "d", "g"],
+                ["a", "b", "e", "" ]
+            ]
+
+        So the first value of column 2 goes with the first value of column 3, the second of each, and so on. When one column runs out of values, use ""
+        """
         orig_parts = get_line_parts(line, self.split_columns)
         if self.split_columns:
-            splits = {}
+            splits = dict()
             lines = []
-            for key in self.split_columns:
-                splits[key] = orig_parts[key]
+            for column_key in self.split_columns:
+                splits[column_key] = orig_parts[column_key]
             for partial_parts in zip_longest(*list(splits.values()), fillvalue=""):
                 new_parts = orig_parts[:]
-                for key, val in zip(self.split_columns, partial_parts):
-                    new_parts[key] = val
+                for column_key, val in zip(self.split_columns, partial_parts):
+                    new_parts[column_key] = val
                 self.do_add_line(new_parts)
         else:
             self.do_add_line(orig_parts)
@@ -102,7 +119,7 @@ class Table:
         column_name = ""
         if self.column:
             column_name = parts[self.column]
-            self.column_values.add("column_name")
+            self.column_values.add(column_name)
         self.parsed_lines.setdefault(column_name, []).append(line_obj)
 
         self.update_max_width([len(x) for x in parts])
