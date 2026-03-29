@@ -80,7 +80,7 @@ def test_header_text_to_header_anchor(header_text, expected):
     assert outline.header_text_to_header_anchor(header_text) == expected
 
 
-def test_get_markdown_from_table():
+def test_table_markdown_simple():
     """Build a table; get_markdown_from_table should result in the same file."""
     path = TEST_DATA_DIR / "matrix-full.md"
     with open(path) as fh:
@@ -89,16 +89,23 @@ def test_get_markdown_from_table():
     mdoutput = outline.get_markdown_from_table(table)
     header = outline.get_outline_file_header("outline")
     assert f"{header}{mdoutput}" == contents
+    beats_stdout, beats_stderr = outline.get_beats(table, file_headers=header, stats=True)
+    assert beats_stdout == contents
+    assert beats_stderr == """Num values: 1 ['default']
+Num beats: 49"""
 
 
-def test_get_yaml_from_table():
+def test_table_yaml_simple():
     path = TEST_DATA_DIR / "matrix-simple.md"
     table = outline.build_table_from_file(path)
     yamloutput = outline.get_yaml_from_table(table)
-    assert yamloutput == """- Trinity took an extra shift to watch Neo. (The One Hook, Trinity Hook)
+    beats_stdout, _ = outline.get_beats(table, format_="yaml")
+    expected = """- Trinity took an extra shift to watch Neo. (The One Hook, Trinity Hook)
 - Neo - Whoa. (Spoon)
 - Neo - surprised - tests the mdash. (Mdash)
 """
+    assert yamloutput == expected
+    assert yamloutput == beats_stdout
 
 
 def test_get_html_from_table():
