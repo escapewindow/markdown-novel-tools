@@ -99,11 +99,11 @@ class Table:
     def do_add_line(self, parts):
         """Add a line"""
         line_obj = self.line_obj(*parts)
-        key = ""
+        column_name = ""
         if self.column:
-            key = parts[self.column]
-        self.column_values.update(set(to_list(key)))
-        self.parsed_lines.setdefault(key, []).append(line_obj)
+            column_name = parts[self.column]
+            self.column_values.add("column_name")
+        self.parsed_lines.setdefault(column_name, []).append(line_obj)
 
         self.update_max_width([len(x) for x in parts])
         self.line_count += 1
