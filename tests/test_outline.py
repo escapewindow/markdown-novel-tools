@@ -152,8 +152,14 @@ def test_table_order_invalid():
         outline.build_table_from_file(path, order=["invalid", "column", "names"])
 
 
-def test_table_from_multi_invalid_headers():
-    path = TEST_DATA_DIR / "test-multi-broken.md"
+@pytest.mark.parametrize(
+    "path",
+    (
+        TEST_DATA_DIR / "test-multi-extra-header.md",
+        TEST_DATA_DIR / "test-multi-missing-header.md",
+    ),
+)
+def test_table_from_multi_invalid_headers(path):
     with pytest.raises(SystemExit):
         outline.build_table_from_file(path)
 
