@@ -9,12 +9,12 @@ aliases: []
 - Deaths [github](#deaths) [obsidian](#Deaths)
 - Exits [github](#exits) [obsidian](#Exits)
 - Judas [github](#judas) [obsidian](#Judas)
+- Love [github](#love) [obsidian](#Love)
 - Morpheus [github](#morpheus) [obsidian](#Morpheus)
 - Oracle [github](#oracle) [obsidian](#Oracle)
 - Spoon [github](#spoon) [obsidian](#Spoon)
 - The Matrix [github](#the-matrix) [obsidian](#The%20Matrix)
 - The One [github](#the-one) [obsidian](#The%20One)
-- Trinity [github](#trinity) [obsidian](#Trinity)
 - Zion [github](#zion) [obsidian](#Zion)
 
 ## Agents
@@ -27,6 +27,8 @@ aliases: []
 ## Exits
 
 ## Judas
+
+## Love
 
 ## Morpheus
 
@@ -49,7 +51,5 @@ aliases: []
 | Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix | Reveal      |
 
 ## The One
-
-## Trinity
 
 ## Zion

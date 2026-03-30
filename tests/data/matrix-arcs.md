@@ -9,12 +9,12 @@ aliases: []
 - Deaths [github](#deaths) [obsidian](#Deaths)
 - Exits [github](#exits) [obsidian](#Exits)
 - Judas [github](#judas) [obsidian](#Judas)
+- Love [github](#love) [obsidian](#Love)
 - Morpheus [github](#morpheus) [obsidian](#Morpheus)
 - Oracle [github](#oracle) [obsidian](#Oracle)
 - Spoon [github](#spoon) [obsidian](#Spoon)
 - The Matrix [github](#the-matrix) [obsidian](#The%20Matrix)
 - The One [github](#the-one) [obsidian](#The%20One)
-- Trinity [github](#trinity) [obsidian](#Trinity)
 - Zion [github](#zion) [obsidian](#Zion)
 
 ## Agents
@@ -74,6 +74,16 @@ aliases: []
 | Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | Judas      |             |
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas      | Plot Turn 2 |
 | Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas      | Resolution  |
+
+## Love
+| Description                                                                    | POV     | Scene | Arc        | Beat        |
+|--------------------------------------------------------------------------------|---------|-------|------------|-------------|
+| Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | Love       |             |
+| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Love       |             |
+| Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Love       |             |
+| Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Love       |             |
+| Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | Love       | Plot Turn 2 |
+| Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | Love       | Resolution  |
 
 ## Morpheus
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
@@ -161,15 +171,6 @@ aliases: []
 | Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | The One    |             |
 | Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | The One    |             |
 | Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | The One    |             |
-
-## Trinity
-| Description                                                                    | POV     | Scene | Arc        | Beat        |
-|--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | Trinity    |             |
-| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Trinity    |             |
-| Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Trinity    |             |
-| Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Trinity    |             |
-| Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | Trinity    |             |
 
 ## Zion
 | Description                                                                    | POV     | Scene | Arc        | Beat        |

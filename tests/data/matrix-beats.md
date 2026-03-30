@@ -9,12 +9,12 @@ aliases: []
 - Deaths [github](#deaths) [obsidian](#Deaths)
 - Exits [github](#exits) [obsidian](#Exits)
 - Judas [github](#judas) [obsidian](#Judas)
+- Love [github](#love) [obsidian](#Love)
 - Morpheus [github](#morpheus) [obsidian](#Morpheus)
 - Oracle [github](#oracle) [obsidian](#Oracle)
 - Spoon [github](#spoon) [obsidian](#Spoon)
 - The Matrix [github](#the-matrix) [obsidian](#The%20Matrix)
 - The One [github](#the-one) [obsidian](#The%20One)
-- Trinity [github](#trinity) [obsidian](#Trinity)
 - Zion [github](#zion) [obsidian](#Zion)
 
 ## Agents
@@ -43,6 +43,12 @@ aliases: []
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas      | Plot Turn 2 |
 | Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas      | Resolution  |
 
+## Love
+| Description                                                                    | POV     | Scene | Arc        | Beat        |
+|--------------------------------------------------------------------------------|---------|-------|------------|-------------|
+| Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | Love       | Plot Turn 2 |
+| Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | Love       | Resolution  |
+
 ## Morpheus
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
@@ -64,7 +70,5 @@ aliases: []
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One    | Hook        |
-
-## Trinity
 
 ## Zion
