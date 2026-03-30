@@ -45,7 +45,7 @@ aliases: []
 ## 02.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
-| Trinity knows Neo is looking for Morpheus. What is the Matrix?                 | Neo     | 02.01 | Morpheus,The Matrix            |                  |
+| Trinity knows Neo is looking for Morpheus. What is the Matrix?                 | Neo     | 02.01 | The Matrix,Morpheus            | Question         |
 
 ## 02.02
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
@@ -70,7 +70,7 @@ aliases: []
 ## 05.02
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
-| Morpheus shows Neo the Matrix's origins. The Matrix is control.                | Neo     | 05.02 | Morpheus,The Matrix            |                  |
+| Morpheus shows Neo the Matrix's origins. The Matrix is control.                | Neo     | 05.02 | The Matrix,Morpheus            | Reveal           |
 | The Oracle prophesied the return of the One. Morpheus believes it is Neo.      | Neo     | 05.02 | Morpheus,The One,Oracle        |                  |
 | Neo learns Kung Fu. He spars with Morpheus and lands a punch.                  | Neo     | 05.02 | Spoon,Morpheus                 |                  |
 | Some rules can be broken in the Matrix.                                        | Neo     | 05.02 | The Matrix,Spoon               |                  |
@@ -83,7 +83,7 @@ aliases: []
 ## 06.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
-| If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | The Matrix,Exits               |                  |
+| If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | The Matrix,Exits               | Promise          |
 | Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | Agents,The One,Morpheus        | Plot Turn 1      |
 | Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | Spoon,The One,Agents,Morpheus  | Promise          |
 
@@ -114,15 +114,15 @@ aliases: []
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
 | Agents find them, cut the hardline, and brick up the windows.                  | Neo     | 09.01 | Judas,Agents,Exits             | Midpoint         |
-| Mouse dies in the Matrix.                                                      | Neo     | 09.01 | Exits,The Matrix,Agents,Deaths |                  |
+| Mouse dies in the Matrix.                                                      | Neo     | 09.01 | The Matrix,Agents,Deaths,Exits | Reveal           |
 | As prophesied, Morpheus sacrifices himself to save Neo.                        | Neo     | 09.01 | Agents,Morpheus,The One        | Pinch 1          |
 
 ## 10.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
 | Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Judas,Exits,Deaths             | Pinch 2          |
-| Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | The Matrix,Judas,Deaths        |                  |
-| Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix,Judas,Deaths        |                  |
+| Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | The Matrix,Judas,Deaths        | Reveal           |
+| Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix,Judas,Deaths        | Reveal           |
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas,The One,Morpheus,Trinity | Plot Turn 2      |
 | Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas,Exits,Deaths             | Resolution       |
 

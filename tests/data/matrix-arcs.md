@@ -126,17 +126,17 @@ aliases: []
 ## The Matrix
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Trinity knows Neo is looking for Morpheus. What is the Matrix?                 | Neo     | 02.01 | The Matrix |             |
+| Trinity knows Neo is looking for Morpheus. What is the Matrix?                 | Neo     | 02.01 | The Matrix | Question    |
 | Agent Smith seals Neo's mouth shut and implants a bug in his navel.            | Neo     | 02.03 | The Matrix |             |
 | Morpheus offers Neo a choice. Neo chooses to learn the truth about the Matrix. | Neo     | 03.01 | The Matrix |             |
 | Neo is reborn and sees the Matrix in its ugly reality.                         | Neo     | 04.01 | The Matrix |             |
-| Morpheus shows Neo the Matrix's origins. The Matrix is control.                | Neo     | 05.02 | The Matrix |             |
+| Morpheus shows Neo the Matrix's origins. The Matrix is control.                | Neo     | 05.02 | The Matrix | Reveal      |
 | Some rules can be broken in the Matrix.                                        | Neo     | 05.02 | The Matrix |             |
-| If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | The Matrix |             |
+| If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | The Matrix | Promise     |
 | Cypher regrets taking the red pill.                                            | Neo     | 07.01 | The Matrix |             |
-| Mouse dies in the Matrix.                                                      | Neo     | 09.01 | The Matrix |             |
-| Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | The Matrix |             |
-| Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix |             |
+| Mouse dies in the Matrix.                                                      | Neo     | 09.01 | The Matrix | Reveal      |
+| Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | The Matrix | Reveal      |
+| Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix | Reveal      |
 | Sentinels close in on the Nebuchadnezzar. Neo is still stuck in the Matrix.    | Trinity | 13.01 | The Matrix |             |
 | Neo brings hope to the people in the Matrix.                                   | Neo     | 14.01 | The Matrix |             |
 
