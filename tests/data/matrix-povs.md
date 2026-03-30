@@ -32,7 +32,7 @@ aliases: []
 | Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | The One,Spoon,Trinity          |                  |
 | If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | The Matrix,Exits               |                  |
 | Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | Agents,The One,Morpheus        | Plot Turn 1      |
-| Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | The One,Agents,Morpheus        |                  |
+| Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | Spoon,The One,Agents,Morpheus  | Promise          |
 | Sentinel almost takes out the Nebuchadnezzar.                                  | Neo     | 06.02 | Agents,Zion                    |                  |
 | Cypher regrets taking the red pill.                                            | Neo     | 07.01 | Judas,The Matrix               | Plot Turn 1      |
 | The truth is, there is no spoon. It is only yourself that bends.               | Neo     | 08.01 | Spoon                          |                  |
@@ -47,8 +47,8 @@ aliases: []
 | Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Agents,Morpheus,Zion           | Midpoint,Pinch 2 |
 | Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Trinity,The One,Oracle         |                  |
 | Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Morpheus,Agents,Oracle         | Plot Turn 2      |
-| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon,Morpheus,Agents          | Plot Turn 2      |
-| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Spoon           |                  |
+| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon,Morpheus,Agents          |                  |
+| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Spoon           | Reveal           |
 | Neo: The Oracle told me... Morpheus: Exactly what you needed to hear.          | Neo     | 12.02 | The One,Morpheus,Oracle        |                  |
 | Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Trinity,Oracle                 |                  |
 | Neo has saved Morpheus. Agent Smith catches Neo.                               | Neo     | 13.01 | Morpheus,Agents                | Resolution       |
@@ -65,7 +65,7 @@ aliases: []
 | Trinity took an extra shift to watch Neo.                                      | Trinity | 01.01 | The One,Trinity                | Hook,Hook        |
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One,Morpheus               | Hook,Hook        |
 | Trinity and Cypher's call is traced.                                           | Trinity | 01.01 | Judas                          | Hook             |
-| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon                          | Hook             |
+| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon                          | Question         |
 | Agent Brown copies Trinity's impossible jump. She evades him with another.     | Trinity | 01.02 | Agents,Spoon                   | Hook             |
 | Trinity escapes the Matrix via pay phone after the hardline is cut.            | Trinity | 01.02 | Exits                          |                  |
 | Sentinels close in on the Nebuchadnezzar. Neo is still stuck in the Matrix.    | Trinity | 13.01 | Zion,Exits,The Matrix          |                  |

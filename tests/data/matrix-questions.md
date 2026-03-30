@@ -18,6 +18,9 @@ aliases: []
 - Zion [github](#zion) [obsidian](#Zion)
 
 ## Agents
+| Description                                                                    | POV     | Scene | Arc        | Beat        |
+|--------------------------------------------------------------------------------|---------|-------|------------|-------------|
+| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents     | Reveal      |
 
 ## Deaths
 
@@ -30,6 +33,10 @@ aliases: []
 ## Oracle
 
 ## Spoon
+| Description                                                                    | POV     | Scene | Arc        | Beat        |
+|--------------------------------------------------------------------------------|---------|-------|------------|-------------|
+| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon      | Question    |
+| Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | Spoon      | Promise     |
 
 ## The Matrix
 

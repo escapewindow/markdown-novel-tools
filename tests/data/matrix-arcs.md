@@ -32,7 +32,7 @@ aliases: []
 | Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Agents     | Midpoint    |
 | Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Agents     |             |
 | Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Agents     |             |
-| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents     |             |
+| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents     | Reveal      |
 | Neo has saved Morpheus. Agent Smith catches Neo.                               | Neo     | 13.01 | Agents     |             |
 | Neo fights Agent Smith rather than run.                                        | Neo     | 13.01 | Agents     |             |
 | Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | Agents     | Pinch 2     |
@@ -112,14 +112,15 @@ aliases: []
 ## Spoon
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon      | Hook        |
+| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon      | Question    |
 | Agent Brown copies Trinity's impossible jump. She evades him with another.     | Trinity | 01.02 | Spoon      |             |
 | Morpheus warns Neo Agents are coming for him. Neo fails to escape.             | Neo     | 02.02 | Spoon      |             |
 | Neo learns Kung Fu. He spars with Morpheus and lands a punch.                  | Neo     | 05.02 | Spoon      |             |
 | Some rules can be broken in the Matrix.                                        | Neo     | 05.02 | Spoon      |             |
 | Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | Spoon      |             |
+| Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | Spoon      | Promise     |
 | The truth is, there is no spoon. It is only yourself that bends.               | Neo     | 08.01 | Spoon      |             |
-| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon      | Plot Turn 2 |
+| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon      |             |
 | Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Spoon      |             |
 
 ## The Matrix

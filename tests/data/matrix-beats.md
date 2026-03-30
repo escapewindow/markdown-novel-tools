@@ -57,10 +57,6 @@ aliases: []
 ## Oracle
 
 ## Spoon
-| Description                                                                    | POV     | Scene | Arc        | Beat        |
-|--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon      | Hook        |
-| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon      | Plot Turn 2 |
 
 ## The Matrix
 

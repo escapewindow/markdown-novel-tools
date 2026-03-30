@@ -34,7 +34,7 @@ aliases: []
 | Trinity took an extra shift to watch Neo.                                      | Trinity | 01.01 | The One,Trinity                | Hook,Hook        |
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One,Morpheus               | Hook,Hook        |
 | Trinity and Cypher's call is traced.                                           | Trinity | 01.01 | Judas                          | Hook             |
-| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon                          | Hook             |
+| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon                          | Question         |
 
 ## 01.02
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
@@ -85,7 +85,7 @@ aliases: []
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
 | If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | The Matrix,Exits               |                  |
 | Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | Agents,The One,Morpheus        | Plot Turn 1      |
-| Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | The One,Agents,Morpheus        |                  |
+| Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | Spoon,The One,Agents,Morpheus  | Promise          |
 
 ## 06.02
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
@@ -136,8 +136,8 @@ aliases: []
 ## 12.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
-| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon,Morpheus,Agents          | Plot Turn 2      |
-| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Spoon           |                  |
+| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon,Morpheus,Agents          |                  |
+| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Spoon           | Reveal           |
 
 ## 12.02
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
