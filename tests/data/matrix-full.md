@@ -27,20 +27,20 @@ aliases: []
 | Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | Agents,The One,Morpheus        | Plot Turn 1 |
 | Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | The One,Agents,Morpheus        |             |
 | Sentinel almost takes out the Nebuchadnezzar.                                  | Neo     | 06.02 | Agents,Zion                    |             |
-| Cypher regrets taking the red pill.                                            | Neo     | 07.01 | Judas,The Matrix               |             |
-| Cypher is a traitor, selling out Morpheus and Zion to return to the Matrix.    | Cypher  | 07.02 | Judas,Zion                     |             |
+| Cypher regrets taking the red pill.                                            | Neo     | 07.01 | Judas,The Matrix               | Plot Turn 1 |
+| Cypher is a traitor, selling out Morpheus and Zion to return to the Matrix.    | Cypher  | 07.02 | Judas,Zion                     | Pinch 1     |
 | The truth is, there is no spoon. It is only yourself that bends.               | Neo     | 08.01 | Spoon                          |             |
 | Oracle confirms Neo is not the One.                                            | Neo     | 08.01 | Oracle,The One                 |             |
 | Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | Oracle,Morpheus,The One        |             |
 | Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | Oracle,Morpheus,The One        |             |
-| Agents find them, cut the hardline, and brick up the windows.                  | Neo     | 09.01 | Agents,Judas,Exits             |             |
+| Agents find them, cut the hardline, and brick up the windows.                  | Neo     | 09.01 | Judas,Agents,Exits             | Midpoint    |
 | Mouse dies in the Matrix.                                                      | Neo     | 09.01 | Exits,The Matrix,Agents,Deaths |             |
 | As prophesied, Morpheus sacrifices himself to save Neo.                        | Neo     | 09.01 | Agents,Morpheus,The One        | Pinch 1     |
-| Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Judas,Exits,Deaths             |             |
+| Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Judas,Exits,Deaths             | Pinch 2     |
 | Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | The Matrix,Judas,Deaths        |             |
 | Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix,Judas,Deaths        |             |
-| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas,The One,Morpheus,Trinity |             |
-| Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas,Exits,Deaths             |             |
+| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas,The One,Morpheus,Trinity | Plot Turn 2 |
+| Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas,Exits,Deaths             | Resolution  |
 | Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Agents,Morpheus,Zion           | Midpoint    |
 | Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Trinity,The One,Oracle         |             |
 | Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Morpheus,Agents,Oracle         |             |

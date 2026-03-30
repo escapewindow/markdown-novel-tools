@@ -37,6 +37,12 @@ aliases: []
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
 | Trinity and Cypher's call is traced.                                           | Trinity | 01.01 | Judas      | Hook        |
+| Cypher regrets taking the red pill.                                            | Neo     | 07.01 | Judas      | Plot Turn 1 |
+| Cypher is a traitor, selling out Morpheus and Zion to return to the Matrix.    | Cypher  | 07.02 | Judas      | Pinch 1     |
+| Agents find them, cut the hardline, and brick up the windows.                  | Neo     | 09.01 | Judas      | Midpoint    |
+| Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Judas      | Pinch 2     |
+| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas      | Plot Turn 2 |
+| Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas      | Resolution  |
 
 ## Kung Fu
 | Description                                                                    | POV     | Scene | Arc        | Beat        |

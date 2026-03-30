@@ -95,12 +95,12 @@ aliases: []
 ## 07.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|-------------|
-| Cypher regrets taking the red pill.                                            | Neo     | 07.01 | Judas,The Matrix               |             |
+| Cypher regrets taking the red pill.                                            | Neo     | 07.01 | Judas,The Matrix               | Plot Turn 1 |
 
 ## 07.02
 | Description                                                                    | POV     | Scene | Arc                            | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|-------------|
-| Cypher is a traitor, selling out Morpheus and Zion to return to the Matrix.    | Cypher  | 07.02 | Judas,Zion                     |             |
+| Cypher is a traitor, selling out Morpheus and Zion to return to the Matrix.    | Cypher  | 07.02 | Judas,Zion                     | Pinch 1     |
 
 ## 08.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat        |
@@ -113,18 +113,18 @@ aliases: []
 ## 09.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|-------------|
-| Agents find them, cut the hardline, and brick up the windows.                  | Neo     | 09.01 | Agents,Judas,Exits             |             |
+| Agents find them, cut the hardline, and brick up the windows.                  | Neo     | 09.01 | Judas,Agents,Exits             | Midpoint    |
 | Mouse dies in the Matrix.                                                      | Neo     | 09.01 | Exits,The Matrix,Agents,Deaths |             |
 | As prophesied, Morpheus sacrifices himself to save Neo.                        | Neo     | 09.01 | Agents,Morpheus,The One        | Pinch 1     |
 
 ## 10.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|-------------|
-| Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Judas,Exits,Deaths             |             |
+| Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Judas,Exits,Deaths             | Pinch 2     |
 | Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | The Matrix,Judas,Deaths        |             |
 | Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix,Judas,Deaths        |             |
-| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas,The One,Morpheus,Trinity |             |
-| Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas,Exits,Deaths             |             |
+| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas,The One,Morpheus,Trinity | Plot Turn 2 |
+| Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas,Exits,Deaths             | Resolution  |
 
 ## 11.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat        |
