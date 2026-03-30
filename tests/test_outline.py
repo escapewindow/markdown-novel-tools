@@ -216,7 +216,7 @@ Num beats: 1"""
         (TEST_DATA_DIR / "test-simple-filter.md", False, ["Question"]),
     ),
 )
-def test_filter_split_columns(expected_file, also_split_by_slash, filter_):
+def test_filter_split_columns_markdown(expected_file, also_split_by_slash, filter_):
     """Build a table; get_markdown_from_table should result in the same file."""
     full_path = TEST_DATA_DIR / "test-simple.md"
     with open(expected_file) as fh:
@@ -228,5 +228,25 @@ def test_filter_split_columns(expected_file, also_split_by_slash, filter_):
         also_split_by_slash=also_split_by_slash,
     )
     mdoutput = outline.get_markdown_from_table(table, filter_=filter_, multi_table=True)
+    header = outline.get_outline_file_header("beats")
+    assert f"{header}{mdoutput}" == contents
+
+
+@pytest.mark.parametrize(
+    "expected_file, also_split_by_slash, filter_",
+    ((TEST_DATA_DIR / "test-simple-filter.html", False, ["Question"]),),
+)
+def test_filter_split_columns(expected_file, also_split_by_slash, filter_):
+    """Build a table; get_markdown_from_table should result in the same file."""
+    full_path = TEST_DATA_DIR / "test-simple.md"
+    with open(expected_file) as fh:
+        contents = fh.read()
+    table = outline.build_table_from_file(
+        full_path,
+        column="Beat",
+        split_columns=["Beat", "Arc"],
+        also_split_by_slash=also_split_by_slash,
+    )
+    mdoutput = outline.get_html_from_table(table, filter_=filter_, multi_table=True)
     header = outline.get_outline_file_header("beats")
     assert f"{header}{mdoutput}" == contents
