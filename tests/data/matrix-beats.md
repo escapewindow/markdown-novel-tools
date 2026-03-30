@@ -75,5 +75,11 @@ aliases: []
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
 | Morpheus believes Neo's the One. Trinity likes watching him.                   | Trinity | 01.01 | The One    | Hook        |
+| Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | The One    | Plot Turn 1 |
+| Oracle confirms Neo is not the One.                                            | Neo     | 08.01 | The One    | Pinch 1     |
+| Neo: The Oracle told me... Morpheus: Exactly what you needed to hear.          | Neo     | 12.02 | The One    | Midpoint    |
+| Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | The One    | Pinch 2     |
+| Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | The One    | Plot Turn 2 |
+| Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | The One    | Resolution  |
 
 ## Zion

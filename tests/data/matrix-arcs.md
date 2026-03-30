@@ -159,21 +159,21 @@ aliases: []
 | Morpheus believes Neo's the One. Trinity likes watching him.                   | Trinity | 01.01 | The One    | Hook        |
 | The Oracle prophesied the return of the One. Morpheus believes it is Neo.      | Neo     | 05.02 | The One    |             |
 | Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | The One    |             |
-| Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | The One    |             |
+| Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | The One    | Plot Turn 1 |
 | Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | The One    |             |
 | Trinity is hesitant to tell Neo what the Oracle told her.                      | Neo     | 08.01 | The One    |             |
-| Oracle confirms Neo is not the One.                                            | Neo     | 08.01 | The One    |             |
+| Oracle confirms Neo is not the One.                                            | Neo     | 08.01 | The One    | Pinch 1     |
 | Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | The One    |             |
 | Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | The One    |             |
 | As prophesied, Morpheus sacrifices himself to save Neo.                        | Neo     | 09.01 | The One    |             |
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | The One    |             |
 | Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | The One    |             |
 | Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | The One    |             |
-| Neo: The Oracle told me... Morpheus: Exactly what you needed to hear.          | Neo     | 12.02 | The One    |             |
+| Neo: The Oracle told me... Morpheus: Exactly what you needed to hear.          | Neo     | 12.02 | The One    | Midpoint    |
 | Neo fights Agent Smith rather than run.                                        | Neo     | 13.01 | The One    |             |
-| Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | The One    |             |
-| Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | The One    |             |
-| Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | The One    |             |
+| Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | The One    | Pinch 2     |
+| Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | The One    | Plot Turn 2 |
+| Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | The One    | Resolution  |
 | Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | The One    |             |
 
 ## Zion
