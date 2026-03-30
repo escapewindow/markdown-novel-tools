@@ -46,13 +46,18 @@ aliases: []
 ## Love
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
+| Morpheus believes Neo's the One. Trinity likes watching him.                   | Trinity | 01.01 | Love       | Hook        |
+| Trinity is hesitant to tell Neo what the Oracle told her.                      | Neo     | 08.01 | Love       | Plot Turn 1 |
+| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Love       | Pinch 1     |
+| Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Love       | Midpoint    |
+| Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Love       | Pinch 2     |
 | Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | Love       | Plot Turn 2 |
 | Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | Love       | Resolution  |
 
 ## Morpheus
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | Morpheus   | Hook        |
+| Morpheus believes Neo's the One. Trinity likes watching him.                   | Trinity | 01.01 | Morpheus   | Hook        |
 | Morpheus offers Neo a choice. Neo chooses to learn the truth about the Matrix. | Neo     | 03.01 | Morpheus   | Plot Turn 1 |
 | Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | Morpheus   | Pinch 1     |
 | Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | Morpheus   | Midpoint    |
@@ -69,6 +74,6 @@ aliases: []
 ## The One
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One    | Hook        |
+| Morpheus believes Neo's the One. Trinity likes watching him.                   | Trinity | 01.01 | The One    | Hook        |
 
 ## Zion

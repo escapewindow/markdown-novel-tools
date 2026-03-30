@@ -87,7 +87,7 @@ def test_table_markdown_simple():
     assert f"{header}{mdoutput}" == contents
     beats_stdout, beats_stderr = outline.get_beats(table, file_headers=header, stats=True)
     assert beats_stdout == contents
-    assert beats_stderr == """Num beats: 48"""
+    assert beats_stderr == """Num beats: 49"""
 
 
 def test_table_yaml_simple():
@@ -131,7 +131,7 @@ def test_table_from_multi():
     assert f"{header}{mdoutput}" == full_contents
     beats_stdout, beats_stderr = outline.get_beats(table, file_headers=True, stats=True)
     assert beats_stdout == full_contents
-    assert beats_stderr == """Num beats: 48"""
+    assert beats_stderr == """Num beats: 49"""
 
 
 def test_full_table_to_scenes():
@@ -158,7 +158,7 @@ def test_full_table_to_scenes():
     assert (
         beats_stderr
         == """Num values: 21 ['01.01', '01.02', '02.01', '02.02', '02.03', '03.01', '04.01', '05.02', '05.03', '06.01', '06.02', '07.01', '07.02', '08.01', '09.01', '10.01', '11.01', '12.01', '12.02', '13.01', '13.02']
-Num beats: 48"""
+Num beats: 49"""
     )
 
 

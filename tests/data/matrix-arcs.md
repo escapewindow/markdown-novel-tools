@@ -78,17 +78,19 @@ aliases: []
 ## Love
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
+| Morpheus believes Neo's the One. Trinity likes watching him.                   | Trinity | 01.01 | Love       | Hook        |
 | Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | Love       |             |
-| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Love       |             |
-| Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Love       |             |
-| Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Love       |             |
+| Trinity is hesitant to tell Neo what the Oracle told her.                      | Neo     | 08.01 | Love       | Plot Turn 1 |
+| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Love       | Pinch 1     |
+| Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Love       | Midpoint    |
+| Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Love       | Pinch 2     |
 | Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | Love       | Plot Turn 2 |
 | Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | Love       | Resolution  |
 
 ## Morpheus
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | Morpheus   | Hook        |
+| Morpheus believes Neo's the One. Trinity likes watching him.                   | Trinity | 01.01 | Morpheus   | Hook        |
 | Trinity knows Neo is looking for Morpheus. What is the Matrix?                 | Neo     | 02.01 | Morpheus   |             |
 | Morpheus warns Neo Agents are coming for him. Neo fails to escape.             | Neo     | 02.02 | Morpheus   |             |
 | Morpheus offers Neo a choice. Neo chooses to learn the truth about the Matrix. | Neo     | 03.01 | Morpheus   | Plot Turn 1 |
@@ -111,6 +113,7 @@ aliases: []
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
 | The Oracle prophesied the return of the One. Morpheus believes it is Neo.      | Neo     | 05.02 | Oracle     |             |
+| Trinity is hesitant to tell Neo what the Oracle told her.                      | Neo     | 08.01 | Oracle     |             |
 | Oracle confirms Neo is not the One.                                            | Neo     | 08.01 | Oracle     |             |
 | Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | Oracle     |             |
 | Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | Oracle     |             |
@@ -153,11 +156,12 @@ aliases: []
 ## The One
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One    | Hook        |
+| Morpheus believes Neo's the One. Trinity likes watching him.                   | Trinity | 01.01 | The One    | Hook        |
 | The Oracle prophesied the return of the One. Morpheus believes it is Neo.      | Neo     | 05.02 | The One    |             |
 | Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | The One    |             |
 | Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | The One    |             |
 | Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | The One    |             |
+| Trinity is hesitant to tell Neo what the Oracle told her.                      | Neo     | 08.01 | The One    |             |
 | Oracle confirms Neo is not the One.                                            | Neo     | 08.01 | The One    |             |
 | Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | The One    |             |
 | Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | The One    |             |

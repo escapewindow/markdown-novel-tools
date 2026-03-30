@@ -14,7 +14,7 @@ aliases: []
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------------|
 | Cypher is a traitor, selling out Morpheus and Zion to return to the Matrix.    | Cypher  | 07.02 | Judas,Zion                     | Pinch 1                |
 | Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Judas,Exits,Deaths             | Pinch 2                |
-| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas,The One,Morpheus,Love    | Plot Turn 2            |
+| Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas,Love,Morpheus,The One    | Plot Turn 2,Pinch 1    |
 | Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas,Exits,Deaths             | Resolution             |
 
 ## Neo
@@ -36,6 +36,7 @@ aliases: []
 | Sentinel almost takes out the Nebuchadnezzar.                                  | Neo     | 06.02 | Agents,Zion                    |                        |
 | Cypher regrets taking the red pill.                                            | Neo     | 07.01 | Judas,The Matrix               | Plot Turn 1            |
 | The truth is, there is no spoon. It is only yourself that bends.               | Neo     | 08.01 | Spoon                          |                        |
+| Trinity is hesitant to tell Neo what the Oracle told her.                      | Neo     | 08.01 | Love,Oracle,The One            | Plot Turn 1            |
 | Oracle confirms Neo is not the One.                                            | Neo     | 08.01 | Oracle,The One                 |                        |
 | Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | Morpheus,Oracle,The One        | Pinch 1                |
 | Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | Morpheus,Oracle,The One        | Midpoint               |
@@ -45,12 +46,12 @@ aliases: []
 | Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | The Matrix,Judas,Deaths        | Reveal                 |
 | Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix,Judas,Deaths        | Reveal                 |
 | Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Agents,Morpheus,Zion           | Midpoint,Pinch 2       |
-| Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Love,The One,Oracle            |                        |
+| Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Love,The One,Oracle            | Midpoint               |
 | Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Morpheus,Agents,Oracle         | Plot Turn 2            |
 | Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon,Morpheus,Agents          |                        |
 | Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Spoon           | Reveal                 |
 | Neo: The Oracle told me... Morpheus: Exactly what you needed to hear.          | Neo     | 12.02 | The One,Morpheus,Oracle        |                        |
-| Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Love,Oracle                    |                        |
+| Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Love,Oracle                    | Pinch 2                |
 | Neo has saved Morpheus. Agent Smith catches Neo.                               | Neo     | 13.01 | Morpheus,Agents                | Resolution             |
 | Neo fights Agent Smith rather than run.                                        | Neo     | 13.01 | The One,Agents                 |                        |
 | Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | Agents,Deaths,The One          | Pinch 2                |
@@ -61,7 +62,7 @@ aliases: []
 ## Trinity
 | Description                                                                    | POV     | Scene | Arc                            | Beat                   |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------------|
-| Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One,Morpheus               | Hook,Hook              |
+| Morpheus believes Neo's the One. Trinity likes watching him.                   | Trinity | 01.01 | The One,Morpheus,Love          | Hook,Hook,Hook         |
 | Trinity and Cypher's call is traced.                                           | Trinity | 01.01 | Judas                          | Hook                   |
 | Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon                          | Question               |
 | Agent Brown copies Trinity's impossible jump. She evades him with another.     | Trinity | 01.02 | Agents,Spoon                   | Hook                   |
