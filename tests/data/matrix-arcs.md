@@ -33,6 +33,7 @@ aliases: []
 | Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Agents     |             |
 | Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Agents     |             |
 | Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents     |             |
+| Neo has saved Morpheus. Agent Smith catches Neo.                               | Neo     | 13.01 | Agents     |             |
 | Neo fights Agent Smith rather than run.                                        | Neo     | 13.01 | Agents     |             |
 | Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | Agents     | Pinch 2     |
 | Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | Agents     | Plot Turn 2 |
@@ -58,7 +59,6 @@ aliases: []
 | Mouse dies in the Matrix.                                                      | Neo     | 09.01 | Exits      |             |
 | Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Exits      |             |
 | Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Exits      |             |
-| Morpheus and Trinity leave the Matrix. Agent Smith catches Neo.                | Neo     | 13.01 | Exits      |             |
 | Sentinels close in on the Nebuchadnezzar. Neo is still stuck in the Matrix.    | Trinity | 13.01 | Exits      |             |
 | Neo exits the Matrix right before Morpheus activates the EMP.                  | Neo     | 13.02 | Exits      |             |
 
@@ -81,21 +81,21 @@ aliases: []
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | Morpheus   | Hook        |
 | Trinity knows Neo is looking for Morpheus. What is the Matrix?                 | Neo     | 02.01 | Morpheus   |             |
 | Morpheus warns Neo Agents are coming for him. Neo fails to escape.             | Neo     | 02.02 | Morpheus   |             |
-| Morpheus offers Neo a choice. Neo chooses to learn the truth about the Matrix. | Neo     | 03.01 | Morpheus   |             |
+| Morpheus offers Neo a choice. Neo chooses to learn the truth about the Matrix. | Neo     | 03.01 | Morpheus   | Plot Turn 1 |
 | Morpheus shows Neo the Matrix's origins. The Matrix is control.                | Neo     | 05.02 | Morpheus   |             |
 | The Oracle prophesied the return of the One. Morpheus believes it is Neo.      | Neo     | 05.02 | Morpheus   |             |
 | Neo learns Kung Fu. He spars with Morpheus and lands a punch.                  | Neo     | 05.02 | Morpheus   |             |
 | Morpheus: Everyone who has fought an Agent has died. But Neo will prevail.     | Neo     | 06.01 | Morpheus   |             |
 | Neo: I can dodge bullets? Morpheus: When you're ready, you won't have to.      | Neo     | 06.01 | Morpheus   |             |
-| Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | Morpheus   |             |
-| Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | Morpheus   |             |
+| Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | Morpheus   | Pinch 1     |
+| Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | Morpheus   | Midpoint    |
 | As prophesied, Morpheus sacrifices himself to save Neo.                        | Neo     | 09.01 | Morpheus   |             |
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Morpheus   |             |
-| Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Morpheus   |             |
-| Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Morpheus   |             |
+| Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Morpheus   | Pinch 2     |
+| Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Morpheus   | Plot Turn 2 |
 | Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Morpheus   |             |
 | Neo: The Oracle told me... Morpheus: Exactly what you needed to hear.          | Neo     | 12.02 | Morpheus   |             |
-| Morpheus and Trinity leave the Matrix. Agent Smith catches Neo.                | Neo     | 13.01 | Morpheus   |             |
+| Neo has saved Morpheus. Agent Smith catches Neo.                               | Neo     | 13.01 | Morpheus   | Resolution  |
 
 ## Oracle
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
@@ -119,7 +119,7 @@ aliases: []
 | Some rules can be broken in the Matrix.                                        | Neo     | 05.02 | Spoon      |             |
 | Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | Spoon      |             |
 | The truth is, there is no spoon. It is only yourself that bends.               | Neo     | 08.01 | Spoon      |             |
-| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon      |             |
+| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon      | Plot Turn 2 |
 | Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Spoon      |             |
 
 ## The Matrix
@@ -171,7 +171,6 @@ aliases: []
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Trinity    |             |
 | Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Trinity    |             |
 | Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Trinity    |             |
-| Morpheus and Trinity leave the Matrix. Agent Smith catches Neo.                | Neo     | 13.01 | Trinity    |             |
 | Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | Trinity    |             |
 
 ## Zion

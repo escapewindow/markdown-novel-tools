@@ -47,6 +47,12 @@ aliases: []
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | Morpheus   | Hook        |
+| Morpheus offers Neo a choice. Neo chooses to learn the truth about the Matrix. | Neo     | 03.01 | Morpheus   | Plot Turn 1 |
+| Morpheus believes so strongly he will sacrifice his life to save Neo's.        | Neo     | 08.01 | Morpheus   | Pinch 1     |
+| Neo must decide whether he or Morpheus will die.                               | Neo     | 08.01 | Morpheus   | Midpoint    |
+| Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Morpheus   | Pinch 2     |
+| Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Morpheus   | Plot Turn 2 |
+| Neo has saved Morpheus. Agent Smith catches Neo.                               | Neo     | 13.01 | Morpheus   | Resolution  |
 
 ## Oracle
 
@@ -54,6 +60,7 @@ aliases: []
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
 | Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon      | Hook        |
+| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon      | Plot Turn 2 |
 
 ## The Matrix
 
