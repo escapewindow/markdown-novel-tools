@@ -26,15 +26,12 @@ aliases: []
 | As prophesied, Morpheus sacrifices himself to save Neo.                        | Neo     | 09.01 | Agents     | Pinch 1     |
 | Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Agents     | Midpoint    |
 | Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | Agents     | Pinch 2     |
-| Trinity admits her love for Neo and kisses him. He breathes once more.         | Trinity | 13.01 | Agents     | Plot Turn 2 |
+| Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | Agents     | Plot Turn 2 |
 | Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | Agents     | Resolution  |
 
 ## Deaths
 
 ## Exits
-| Description                                                                    | POV     | Scene | Arc        | Beat        |
-|--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Trinity escapes the Matrix via pay phone after the hardline is cut.            | Trinity | 01.02 | Exits      | Hook        |
 
 ## Judas
 | Description                                                                    | POV     | Scene | Arc        | Beat        |

@@ -36,7 +36,7 @@ aliases: []
 | Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents     |             |
 | Neo fights Agent Smith rather than run.                                        | Neo     | 13.01 | Agents     |             |
 | Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | Agents     | Pinch 2     |
-| Trinity admits her love for Neo and kisses him. He breathes once more.         | Trinity | 13.01 | Agents     | Plot Turn 2 |
+| Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | Agents     | Plot Turn 2 |
 | Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | Agents     | Resolution  |
 
 ## Deaths
@@ -46,19 +46,19 @@ aliases: []
 | Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Deaths     |             |
 | Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | Deaths     |             |
 | Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | Deaths     |             |
+| Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Deaths     |             |
 | Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | Deaths     |             |
-| Trinity admits her love for Neo and kisses him. He breathes once more.         | Trinity | 13.01 | Deaths     |             |
-| Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | Deaths     |             |
+| Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | Deaths     |             |
 
 ## Exits
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Trinity escapes the Matrix via pay phone after the hardline is cut.            | Trinity | 01.02 | Exits      | Hook        |
+| Trinity escapes the Matrix via pay phone after the hardline is cut.            | Trinity | 01.02 | Exits      |             |
 | If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | Exits      |             |
 | Agents find them, cut the hardline, and brick up the windows.                  | Neo     | 09.01 | Exits      |             |
 | Mouse dies in the Matrix.                                                      | Neo     | 09.01 | Exits      |             |
 | Cypher kills Dozer and Tank. Trinity and Neo are stranded.                     | Cypher  | 10.01 | Exits      |             |
-| Tank kills Cypher and pulls Trinity and Neo out of the Matrix.                 | Cypher  | 10.01 | Exits      |             |
+| Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Exits      |             |
 | Morpheus and Trinity leave the Matrix. Agent Smith catches Neo.                | Neo     | 13.01 | Exits      |             |
 | Sentinels close in on the Nebuchadnezzar. Neo is still stuck in the Matrix.    | Trinity | 13.01 | Exits      |             |
 | Neo exits the Matrix right before Morpheus activates the EMP.                  | Neo     | 13.02 | Exits      |             |
@@ -74,7 +74,7 @@ aliases: []
 | Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | Judas      |             |
 | Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | Judas      |             |
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas      |             |
-| Tank kills Cypher and pulls Trinity and Neo out of the Matrix.                 | Cypher  | 10.01 | Judas      |             |
+| Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas      |             |
 
 ## Kung Fu
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
@@ -165,7 +165,8 @@ aliases: []
 | Neo: The Oracle told me... Morpheus: Exactly what you needed to hear.          | Neo     | 12.02 | The One    |             |
 | Neo fights Agent Smith rather than run.                                        | Neo     | 13.01 | The One    |             |
 | Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | The One    |             |
-| Trinity admits her love for Neo and kisses him. He breathes once more.         | Trinity | 13.01 | The One    |             |
+| Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | The One    |             |
+| Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | The One    |             |
 | Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | The One    |             |
 | Neo brings hope to the people in the Matrix.                                   | Neo     | 14.01 | The One    |             |
 
@@ -178,7 +179,7 @@ aliases: []
 | Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Trinity    |             |
 | Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Trinity    |             |
 | Morpheus and Trinity leave the Matrix. Agent Smith catches Neo.                | Neo     | 13.01 | Trinity    |             |
-| Trinity admits her love for Neo and kisses him. He breathes once more.         | Trinity | 13.01 | Trinity    |             |
+| Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | Trinity    |             |
 
 ## Zion
 | Description                                                                    | POV     | Scene | Arc        | Beat        |

@@ -12,7 +12,7 @@ aliases: []
 | Trinity and Cypher's call is traced.                                           | Trinity | 01.01 | Judas                          | Hook        |
 | Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Kung Fu                        | Hook        |
 | Agent Brown copies Trinity's impossible jump. She evades him with another.     | Trinity | 01.02 | Agents,Spoon,Kung Fu           | Hook,Hook   |
-| Trinity escapes the Matrix via pay phone after the hardline is cut.            | Trinity | 01.02 | Exits                          | Hook        |
+| Trinity escapes the Matrix via pay phone after the hardline is cut.            | Trinity | 01.02 | Exits                          |             |
 | Trinity knows Neo is looking for Morpheus. What is the Matrix?                 | Neo     | 02.01 | Morpheus,The Matrix            |             |
 | Morpheus warns Neo Agents are coming for him. Neo fails to escape.             | Neo     | 02.02 | Morpheus,Agents,Spoon          |             |
 | Agent Smith seals Neo's mouth shut and implants a bug in his navel.            | Neo     | 02.03 | The Matrix,Agents              |             |
@@ -40,7 +40,7 @@ aliases: []
 | Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | The Matrix,Judas,Deaths        |             |
 | Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix,Judas,Deaths        |             |
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas,The One,Morpheus,Trinity |             |
-| Tank kills Cypher and pulls Trinity and Neo out of the Matrix.                 | Cypher  | 10.01 | Judas,Exits                    |             |
+| Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas,Exits,Deaths             |             |
 | Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Agents,Morpheus,Zion           | Midpoint    |
 | Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Trinity,The One,Oracle         |             |
 | Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Morpheus,Agents,Oracle         |             |
@@ -52,7 +52,8 @@ aliases: []
 | Neo fights Agent Smith rather than run.                                        | Neo     | 13.01 | The One,Agents                 |             |
 | Sentinels close in on the Nebuchadnezzar. Neo is still stuck in the Matrix.    | Trinity | 13.01 | Zion,Exits,The Matrix          |             |
 | Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | Agents,Deaths,The One          | Pinch 2     |
-| Trinity admits her love for Neo and kisses him. He breathes once more.         | Trinity | 13.01 | Agents,Trinity,The One,Deaths  | Plot Turn 2 |
-| Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | Agents,The One,Deaths          | Resolution  |
+| Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | Trinity,The One                |             |
+| Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | Agents,The One,Deaths          | Plot Turn 2 |
+| Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | Agents,The One                 | Resolution  |
 | Neo exits the Matrix right before Morpheus activates the EMP.                  | Neo     | 13.02 | Zion,Exits                     |             |
 | Neo brings hope to the people in the Matrix.                                   | Neo     | 14.01 | The One,The Matrix             |             |
