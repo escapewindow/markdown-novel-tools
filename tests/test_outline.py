@@ -208,16 +208,18 @@ Num beats: 1"""
 
 
 @pytest.mark.parametrize(
-    "expected_file, also_split_by_slash, filter_",
+    "expected_file, also_split_by_slash, filter_, format_",
     (
-        (TEST_DATA_DIR / "test-simple-split_columns.md", True, ["Hook"]),
-        (TEST_DATA_DIR / "test-simple-split_columns-noslash.md", False, []),
-        (TEST_DATA_DIR / "test-simple-filter.md", False, ["Hook/Question"]),
-        (TEST_DATA_DIR / "test-simple-filter.md", False, ["Question"]),
+        (TEST_DATA_DIR / "test-simple-split_columns.md", True, ["Hook"], None),
+        (TEST_DATA_DIR / "test-simple-split_columns-noslash.md", False, [], None),
+        (TEST_DATA_DIR / "test-simple-filter.md", False, ["Hook/Question"], None),
+        (TEST_DATA_DIR / "test-simple-filter.md", False, ["Question"], None),
+        (TEST_DATA_DIR / "test-simple-filter.html", False, ["Question"], "html"),
+        (TEST_DATA_DIR / "test-simple-filter.yaml", False, ["Question"], "yaml"),
     ),
 )
-def test_filter_split_columns_markdown(expected_file, also_split_by_slash, filter_):
-    """Build a table; get_markdown_from_table should result in the same file."""
+def test_filter_split_columns_markdown(expected_file, also_split_by_slash, filter_, format_):
+    """Build a table; get_beats should result in the same file."""
     full_path = TEST_DATA_DIR / "test-simple.md"
     with open(expected_file) as fh:
         contents = fh.read()
@@ -227,26 +229,13 @@ def test_filter_split_columns_markdown(expected_file, also_split_by_slash, filte
         split_columns=["Beat", "Arc"],
         also_split_by_slash=also_split_by_slash,
     )
-    mdoutput = outline.get_markdown_from_table(table, filter_=filter_, multi_table=True)
-    header = outline.get_outline_file_header("beats")
-    assert f"{header}{mdoutput}" == contents
-
-
-@pytest.mark.parametrize(
-    "expected_file, also_split_by_slash, filter_",
-    ((TEST_DATA_DIR / "test-simple-filter.html", False, ["Question"]),),
-)
-def test_filter_split_columns(expected_file, also_split_by_slash, filter_):
-    """Build a table; get_markdown_from_table should result in the same file."""
-    full_path = TEST_DATA_DIR / "test-simple.md"
-    with open(expected_file) as fh:
-        contents = fh.read()
-    table = outline.build_table_from_file(
-        full_path,
-        column="Beat",
-        split_columns=["Beat", "Arc"],
-        also_split_by_slash=also_split_by_slash,
+    file_headers = format_ in (None, "markdown")
+    output, _ = outline.get_beats(
+        table,
+        filter_=filter_,
+        multi_table_output=True,
+        format_=format_,
+        file_headers=file_headers,
+        beats_type="beats",
     )
-    mdoutput = outline.get_html_from_table(table, filter_=filter_, multi_table=True)
-    header = outline.get_outline_file_header("beats")
-    assert f"{header}{mdoutput}" == contents
+    assert output == contents
