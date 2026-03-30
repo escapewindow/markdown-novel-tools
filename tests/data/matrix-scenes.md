@@ -34,12 +34,12 @@ aliases: []
 | Trinity took an extra shift to watch Neo.                                      | Trinity | 01.01 | The One,Trinity                | Hook,Hook   |
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One,Morpheus               | Hook,Hook   |
 | Trinity and Cypher's call is traced.                                           | Trinity | 01.01 | Judas                          | Hook        |
-| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Kung Fu                        | Hook        |
+| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon                          | Hook        |
 
 ## 01.02
 | Description                                                                    | POV     | Scene | Arc                            | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|-------------|
-| Agent Brown copies Trinity's impossible jump. She evades him with another.     | Trinity | 01.02 | Agents,Spoon,Kung Fu           | Hook,Hook   |
+| Agent Brown copies Trinity's impossible jump. She evades him with another.     | Trinity | 01.02 | Agents,Spoon                   | Hook        |
 | Trinity escapes the Matrix via pay phone after the hardline is cut.            | Trinity | 01.02 | Exits                          |             |
 
 ## 02.01
@@ -72,7 +72,7 @@ aliases: []
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|-------------|
 | Morpheus shows Neo the Matrix's origins. The Matrix is control.                | Neo     | 05.02 | Morpheus,The Matrix            |             |
 | The Oracle prophesied the return of the One. Morpheus believes it is Neo.      | Neo     | 05.02 | Morpheus,The One,Oracle        |             |
-| Neo learns Kung Fu. He spars with Morpheus and lands a punch.                  | Neo     | 05.02 | Kung Fu,Morpheus               |             |
+| Neo learns Kung Fu. He spars with Morpheus and lands a punch.                  | Neo     | 05.02 | Spoon,Morpheus                 |             |
 | Some rules can be broken in the Matrix.                                        | Neo     | 05.02 | The Matrix,Spoon               |             |
 
 ## 05.03
@@ -136,8 +136,8 @@ aliases: []
 ## 12.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|-------------|
-| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Kung Fu,Spoon,Agents,Morpheus  |             |
-| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Kung Fu         |             |
+| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon,Agents,Morpheus          |             |
+| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Spoon           |             |
 
 ## 12.02
 | Description                                                                    | POV     | Scene | Arc                            | Beat        |

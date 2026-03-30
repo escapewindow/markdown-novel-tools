@@ -9,7 +9,6 @@ aliases: []
 - Deaths [github](#deaths) [obsidian](#Deaths)
 - Exits [github](#exits) [obsidian](#Exits)
 - Judas [github](#judas) [obsidian](#Judas)
-- Kung Fu [github](#kung-fu) [obsidian](#Kung%20Fu)
 - Morpheus [github](#morpheus) [obsidian](#Morpheus)
 - Oracle [github](#oracle) [obsidian](#Oracle)
 - Spoon [github](#spoon) [obsidian](#Spoon)
@@ -44,11 +43,6 @@ aliases: []
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Judas      | Plot Turn 2 |
 | Tank is alive. He kills Cypher and pulls Trinity and Neo out of the Matrix.    | Cypher  | 10.01 | Judas      | Resolution  |
 
-## Kung Fu
-| Description                                                                    | POV     | Scene | Arc        | Beat        |
-|--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Kung Fu    | Hook        |
-
 ## Morpheus
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
@@ -59,7 +53,7 @@ aliases: []
 ## Spoon
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Agent Brown copies Trinity's impossible jump. She evades him with another.     | Trinity | 01.02 | Spoon      | Hook        |
+| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon      | Hook        |
 
 ## The Matrix
 

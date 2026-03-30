@@ -10,8 +10,8 @@ aliases: []
 | Trinity took an extra shift to watch Neo.                                      | Trinity | 01.01 | The One,Trinity                | Hook,Hook   |
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One,Morpheus               | Hook,Hook   |
 | Trinity and Cypher's call is traced.                                           | Trinity | 01.01 | Judas                          | Hook        |
-| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Kung Fu                        | Hook        |
-| Agent Brown copies Trinity's impossible jump. She evades him with another.     | Trinity | 01.02 | Agents,Spoon,Kung Fu           | Hook,Hook   |
+| Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon                          | Hook        |
+| Agent Brown copies Trinity's impossible jump. She evades him with another.     | Trinity | 01.02 | Agents,Spoon                   | Hook        |
 | Trinity escapes the Matrix via pay phone after the hardline is cut.            | Trinity | 01.02 | Exits                          |             |
 | Trinity knows Neo is looking for Morpheus. What is the Matrix?                 | Neo     | 02.01 | Morpheus,The Matrix            |             |
 | Morpheus warns Neo Agents are coming for him. Neo fails to escape.             | Neo     | 02.02 | Morpheus,Agents,Spoon          |             |
@@ -20,7 +20,7 @@ aliases: []
 | Neo is reborn and sees the Matrix in its ugly reality.                         | Neo     | 04.01 | The Matrix                     |             |
 | Morpheus shows Neo the Matrix's origins. The Matrix is control.                | Neo     | 05.02 | Morpheus,The Matrix            |             |
 | The Oracle prophesied the return of the One. Morpheus believes it is Neo.      | Neo     | 05.02 | Morpheus,The One,Oracle        |             |
-| Neo learns Kung Fu. He spars with Morpheus and lands a punch.                  | Neo     | 05.02 | Kung Fu,Morpheus               |             |
+| Neo learns Kung Fu. He spars with Morpheus and lands a punch.                  | Neo     | 05.02 | Spoon,Morpheus                 |             |
 | Some rules can be broken in the Matrix.                                        | Neo     | 05.02 | The Matrix,Spoon               |             |
 | Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | The One,Spoon,Trinity          |             |
 | If you die in the Matrix, you die in real life.                                | Neo     | 06.01 | The Matrix,Exits               |             |
@@ -44,8 +44,8 @@ aliases: []
 | Morpheus weakens against the Agents. Tank: We have to pull the plug.           | Neo     | 11.01 | Agents,Morpheus,Zion           | Midpoint    |
 | Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Trinity,The One,Oracle         |             |
 | Neo decides to save Morpheus. Morpheus is the one that matters.                | Neo     | 11.01 | Morpheus,Agents,Oracle         |             |
-| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Kung Fu,Spoon,Agents,Morpheus  |             |
-| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Kung Fu         |             |
+| Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon,Agents,Morpheus          |             |
+| Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Agents,The One,Spoon           |             |
 | Neo: The Oracle told me... Morpheus: Exactly what you needed to hear.          | Neo     | 12.02 | The One,Morpheus,Oracle        |             |
 | Trinity nearly admits her love, and that Neo must be the One.                  | Neo     | 13.01 | Trinity,Oracle                 |             |
 | Morpheus and Trinity leave the Matrix. Agent Smith catches Neo.                | Neo     | 13.01 | Exits,Trinity,Morpheus         |             |
