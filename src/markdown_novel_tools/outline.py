@@ -200,10 +200,6 @@ def get_line_parts(line, split_columns=None):
         if split_columns and i in split_columns:
             # Split by ',': ["a", "b", "c/d"]
             comma_line_parts = [x.strip() for x in part.split(",")]
-            #            # Split by '/': ["a", "b", ["c", "d"]]
-            #            for j, k in enumerate(comma_line_parts):
-            #                if "/" in k:
-            #                    comma_line_parts[j] = k.split("/")
             part = comma_line_parts
         parts.append(part)
     return parts
