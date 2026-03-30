@@ -67,7 +67,7 @@ def _beats_helper(
     if table:
         return get_beats(
             table,
-            filter_=filter,
+            filter_=filter_,
             file_headers=file_headers,
             multi_table_output=multi_table_output,
             stats=stats,
