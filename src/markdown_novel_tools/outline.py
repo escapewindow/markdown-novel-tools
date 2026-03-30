@@ -223,7 +223,7 @@ aliases: []
 
 def get_beats(
     table,
-    filter=None,
+    filter_=None,
     file_headers=False,
     multi_table_output=False,
     stats=False,
@@ -238,26 +238,31 @@ def get_beats(
         stdout += get_outline_file_header(beats_type)
 
     if format_ == "yaml":
-        stdout = f"{stdout}{get_yaml_from_table(table, filter_=filter)}"
+        stdout = f"{stdout}{get_yaml_from_table(table, filter_=filter_)}"
     elif format_ is None or format_ == "markdown":
-        stdout = f"{stdout}{get_markdown_from_table(table, filter_=filter, multi_table=multi_table_output)}"
+        stdout = f"{stdout}{get_markdown_from_table(table, filter_=filter_, multi_table=multi_table_output)}"
     elif format_ == "html":
         # No markdown file headers in html
-        stdout = get_html_from_table(table, filter_=filter, multi_table=multi_table_output)
+        stdout = get_html_from_table(table, filter_=filter_, multi_table=multi_table_output)
     else:
         raise Exception(f"Unknown format {format_}!")
 
     if stats:
+        line_count = table.line_count
         if table.column_values:
             values = set()
-            if filter:
+            if filter_:
+                line_count = 0
                 for val in table.column_values:
-                    values.update(set(split_by_char(val, "/")))
+                    for split_by_slash in split_by_char(val, "/"):
+                        if split_by_slash in filter_:
+                            values.add(split_by_slash)
+                            line_count += 1
                 values = list(values)
             else:
                 values = table.column_values
             stderr = f"{stderr}Num values: {len(values)} {sorted(values)}\n"
-        stderr = f"{stderr}Num beats: {table.line_count}"
+        stderr = f"{stderr}Num beats: {line_count}"
     return stdout, stderr
 
 

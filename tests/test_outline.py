@@ -191,10 +191,20 @@ def test_filter_order():
         order=["Description", "POV", "Beat", "Scene", "Arc"],
         column="Scene",
     )
-    # mdoutput = outline.get_beats(table, filter=["02.01"], file_headers=True, beats_type="scenes")
     mdoutput = outline.get_markdown_from_table(table, filter_=["02.01"], multi_table=True)
     header = outline.get_outline_file_header("scenes")
     assert f"{header}{mdoutput}" == contents
+    beats_stdout, beats_stderr = outline.get_beats(
+        table,
+        file_headers=True,
+        stats=True,
+        beats_type="scenes",
+        multi_table_output=True,
+        filter_=["02.01"],
+    )
+    assert beats_stdout == contents
+    assert beats_stderr == """Num values: 1 ['02.01']
+Num beats: 1"""
 
 
 @pytest.mark.parametrize(
@@ -219,6 +229,4 @@ def test_filter_split_columns(expected_file, also_split_by_slash, filter_):
     )
     mdoutput = outline.get_markdown_from_table(table, filter_=filter_, multi_table=True)
     header = outline.get_outline_file_header("beats")
-    with open("f", "w") as fh:
-        fh.write(f"{header}{mdoutput}")
     assert f"{header}{mdoutput}" == contents

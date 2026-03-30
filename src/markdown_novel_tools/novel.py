@@ -43,7 +43,7 @@ from markdown_novel_tools.utils import find_markdown_files, write_to_file
 def _beats_helper(
     path,
     column=None,
-    filter=None,
+    filter_=None,
     file_headers=False,
     multi_table_output=False,
     order=None,
@@ -67,7 +67,7 @@ def _beats_helper(
     if table:
         return get_beats(
             table,
-            filter=filter,
+            filter_=filter,
             file_headers=file_headers,
             multi_table_output=multi_table_output,
             stats=stats,
@@ -104,7 +104,7 @@ def novel_beats(args):
     stdout, stderr = _beats_helper(
         args.path,
         column=args.column,
-        filter=args.filter,
+        filter_=args.filter,
         file_headers=args.file_headers,
         multi_table_output=args.multi_table_output,
         order=args.order,
