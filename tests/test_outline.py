@@ -183,7 +183,7 @@ def test_table_from_multi_invalid_headers(path):
 def test_filter_order():
     """Build a table; change the column order and filter by scene."""
     full_path = TEST_DATA_DIR / "test-simple.md"
-    second_scene_path = TEST_DATA_DIR / "test-simple-second-scene.md"
+    second_scene_path = TEST_DATA_DIR / "test-simple-second-scene-order.md"
     with open(second_scene_path) as fh:
         contents = fh.read()
     table = outline.build_table_from_file(
@@ -239,3 +239,20 @@ def test_filter_split_columns_markdown(expected_file, also_split_by_slash, filte
         beats_type="beats",
     )
     assert output == contents
+
+
+def test_table_num():
+    """Build a table from a multi table file; filter by table number."""
+    scene_path = TEST_DATA_DIR / "test-multi-scene.md"
+    second_scene_path = TEST_DATA_DIR / "test-simple-second-scene.md"
+    with open(second_scene_path) as fh:
+        contents = fh.read()
+
+    table = outline.build_table_from_file(
+        scene_path,
+        target_table_num=2,
+        column="Scene",
+    )
+    mdoutput = outline.get_markdown_from_table(table, multi_table=True)
+    header = outline.get_outline_file_header("scenes")
+    assert f"{header}{mdoutput}" == contents
