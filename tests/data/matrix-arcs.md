@@ -122,6 +122,7 @@ aliases: []
 | The truth is, there is no spoon. It is only yourself that bends.               | Neo     | 08.01 | Spoon      |             |
 | Trinity and Neo fight the Agents to save Morpheus. Neo: There is no spoon.     | Neo     | 12.01 | Spoon      |             |
 | Neo dodges bullets. He's faster than anyone Trinity's ever seen.               | Neo     | 12.01 | Spoon      |             |
+| Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | Spoon      |             |
 
 ## The Matrix
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
@@ -138,12 +139,10 @@ aliases: []
 | Cypher disconnects Apoc's connection to the Matrix. He dies.                   | Neo     | 10.01 | The Matrix | Reveal      |
 | Cypher disconnects Switch's connection to the Matrix. She dies.                | Neo     | 10.01 | The Matrix | Reveal      |
 | Sentinels close in on the Nebuchadnezzar. Neo is still stuck in the Matrix.    | Trinity | 13.01 | The Matrix |             |
-| Neo brings hope to the people in the Matrix.                                   | Neo     | 14.01 | The Matrix |             |
 
 ## The One
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Trinity took an extra shift to watch Neo.                                      | Trinity | 01.01 | The One    | Hook        |
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One    | Hook        |
 | The Oracle prophesied the return of the One. Morpheus believes it is Neo.      | Neo     | 05.02 | The One    |             |
 | Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | The One    |             |
@@ -162,12 +161,10 @@ aliases: []
 | Trinity admits her love for Neo and kisses him.                                | Trinity | 13.01 | The One    |             |
 | Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | The One    |             |
 | Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | The One    |             |
-| Neo brings hope to the people in the Matrix.                                   | Neo     | 14.01 | The One    |             |
 
 ## Trinity
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Trinity took an extra shift to watch Neo.                                      | Trinity | 01.01 | Trinity    | Hook        |
 | Neo fails his first jump. Trinity is crushed. He might not be the One.         | Neo     | 05.03 | Trinity    |             |
 | Cypher: If Neo is the one, I won't be able to pull this plug.                  | Cypher  | 10.01 | Trinity    |             |
 | Neo: I'm not the One. Trinity: No, you have to be.                             | Neo     | 11.01 | Trinity    |             |

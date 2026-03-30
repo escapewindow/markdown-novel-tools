@@ -26,12 +26,10 @@ aliases: []
 - 12.02 [github](#1202) [obsidian](#12.02)
 - 13.01 [github](#1301) [obsidian](#13.01)
 - 13.02 [github](#1302) [obsidian](#13.02)
-- 14.01 [github](#1401) [obsidian](#14.01)
 
 ## 01.01
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
-| Trinity took an extra shift to watch Neo.                                      | Trinity | 01.01 | The One,Trinity                | Hook,Hook        |
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One,Morpheus               | Hook,Hook        |
 | Trinity and Cypher's call is traced.                                           | Trinity | 01.01 | Judas                          | Hook             |
 | Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon                          | Question         |
@@ -158,10 +156,5 @@ aliases: []
 ## 13.02
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
-| Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | Agents,The One                 | Resolution       |
+| Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | Agents,The One,Spoon           | Resolution       |
 | Neo exits the Matrix right before Morpheus activates the EMP.                  | Neo     | 13.02 | Zion,Exits                     |                  |
-
-## 14.01
-| Description                                                                    | POV     | Scene | Arc                            | Beat             |
-|--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
-| Neo brings hope to the people in the Matrix.                                   | Neo     | 14.01 | The One,The Matrix             |                  |

@@ -63,12 +63,8 @@ aliases: []
 ## The One
 | Description                                                                    | POV     | Scene | Arc        | Beat        |
 |--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Trinity took an extra shift to watch Neo.                                      | Trinity | 01.01 | The One    | Hook        |
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One    | Hook        |
 
 ## Trinity
-| Description                                                                    | POV     | Scene | Arc        | Beat        |
-|--------------------------------------------------------------------------------|---------|-------|------------|-------------|
-| Trinity took an extra shift to watch Neo.                                      | Trinity | 01.01 | Trinity    | Hook        |
 
 ## Zion

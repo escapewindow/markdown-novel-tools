@@ -55,14 +55,12 @@ aliases: []
 | Neo fights Agent Smith rather than run.                                        | Neo     | 13.01 | The One,Agents                 |                  |
 | Agent Smith shoots and kills Neo.                                              | Neo     | 13.01 | Agents,Deaths,The One          | Pinch 2          |
 | Neo rises from the dead. He is the One.                                        | Neo     | 13.01 | Agents,The One,Deaths          | Plot Turn 2      |
-| Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | Agents,The One                 | Resolution       |
+| Neo stops the Agents' bullets in mid-air, and kills the Agents.                | Neo     | 13.02 | Agents,The One,Spoon           | Resolution       |
 | Neo exits the Matrix right before Morpheus activates the EMP.                  | Neo     | 13.02 | Zion,Exits                     |                  |
-| Neo brings hope to the people in the Matrix.                                   | Neo     | 14.01 | The One,The Matrix             |                  |
 
 ## Trinity
 | Description                                                                    | POV     | Scene | Arc                            | Beat             |
 |--------------------------------------------------------------------------------|---------|-------|--------------------------------|------------------|
-| Trinity took an extra shift to watch Neo.                                      | Trinity | 01.01 | The One,Trinity                | Hook,Hook        |
 | Morpheus believes Neo's the One. Trinity reserves judgment.                    | Trinity | 01.01 | The One,Morpheus               | Hook,Hook        |
 | Trinity and Cypher's call is traced.                                           | Trinity | 01.01 | Judas                          | Hook             |
 | Trinity takes out the police by moving quicker than any human.                 | Trinity | 01.01 | Spoon                          | Question         |
