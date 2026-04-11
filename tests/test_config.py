@@ -129,6 +129,51 @@ def test_get_markdown_template_choices():
 
 
 @pytest.mark.parametrize(
+    "var, repl_dict, expected, raises",
+    (
+        (set(["a", "b"]), {}, None, TypeError),
+        ("same", None, "same", None),
+        (None, {}, None, None),
+        ("foo{foo}", {"foo": "bar"}, "foobar", None),
+        ({"foo": "{foo}"}, {"foo": "bar"}, {"foo": "bar"}, None),
+        ({"a": "{foo}", "b": "b{foo}"}, {"foo": "bar"}, {"a": "bar", "b": "bbar"}, None),
+        (
+            {
+                "top": {
+                    "a": "{foo}bar",
+                    "b": "b{foo}",
+                    "c": "c{foo}x",
+                    "d": {
+                        "e": "e{foo}",
+                    },
+                },
+                "xx": "{foo}bar",
+            },
+            {"foo": "bar"},
+            {
+                "top": {
+                    "a": "barbar",
+                    "b": "bbar",
+                    "c": "cbarx",
+                    "d": {
+                        "e": "ebar",
+                    },
+                },
+                "xx": "barbar",
+            },
+            None,
+        ),
+    ),
+)
+def test_replace_values(var, repl_dict, expected, raises):
+    if raises:
+        with pytest.raises(raises):
+            mdconfig._replace_values(var, repl_dict)
+    else:
+        assert mdconfig._replace_values(var, repl_dict) == expected
+
+
+@pytest.mark.parametrize(
     "config_val, user_config_val, key_name, raises, expected",
     (
         ("a", None, "", False, "a"),
