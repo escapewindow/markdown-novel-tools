@@ -1,5 +1,7 @@
 """Test constants."""
 
+import os
+import tempfile
 from pathlib import Path
 
 import pytest
@@ -19,6 +21,27 @@ def test_get_config_path():
 
     Do I want a git repo for any other tests? I could create a bogus one as a fixture
     """
+    with tempfile.TemporaryDirectory() as tmp_home, tempfile.TemporaryDirectory() as tmp_repo, tempfile.TemporaryDirectory() as tmp_config:
+        os.environ = {
+            "HOME": tmp_home,
+            "XDG_CONFIG_HOME": tmp_config,
+        }
+        os.chdir(tmp_repo)
+
+        # No config file in invalid git root, config dir, home dir
+        assert mdconfig.get_config_path() is None
+
+        # No config file in valid git root, config dir, home dir
+        Repo.init(tmp_repo)
+        assert mdconfig.get_config_path() is None
+
+        # home config
+        home_config = Path(tmp_home) / ".novel_config.yaml"
+        home_config.touch()
+        assert mdconfig.get_config_path() == home_config
+
+        os.makedirs(Path(tmp_repo) / "parent" / "child")
+        # assert Path(".") / ".config.yaml" == mdconfig.get_config_path()
 
 
 #    try:
