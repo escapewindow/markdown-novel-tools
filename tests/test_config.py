@@ -117,6 +117,17 @@ def test_get_css_path(variant, expected, raises):
         assert mdconfig.get_css_path(config, **kwargs) == Path(expected)
 
 
+def test_get_markdown_template_choices():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        expected = ["one", "two", "three"]
+        for path in expected:
+            Path("/".join([tmpdir, f"{path}.md"])).touch()
+        config = {
+            "markdown_template_dir": tmpdir,
+        }
+        assert mdconfig.get_markdown_template_choices(config) == sorted(expected)
+
+
 @pytest.mark.parametrize(
     "config_val, user_config_val, key_name, raises, expected",
     (
