@@ -206,6 +206,8 @@ def test_replace_values(var, repl_dict, expected, raises):
         # Mismatched types
         (["a"], {"b": "c"}, None, True, {}, TypeError, None),
         (["a"], {"b": "c"}, "keyname", True, {}, TypeError, None),
+        # Unknown type
+        (set(["a"]), set(["b"]), "invalid", True, {}, TypeError, None),
     ),
 )
 def test_get_new_config_val(
