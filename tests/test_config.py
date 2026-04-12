@@ -4,6 +4,7 @@ import os
 import re
 import tempfile
 from pathlib import Path
+from unittest.mock import Mock
 
 import pytest
 from git import Repo
@@ -227,3 +228,9 @@ def test_get_new_config_val(
             )
             == expected
         )
+
+
+def test_add_config_parser_args():
+    parser = Mock()
+    mdconfig.add_config_parser_args(parser)
+    parser.add_argument.assert_called()
