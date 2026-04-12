@@ -174,20 +174,30 @@ def test_replace_values(var, repl_dict, expected, raises):
 
 
 @pytest.mark.parametrize(
-    "config_val, user_config_val, key_name, use_default_keys, raises, expected",
+    "config_val, user_config_val, key_name, use_default_keys, repl_dict, raises, expected",
     (
-        ("a", None, "", True, None, "a"),
-        ("a", "b", "", True, None, "b"),
-        (["a"], ["b", "c"], "", True, None, ["b", "c"]),
-        ({"a": "foo", "b": "bar"}, {"a": "baz"}, "", True, None, {"a": "baz", "b": "bar"}),
-        (None, {"foo": "{foo}"}, "", True, None, None),
+        ("a", None, "", True, {}, None, "a"),
+        ("a", "b", "", True, {}, None, "b"),
+        (["a"], ["b", "c"], "", True, {}, None, ["b", "c"]),
+        ({"a": "foo", "b": "bar"}, {"a": "baz"}, "", True, {}, None, {"a": "baz", "b": "bar"}),
+        (None, {"foo": "{foo}"}, "", True, {}, None, None),
+        (None, {"foo": "{foo}"}, "", False, {"foo": "bar"}, None, {"foo": "bar"}),
     ),
 )
 def test_get_new_config_val(
-    config_val, user_config_val, key_name, use_default_keys, raises, expected
+    config_val, user_config_val, key_name, use_default_keys, repl_dict, raises, expected
 ):
     if raises:
         with pytest.raises(raises):
             md_config._get_new_config_val(config_val, user_config_val, key_name)
     else:
-        assert mdconfig._get_new_config_val(config_val, user_config_val, key_name) == expected
+        assert (
+            mdconfig._get_new_config_val(
+                config_val,
+                user_config_val,
+                key_name=key_name,
+                use_default_keys=use_default_keys,
+                repl_dict=repl_dict,
+            )
+            == expected
+        )
