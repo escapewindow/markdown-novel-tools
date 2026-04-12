@@ -176,12 +176,36 @@ def test_replace_values(var, repl_dict, expected, raises):
 @pytest.mark.parametrize(
     "config_val, user_config_val, key_name, use_default_keys, repl_dict, raises, expected",
     (
+        # Simple string fallthrough
         ("a", None, "", True, {}, None, "a"),
+        # User string override
         ("a", "b", "", True, {}, None, "b"),
+        # User list override
         (["a"], ["b", "c"], "", True, {}, None, ["b", "c"]),
+        #
+        ## Combined user and default config dicts
+        ##
+        ## override an existing key, use_default_keys=True
         ({"a": "foo", "b": "bar"}, {"a": "baz"}, "", True, {}, None, {"a": "baz", "b": "bar"}),
+        ## add a nonexistent value, use_default_keys=True
+        ({"a": "foo", "b": "bar"}, {"c": "baz"}, "", True, {}, None, {"a": "foo", "b": "bar"}),
+        ## add a nonexistent value, use_default_keys=False
+        (
+            {"a": "foo", "b": "bar"},
+            {"c": "baz"},
+            "",
+            False,
+            {},
+            None,
+            {"a": "foo", "b": "bar", "c": "baz"},
+        ),
+        #
+        # config_val is None
         (None, {"foo": "{foo}"}, "", True, {}, None, None),
         (None, {"foo": "{foo}"}, "", False, {"foo": "bar"}, None, {"foo": "bar"}),
+        # Mismatched types
+        (["a"], {"b": "c"}, None, True, {}, TypeError, None),
+        (["a"], {"b": "c"}, "keyname", True, {}, TypeError, None),
     ),
 )
 def test_get_new_config_val(
@@ -189,7 +213,7 @@ def test_get_new_config_val(
 ):
     if raises:
         with pytest.raises(raises):
-            md_config._get_new_config_val(config_val, user_config_val, key_name)
+            mdconfig._get_new_config_val(config_val, user_config_val, key_name)
     else:
         assert (
             mdconfig._get_new_config_val(
