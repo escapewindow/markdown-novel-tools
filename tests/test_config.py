@@ -180,6 +180,7 @@ def test_replace_values(var, repl_dict, expected, raises):
         ("a", "b", "", True, None, "b"),
         (["a"], ["b", "c"], "", True, None, ["b", "c"]),
         ({"a": "foo", "b": "bar"}, {"a": "baz"}, "", True, None, {"a": "baz", "b": "bar"}),
+        (None, {"foo": "{foo}"}, "", True, None, None),
     ),
 )
 def test_get_new_config_val(
