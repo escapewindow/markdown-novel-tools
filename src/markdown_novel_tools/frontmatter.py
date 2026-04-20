@@ -189,20 +189,26 @@ def frontmatter_parser():
     subparsers = parser.add_subparsers()
 
     # frontmatter check
-    check_parser = subparsers.add_parser("check")
+    check_parser = subparsers.add_parser(
+        "check", help="Check the frontmatter for syntactic correctness."
+    )
     check_parser.set_defaults(require_book_num=True)
     check_parser.add_argument("path", nargs="+")
     check_parser.set_defaults(func=frontmatter_check)
 
     # frontmatter diff
-    diff_parser = subparsers.add_parser("diff")
+    diff_parser = subparsers.add_parser(
+        "diff", help="Show the difference between the frontmatter and the outline."
+    )
     diff_parser.set_defaults(require_book_num=True)
     diff_parser.add_argument("-o", "--outline", default=get_primary_outline_path(config))
     diff_parser.add_argument("path", nargs="+")
     diff_parser.set_defaults(func=frontmatter_diff)
 
     # frontmatter query
-    query_parser = subparsers.add_parser("query")
+    query_parser = subparsers.add_parser(
+        "query", help="Show all values of the given field in the given path."
+    )
     query_parser.set_defaults(require_book_num=True)
     query_parser.add_argument("-f", "--field", required=True)
     query_parser.add_argument("-g", "--grep")
@@ -217,7 +223,9 @@ def frontmatter_parser():
     query_parser.set_defaults(func=frontmatter_query)
 
     # frontmatter update
-    update_parser = subparsers.add_parser("update")
+    update_parser = subparsers.add_parser(
+        "update", help="Update the manuscript frontmatter with the outline beats."
+    )
     update_parser.set_defaults(require_book_num=True)
     update_parser.add_argument("-f", "--fix", action="store_true")
     update_parser.add_argument("-n", "--noop", action="store_true")
