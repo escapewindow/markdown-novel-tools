@@ -451,7 +451,7 @@ def novel_parser():
     subparsers = parser.add_subparsers()
 
     # novel beats
-    beats_parser = subparsers.add_parser("beats")
+    beats_parser = subparsers.add_parser("beats", help="Show the outline beats")
     beats_parser.set_defaults(require_book_num=False)
     beats_parser.add_argument(
         "--column",
@@ -514,7 +514,9 @@ def novel_parser():
     sync_parser.set_defaults(func=novel_sync)
 
     # novel convert
-    convert_parser = subparsers.add_parser("convert")
+    convert_parser = subparsers.add_parser(
+        "convert", help="Convert manuscript markdown into various other formats."
+    )
     convert_parser.set_defaults(require_book_num=True)
     convert_parser.add_argument(
         "--format",
@@ -528,18 +530,20 @@ def novel_parser():
     convert_parser.set_defaults(func=novel_convert)
 
     # novel lint
-    lint_parser = subparsers.add_parser("lint")
+    lint_parser = subparsers.add_parser(
+        "lint", help="Check the manuscript files for syntax correctness."
+    )
     lint_parser.add_argument("-f", "--fix", action="store_true")
     lint_parser.add_argument("path")
     lint_parser.set_defaults(func=novel_lint)
 
     # novel links
-    links_parser = subparsers.add_parser("links")
+    links_parser = subparsers.add_parser("links", help="Show the wiki pages linked from the path.")
     links_parser.add_argument("path")
     links_parser.set_defaults(func=novel_links)
 
     # novel new
-    new_parser = subparsers.add_parser("new")
+    new_parser = subparsers.add_parser("new", help="Create a file from the appropriate template.")
     new_parser.add_argument(
         "-p",
         "--create-missing-parents",
@@ -551,7 +555,9 @@ def novel_parser():
     new_parser.set_defaults(func=novel_new)
 
     # novel outline-convert
-    outline_convert_parser = subparsers.add_parser("outline_convert")
+    outline_convert_parser = subparsers.add_parser(
+        "outline_convert", help="Convert outline markdown into various other formats."
+    )
     outline_convert_parser.set_defaults(require_book_num=True)
     outline_convert_parser.add_argument(
         "--format",
@@ -564,19 +570,28 @@ def novel_parser():
     outline_convert_parser.set_defaults(func=novel_outline_convert)
 
     # novel replace
-    replace_parser = subparsers.add_parser("replace")
-    replace_parser.add_argument("-l", "--list", action=argparse.BooleanOptionalAction)
+    replace_parser = subparsers.add_parser(
+        "replace", help="Globally replace words or phrases in the path."
+    )
+    replace_parser.add_argument(
+        "-l",
+        "--list",
+        action=argparse.BooleanOptionalAction,
+        help="Only show what would be replaced, without making the changes.",
+    )
     replace_parser.add_argument("from_")
     replace_parser.add_argument("to")
     replace_parser.set_defaults(func=replace)
 
     # novel stats
-    stats_parser = subparsers.add_parser("stats")
+    stats_parser = subparsers.add_parser("stats", help="Show the novel stats.")
     stats_parser.set_defaults(require_book_num=True)
     stats_parser.set_defaults(func=novel_stats)
 
     # novel today
-    today_parser = subparsers.add_parser("today")
+    today_parser = subparsers.add_parser(
+        "today", help="Show the commits made in the repository today."
+    )
     today_parser.set_defaults(func=novel_today)
 
     return parser, remaining_args
