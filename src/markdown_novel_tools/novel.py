@@ -34,49 +34,10 @@ from markdown_novel_tools.mdfile import (
     walk_repo_dir,
     write_markdown_file,
 )
-from markdown_novel_tools.outline import build_table_from_file, get_beats
+from markdown_novel_tools.outline import beats_helper, build_table_from_file, get_beats
 from markdown_novel_tools.repo import commits_today, replace
 from markdown_novel_tools.shunn import shunn_docx, shunn_md
 from markdown_novel_tools.utils import find_markdown_files, write_to_file
-
-
-def _beats_helper(
-    path,
-    column=None,
-    filter_=None,
-    file_headers=False,
-    multi_table_output=False,
-    order=None,
-    split_columns=None,
-    also_split_by_slash=False,
-    stats=False,
-    target_table_num=None,
-    format_=None,
-    beats_type="outline",
-):
-    """Shared logic from novel_beats and novel_sync"""
-    table = build_table_from_file(
-        path,
-        column=column,
-        order=order,
-        split_columns=split_columns,
-        also_split_by_slash=also_split_by_slash,
-        target_table_num=target_table_num,
-    )
-
-    if table:
-        return get_beats(
-            table,
-            filter_=filter_,
-            file_headers=file_headers,
-            multi_table_output=multi_table_output,
-            stats=stats,
-            format_=format_,
-            beats_type=beats_type,
-        )
-    else:
-        print("No table found!", file=sys.stderr)
-        sys.exit(1)
 
 
 def _write_to_file_helper(path, contents, header=None):
@@ -101,7 +62,7 @@ def novel_beats(args):
         print("Specify column with `--column` when filtering!", file=sys.stderr)
         sys.exit(1)
 
-    stdout, stderr = _beats_helper(
+    stdout, stderr = beats_helper(
         args.path,
         column=args.column,
         filter_=args.filter,
@@ -225,7 +186,7 @@ def novel_outline_convert(args):
     parent.mkdir(parents=True, exist_ok=True)
 
     # Arc
-    contents, stats = _beats_helper(
+    contents, stats = beats_helper(
         path,
         column="Arc",
         multi_table_output=True,
@@ -237,7 +198,7 @@ def novel_outline_convert(args):
     write_to_file(parent / f"{output_basestr}-arcs.html", contents)
 
     # Scene
-    contents, stats = _beats_helper(
+    contents, stats = beats_helper(
         path,
         column="Scene",
         multi_table_output=True,
@@ -350,11 +311,11 @@ def novel_sync(args):
             f"WARNING: If {path} is an `arcs` file, you are in danger of scrambling the beat order!",
             file=sys.stderr,
         )
-        contents, stats = _beats_helper(path, column="Arcs", file_headers=True, stats=True)
+        contents, stats = beats_helper(path, column="Arcs", file_headers=True, stats=True)
     elif path == paths["scenes"]:
-        contents, stats = _beats_helper(path, column="Scene", file_headers=True, stats=True)
+        contents, stats = beats_helper(path, column="Scene", file_headers=True, stats=True)
     elif path == paths["povs"]:
-        contents, stats = _beats_helper(paths["full"], column="POV", file_headers=True, stats=True)
+        contents, stats = beats_helper(paths["full"], column="POV", file_headers=True, stats=True)
     if contents and stats:
         write_to_file(paths["full"], contents)
         print(f"{stats}\n", file=sys.stderr)
@@ -362,7 +323,7 @@ def novel_sync(args):
         shutil.copyfile(path, paths["full"])
 
     # POVS
-    contents, stats = _beats_helper(
+    contents, stats = beats_helper(
         paths["full"],
         column="POV",
         file_headers=True,
@@ -374,7 +335,7 @@ def novel_sync(args):
     print(f"{stats}\n", file=sys.stderr)
 
     # Arc
-    contents, stats = _beats_helper(
+    contents, stats = beats_helper(
         paths["full"],
         column="Arc",
         file_headers=True,
@@ -387,7 +348,7 @@ def novel_sync(args):
     print(f"{stats}\n", file=sys.stderr)
 
     # Scene
-    contents, stats = _beats_helper(
+    contents, stats = beats_helper(
         paths["full"],
         column="Scene",
         file_headers=True,
@@ -399,7 +360,7 @@ def novel_sync(args):
     print(f"{stats}\n", file=sys.stderr)
 
     # Questions - regex is hacky but I don't have a way to split and filter by different columns
-    arc_contents, stats = _beats_helper(
+    arc_contents, stats = beats_helper(
         paths["full"],
         column="Arc",
         file_headers=True,
@@ -414,7 +375,7 @@ def novel_sync(args):
     print(f"{stats}\n", file=sys.stderr)
 
     # Beats - regex is hacky but I don't have a way to split and filter by different columns
-    arc_contents, stats = _beats_helper(
+    arc_contents, stats = beats_helper(
         paths["full"],
         column="Arc",
         file_headers=True,

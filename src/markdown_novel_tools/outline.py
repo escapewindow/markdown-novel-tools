@@ -176,6 +176,45 @@ def _outline_to_yaml(line):
     return line.strip('"').replace("[[", "").replace("]]", "").replace('"', "").replace(":", " -")
 
 
+def beats_helper(
+    path,
+    column=None,
+    filter_=None,
+    file_headers=False,
+    multi_table_output=False,
+    order=None,
+    split_columns=None,
+    also_split_by_slash=False,
+    stats=False,
+    target_table_num=None,
+    format_=None,
+    beats_type="outline",
+):
+    """Shared logic from novel_beats and novel_sync"""
+    table = build_table_from_file(
+        path,
+        column=column,
+        order=order,
+        split_columns=split_columns,
+        also_split_by_slash=also_split_by_slash,
+        target_table_num=target_table_num,
+    )
+
+    if table:
+        return get_beats(
+            table,
+            filter_=filter_,
+            file_headers=file_headers,
+            multi_table_output=multi_table_output,
+            stats=stats,
+            format_=format_,
+            beats_type=beats_type,
+        )
+    else:
+        print("No table found!", file=sys.stderr)
+        sys.exit(1)
+
+
 def get_line_parts(line, split_columns=None):
     """Split a markdown table into column parts.
 
