@@ -263,8 +263,14 @@ def test_table_num():
     beats, _ = outline.beats_helper(
         scene_path, target_table_num=2, column="Scene", multi_table_output=True
     )
-    with open(GENERAL_DATA_DIR / "beats", "w") as fh:
-        fh.write(beats)
-    with open(GENERAL_DATA_DIR / "mdoutput", "w") as fh:
-        fh.write(mdoutput)
     assert beats == mdoutput
+
+
+def test_missing_table():
+    """Try to build a missing table."""
+    scene_path = GENERAL_DATA_DIR / "test-simple-second-scene.md"
+
+    with pytest.raises(SystemExit):
+        beats, _ = outline.beats_helper(
+            scene_path, target_table_num=8, column="Scene", multi_table_output=True
+        )
