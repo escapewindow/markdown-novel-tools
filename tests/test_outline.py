@@ -259,3 +259,12 @@ def test_table_num():
     mdoutput = outline.get_markdown_from_table(table, multi_table=True)
     header = outline.get_outline_file_header("scenes")
     assert f"{header}{mdoutput}" == contents
+
+    beats, _ = outline.beats_helper(
+        scene_path, target_table_num=2, column="Scene", multi_table_output=True
+    )
+    with open(GENERAL_DATA_DIR / "beats", "w") as fh:
+        fh.write(beats)
+    with open(GENERAL_DATA_DIR / "mdoutput", "w") as fh:
+        fh.write(mdoutput)
+    assert beats == mdoutput
