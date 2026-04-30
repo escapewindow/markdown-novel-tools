@@ -40,12 +40,6 @@ from markdown_novel_tools.shunn import shunn_docx, shunn_md
 from markdown_novel_tools.utils import find_markdown_files, write_to_file
 
 
-def _write_to_file_helper(path, contents, header=None):
-    """Preserve existing header."""
-    # TODO
-    return write_to_file(path, contents)
-
-
 def novel_beats(args):
     """Print an outline's beats in the desired form."""
     if not args.path:
