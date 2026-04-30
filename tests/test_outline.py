@@ -6,6 +6,9 @@ import markdown_novel_tools.outline as outline
 
 from . import TEST_DATA_DIR
 
+MATRIX_DATA_DIR = TEST_DATA_DIR / "matrix"
+GENERAL_DATA_DIR = TEST_DATA_DIR / "general"
+
 
 @pytest.mark.parametrize(
     "column, expected, throws",
@@ -17,7 +20,7 @@ from . import TEST_DATA_DIR
     ),
 )
 def test_table_get_column(column, expected, throws):
-    path = TEST_DATA_DIR / "matrix-full.md"
+    path = MATRIX_DATA_DIR / "matrix-full.md"
     with open(path) as fh:
         contents = fh.read()
     table = outline.build_table_from_file(path)
@@ -78,7 +81,7 @@ def test_header_text_to_header_anchor(header_text, expected):
 
 def test_table_markdown_simple():
     """Build a table; get_markdown_from_table should result in the same file."""
-    path = TEST_DATA_DIR / "matrix-full.md"
+    path = MATRIX_DATA_DIR / "matrix-full.md"
     with open(path) as fh:
         contents = fh.read()
     table = outline.build_table_from_file(path)
@@ -91,21 +94,21 @@ def test_table_markdown_simple():
 
 
 def test_table_yaml_simple():
-    path = TEST_DATA_DIR / "test-simple.md"
+    path = GENERAL_DATA_DIR / "test-simple.md"
     table = outline.build_table_from_file(path)
     yamloutput = outline.get_yaml_from_table(table)
     beats_stdout, _ = outline.get_beats(table, format_="yaml")
-    with open(TEST_DATA_DIR / "test-simple.yaml") as fh:
+    with open(GENERAL_DATA_DIR / "test-simple.yaml") as fh:
         expected = fh.read()
     assert yamloutput == expected
     assert yamloutput == beats_stdout
 
 
 def test_table_html_simple():
-    path = TEST_DATA_DIR / "test-simple.md"
+    path = GENERAL_DATA_DIR / "test-simple.md"
     table = outline.build_table_from_file(path)
     htmloutput = outline.get_html_from_table(table)
-    with open(TEST_DATA_DIR / "test-simple.html") as fh:
+    with open(GENERAL_DATA_DIR / "test-simple.html") as fh:
         expected = fh.read()
     assert htmloutput == expected
     beats_stdout, _ = outline.get_beats(table, format_="html")
@@ -113,7 +116,7 @@ def test_table_html_simple():
 
 
 def test_beats_bad_format():
-    path = TEST_DATA_DIR / "test-simple.md"
+    path = GENERAL_DATA_DIR / "test-simple.md"
     table = outline.build_table_from_file(path)
     with pytest.raises(Exception):
         outline.get_beats(table, format_="invalid format")
@@ -121,8 +124,8 @@ def test_beats_bad_format():
 
 def test_table_from_multi():
     """Parse scenes, which is multi-table, and compare against full outline"""
-    scenes_path = TEST_DATA_DIR / "matrix-scenes.md"
-    full_path = TEST_DATA_DIR / "matrix-full.md"
+    scenes_path = MATRIX_DATA_DIR / "matrix-scenes.md"
+    full_path = MATRIX_DATA_DIR / "matrix-full.md"
     table = outline.build_table_from_file(scenes_path)
     with open(full_path) as fh:
         full_contents = fh.read()
@@ -136,8 +139,8 @@ def test_table_from_multi():
 
 def test_full_table_to_scenes():
     """Parse full, and compare against scenes, which is multi-table"""
-    full_path = TEST_DATA_DIR / "matrix-full.md"
-    scenes_path = TEST_DATA_DIR / "matrix-scenes.md"
+    full_path = MATRIX_DATA_DIR / "matrix-full.md"
+    scenes_path = MATRIX_DATA_DIR / "matrix-scenes.md"
     table = outline.build_table_from_file(full_path, column="Scene")
     with open(scenes_path) as fh:
         scenes_contents = fh.read()
@@ -163,7 +166,7 @@ Num beats: 49"""
 
 
 def test_table_order_invalid():
-    path = TEST_DATA_DIR / "test-simple.md"
+    path = GENERAL_DATA_DIR / "test-simple.md"
     with pytest.raises(SystemExit):
         outline.build_table_from_file(path, order=["invalid", "column", "names"])
 
@@ -171,8 +174,8 @@ def test_table_order_invalid():
 @pytest.mark.parametrize(
     "path",
     (
-        TEST_DATA_DIR / "test-multi-extra-header.md",
-        TEST_DATA_DIR / "test-multi-missing-header.md",
+        GENERAL_DATA_DIR / "test-multi-extra-header.md",
+        GENERAL_DATA_DIR / "test-multi-missing-header.md",
     ),
 )
 def test_table_from_multi_invalid_headers(path):
@@ -182,8 +185,8 @@ def test_table_from_multi_invalid_headers(path):
 
 def test_filter_order():
     """Build a table; change the column order and filter by scene."""
-    full_path = TEST_DATA_DIR / "test-simple.md"
-    second_scene_path = TEST_DATA_DIR / "test-simple-second-scene-order.md"
+    full_path = GENERAL_DATA_DIR / "test-simple.md"
+    second_scene_path = GENERAL_DATA_DIR / "test-simple-second-scene-order.md"
     with open(second_scene_path) as fh:
         contents = fh.read()
     table = outline.build_table_from_file(
@@ -210,17 +213,17 @@ Num beats: 1"""
 @pytest.mark.parametrize(
     "expected_file, also_split_by_slash, filter_, format_",
     (
-        (TEST_DATA_DIR / "test-simple-split_columns.md", True, ["Hook"], None),
-        (TEST_DATA_DIR / "test-simple-split_columns-noslash.md", False, [], None),
-        (TEST_DATA_DIR / "test-simple-filter.md", False, ["Hook/Question"], None),
-        (TEST_DATA_DIR / "test-simple-filter.md", False, ["Question"], None),
-        (TEST_DATA_DIR / "test-simple-filter.html", False, ["Question"], "html"),
-        (TEST_DATA_DIR / "test-simple-filter.yaml", False, ["Question"], "yaml"),
+        (GENERAL_DATA_DIR / "test-simple-split_columns.md", True, ["Hook"], None),
+        (GENERAL_DATA_DIR / "test-simple-split_columns-noslash.md", False, [], None),
+        (GENERAL_DATA_DIR / "test-simple-filter.md", False, ["Hook/Question"], None),
+        (GENERAL_DATA_DIR / "test-simple-filter.md", False, ["Question"], None),
+        (GENERAL_DATA_DIR / "test-simple-filter.html", False, ["Question"], "html"),
+        (GENERAL_DATA_DIR / "test-simple-filter.yaml", False, ["Question"], "yaml"),
     ),
 )
 def test_filter_split_columns_markdown(expected_file, also_split_by_slash, filter_, format_):
     """Build a table; get_beats should result in the same file."""
-    full_path = TEST_DATA_DIR / "test-simple.md"
+    full_path = GENERAL_DATA_DIR / "test-simple.md"
     with open(expected_file) as fh:
         contents = fh.read()
     table = outline.build_table_from_file(
@@ -243,8 +246,8 @@ def test_filter_split_columns_markdown(expected_file, also_split_by_slash, filte
 
 def test_table_num():
     """Build a table from a multi table file; filter by table number."""
-    scene_path = TEST_DATA_DIR / "test-multi-scene.md"
-    second_scene_path = TEST_DATA_DIR / "test-simple-second-scene.md"
+    scene_path = GENERAL_DATA_DIR / "test-multi-scene.md"
+    second_scene_path = GENERAL_DATA_DIR / "test-simple-second-scene.md"
     with open(second_scene_path) as fh:
         contents = fh.read()
 
