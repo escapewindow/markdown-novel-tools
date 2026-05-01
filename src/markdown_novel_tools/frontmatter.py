@@ -8,7 +8,11 @@ import sys
 
 import yaml
 
-from markdown_novel_tools.config import add_config_parser_args, get_config, get_primary_outline_path
+from markdown_novel_tools.config import (
+    add_config_parser_args,
+    get_config,
+    single_book_primary_outline_path,
+)
 from markdown_novel_tools.constants import MANUSCRIPT_REGEX
 from markdown_novel_tools.mdfile import (
     FRONTMATTER_VALIDATOR,
@@ -50,7 +54,7 @@ def frontmatter_diff(args):
     """Diff frontmatter."""
 
     if not args.outline:
-        args.outline = get_primary_outline_path(config)
+        args.outline = single_book_primary_outline_path(config)
     files = find_markdown_files(args.path)
     table = build_table_from_file(args.outline, column="Scene")
 
@@ -201,7 +205,7 @@ def frontmatter_parser():
         "diff", help="Show the difference between the frontmatter and the outline."
     )
     diff_parser.set_defaults(require_book_num=True)
-    diff_parser.add_argument("-o", "--outline", default=get_primary_outline_path(config))
+    diff_parser.add_argument("-o", "--outline", default=single_book_primary_outline_path(config))
     diff_parser.add_argument("path", nargs="+")
     diff_parser.set_defaults(func=frontmatter_diff)
 
@@ -224,12 +228,12 @@ def frontmatter_parser():
 
     # frontmatter update
     update_parser = subparsers.add_parser(
-        "update", help="Update the manuscript frontmatter with the outline beats."
+        "update", help="Update the manuscript frontmatter with the outline beats.t"
     )
     update_parser.set_defaults(require_book_num=True)
     update_parser.add_argument("-f", "--fix", action="store_true")
     update_parser.add_argument("-n", "--noop", action="store_true")
-    update_parser.add_argument("-o", "--outline", default=get_primary_outline_path(config))
+    update_parser.add_argument("-o", "--outline", default=single_book_primary_outline_path(config))
     update_parser.add_argument("path", nargs="+")
     update_parser.set_defaults(func=frontmatter_update)
 

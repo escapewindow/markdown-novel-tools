@@ -17,7 +17,7 @@ from markdown_novel_tools.config import (
     get_config,
     get_css_path,
     get_markdown_template_choices,
-    get_primary_outline_path,
+    single_book_primary_outline_path,
 )
 from markdown_novel_tools.constants import BEATS_REGEX, LINKS_REGEX, QUESTIONS_REGEX
 from markdown_novel_tools.convert import (
@@ -43,7 +43,7 @@ from markdown_novel_tools.utils import find_markdown_files, write_to_file
 def novel_beats(args):
     """Print an outline's beats in the desired form."""
     if not args.path:
-        args.path = get_primary_outline_path(args.config)
+        args.path = single_book_primary_outline_path(args.config)
 
     if args.order:
         args.order = args.order.split(",")
@@ -161,7 +161,7 @@ def novel_new(args):
 
 def novel_outline_convert(args):
     """Convert the outline to something shareable."""
-    path = get_primary_outline_path(args.config)
+    path = single_book_primary_outline_path(args.config)
     if "arcs" in path.name:
         print(
             f"WARNING: If {path} is an `arcs` file, you are in danger of scrambling the beat order!",
@@ -277,7 +277,7 @@ def novel_sync(args):
     if args.path:
         path = Path(args.path)
     else:
-        path = get_primary_outline_path(args.config)
+        path = single_book_primary_outline_path(args.config)
 
     if args.artifact_dir:
         parent = Path(args.artifact_dir)
@@ -286,8 +286,10 @@ def novel_sync(args):
 
     if args.outline_name:
         outline_path = str(parent / args.outline_name)
+    elif args.config.get("book_num"):
+        outline_path = str(parent / args.config["outline"]["single"]["outline_name"])
     else:
-        outline_path = str(parent / args.config["outline"]["outline_name"])
+        outline_path = str(parent / args.config["outline"]["series"]["outline_name"])
 
     parent.mkdir(parents=True, exist_ok=True)
     paths = {
@@ -460,7 +462,6 @@ def novel_parser():
     sync_parser.add_argument("--artifact-dir", help="Defaults to the parent of PATH")
     sync_parser.add_argument(
         "--outline-name",
-        default=config["outline"]["outline_name"],
         help="The template string for each outline. Include the `{outline_type}` string.",
     )
     sync_parser.add_argument(

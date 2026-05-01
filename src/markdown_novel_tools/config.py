@@ -31,9 +31,9 @@ def get_config_path():
             return path
 
 
-def get_primary_outline_path(config, book_num=None):
+def single_book_primary_outline_path(config):
     """Return the primary outline path."""
-    return Path(config["outline"]["outline_dir"]) / config["outline"]["primary_outline_file"]
+    return Path(config["outline"]["single"]["primary_outline_file"])
 
 
 def get_metadata_path(config, format_="default"):
@@ -137,6 +137,7 @@ def get_config():
         with open(path) as fh:
             user_config = yaml.safe_load(fh)
     book_num = config_args.book_num or user_config.get("book_num", config.get("book_num"))
+    print(f"book_num {book_num}")
     repl_dict = {
         "book_num": book_num or "",
     }

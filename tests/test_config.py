@@ -54,12 +54,12 @@ def test_get_config_path():
             )
 
 
-def test_get_primary_outline_path():
+def test_single_book_primary_outline_path():
     config = {
-        "outline": {"outline_dir": "/tmp", "primary_outline_file": "foo"},
+        "outline": {"single": {"primary_outline_file": "/tmp/foo"}},
     }
     expected = Path("/tmp/foo")
-    assert mdconfig.get_primary_outline_path(config) == expected
+    assert mdconfig.single_book_primary_outline_path(config) == expected
 
 
 @pytest.mark.parametrize(
