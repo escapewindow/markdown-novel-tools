@@ -273,7 +273,7 @@ def arc_grep(beats_contents, regex):
 
 
 def novel_sync(args):
-    """Sync the various outline files."""
+    """Sync the various outline files in a given book."""
     if args.path:
         path = Path(args.path)
     else:

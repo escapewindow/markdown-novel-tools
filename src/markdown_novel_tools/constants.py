@@ -12,9 +12,15 @@ DEBUG = 0
 DEFAULT_CONFIG = {
     "timezone": "US/Mountain",
     "outline": {
-        "outline_dir": "outline/book{book_num}/",
-        "primary_outline_file": "book{book_num}-scenes.md",
-        "outline_name": "book{book_num}-{{outline_type}}.md",
+        "single": {
+            "primary_outline_file": "outline/book{book_num}/book{book_num}-scenes.md",
+            "outline_name": "book{book_num}-{outline_type}.md",
+        },
+        "series": {
+            "source_outline_glob": "outline/book*/book*-full.md",
+            "series_dir": "outline/series",
+            "outline_name": "series-{outline_type}.md",
+        },
     },
     "convert": {
         "metadata_path": {

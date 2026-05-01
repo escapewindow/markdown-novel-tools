@@ -31,7 +31,7 @@ def get_config_path():
             return path
 
 
-def get_primary_outline_path(config):
+def get_primary_outline_path(config, book_num=None):
     """Return the primary outline path."""
     return Path(config["outline"]["outline_dir"]) / config["outline"]["primary_outline_file"]
 
