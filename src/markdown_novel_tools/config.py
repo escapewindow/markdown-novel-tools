@@ -4,6 +4,7 @@
 import argparse
 import glob
 import os
+import sys
 from copy import deepcopy
 from pathlib import Path
 
@@ -125,11 +126,12 @@ def add_config_parser_args(parser):
     parser.add_argument("-b", "--book-num")
 
 
-def get_config():
+def get_config(args=None):
     """Read and return the config."""
     config_parser = argparse.ArgumentParser(add_help=False)
     add_config_parser_args(config_parser)
-    config_args, remaining_args = config_parser.parse_known_args()
+    args = args or sys.argv[1:]
+    config_args, remaining_args = config_parser.parse_known_args(args=args)
     config = deepcopy(DEFAULT_CONFIG)
     path = config_args.config_path or get_config_path()
     user_config = {}
@@ -137,10 +139,12 @@ def get_config():
         with open(path) as fh:
             user_config = yaml.safe_load(fh)
     book_num = config_args.book_num or user_config.get("book_num", config.get("book_num"))
-    print(f"book_num {book_num}")
     repl_dict = {
         "book_num": book_num or "",
     }
+    repl_dict = {}
+    if book_num:
+        repl_dict["book_num"] = book_num
     config = _get_new_config_val(config, user_config, repl_dict=repl_dict)
     config.setdefault("book_num", book_num)
     return config, remaining_args
