@@ -8,6 +8,7 @@ import pprint
 import re
 import shutil
 import sys
+from glob import glob
 from pathlib import Path
 
 from git import Repo
@@ -272,67 +273,47 @@ def arc_grep(beats_contents, regex):
     return parsed_contents
 
 
-def novel_sync(args):
-    """Sync the various outline files in a given book."""
-    if args.path:
-        path = Path(args.path)
-    else:
-        path = single_book_primary_outline_path(args.config)
-
-    if args.artifact_dir:
-        parent = Path(args.artifact_dir)
-    else:
-        parent = path.parent
-
-    if args.outline_name:
-        outline_path = str(parent / args.outline_name)
-    elif args.config.get("book_num"):
-        outline_path = str(parent / args.config["outline"]["single"]["outline_name"])
-    else:
-        outline_path = str(parent / args.config["outline"]["series"]["outline_name"])
+def do_sync(paths, parent, primary_outline_type, output_name):
+    """Create the different output_paths outlines, using `paths` as the source."""
+    output_paths = {
+        "full": parent / output_name.format(outline_type="full"),
+        "scenes": parent / output_name.format(outline_type="scenes"),
+        "povs": parent / output_name.format(outline_type="povs"),
+        "arcs": parent / output_name.format(outline_type="arcs"),
+        "questions": parent / output_name.format(outline_type="questions"),
+        "beats": parent / output_name.format(outline_type="beats"),
+    }
 
     parent.mkdir(parents=True, exist_ok=True)
-    paths = {
-        "full": Path(outline_path.format(outline_type="full")),
-        "scenes": Path(outline_path.format(outline_type="scenes")),
-        "povs": Path(outline_path.format(outline_type="povs")),
-        "arcs": Path(outline_path.format(outline_type="arcs")),
-        "questions": Path(outline_path.format(outline_type="questions")),
-        "beats": Path(outline_path.format(outline_type="beats")),
-    }
-    # TODO hacky
-    contents = stats = ""
-    if "arcs" in path.name:
-        print(
-            f"WARNING: If {path} is an `arcs` file, you are in danger of scrambling the beat order!",
-            file=sys.stderr,
-        )
-        contents, stats = beats_helper(path, column="Arcs", file_headers=True, stats=True)
-    elif path == paths["scenes"]:
-        contents, stats = beats_helper(path, column="Scene", file_headers=True, stats=True)
-    elif path == paths["povs"]:
-        contents, stats = beats_helper(paths["full"], column="POV", file_headers=True, stats=True)
-    if contents and stats:
-        write_to_file(paths["full"], contents)
-        print(f"{stats}\n", file=sys.stderr)
-    elif not os.path.exists(paths["full"]):
-        shutil.copyfile(path, paths["full"])
+
+    match primary_outline_type:
+        case "scenes":
+            contents, stats = beats_helper(paths, column="Scene", file_headers=True, stats=True)
+        case "povs":
+            contents, stats = beats_helper(paths, column="POV", file_headers=True, stats=True)
+        case "full":
+            contents, stats = beats_helper(paths, file_headers=True, stats=True)
+        case _:
+            raise KeyError(f"Invalid primary_outline_type {primary_outline_type}!")
+
+    write_to_file(output_paths["full"], contents)
+    print(f"{stats}\n", file=sys.stderr)
 
     # POVS
     contents, stats = beats_helper(
-        paths["full"],
+        output_paths["full"],
         column="POV",
         file_headers=True,
         multi_table_output=True,
         stats=True,
         beats_type="povs",
     )
-    write_to_file(paths["povs"], contents)
+    write_to_file(output_paths["povs"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Arc
     contents, stats = beats_helper(
-        paths["full"],
+        output_paths["full"],
         column="Arc",
         file_headers=True,
         multi_table_output=True,
@@ -340,24 +321,24 @@ def novel_sync(args):
         stats=True,
         beats_type="arcs",
     )
-    write_to_file(paths["arcs"], contents)
+    write_to_file(output_paths["arcs"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Scene
     contents, stats = beats_helper(
-        paths["full"],
+        output_paths["full"],
         column="Scene",
         file_headers=True,
         multi_table_output=True,
         stats=True,
         beats_type="scenes",
     )
-    write_to_file(paths["scenes"], contents)
+    write_to_file(output_paths["scenes"], contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Questions - regex is hacky but I don't have a way to split and filter by different columns
     arc_contents, stats = beats_helper(
-        paths["full"],
+        output_paths["full"],
         column="Arc",
         file_headers=True,
         multi_table_output=True,
@@ -367,12 +348,12 @@ def novel_sync(args):
         beats_type="questions",
     )
     parsed_contents = arc_grep(arc_contents, QUESTIONS_REGEX)
-    write_to_file(paths["questions"], parsed_contents)
+    write_to_file(output_paths["questions"], parsed_contents)
     print(f"{stats}\n", file=sys.stderr)
 
     # Beats - regex is hacky but I don't have a way to split and filter by different columns
     arc_contents, stats = beats_helper(
-        paths["full"],
+        output_paths["full"],
         column="Arc",
         file_headers=True,
         multi_table_output=True,
@@ -382,8 +363,36 @@ def novel_sync(args):
         beats_type="beats",
     )
     parsed_contents = arc_grep(arc_contents, BEATS_REGEX)
-    write_to_file(paths["beats"], parsed_contents)
+    write_to_file(output_paths["beats"], parsed_contents)
     print(f"{stats}\n", file=sys.stderr)
+
+
+def novel_sync(args):
+    """Sync the various outline files in a given book."""
+
+    if args.path:
+        paths = [Path(args.path)]
+    elif args.config.get("book_num"):
+        paths = [single_book_primary_outline_path(args.config)]
+    else:
+        paths = [Path(p) for p in glob(args.config["outline"]["series"]["source_outline_glob"])]
+
+    if args.config["book_num"]:
+        config_key = "single"
+    else:
+        config_key = "series"
+
+    if args.artifact_dir:
+        parent = Path(args.artifact_dir)
+    else:
+        parent = Path(args.config["outline"][config_key]["output_dir"])
+
+    primary_outline_type = (
+        args.primary_outline_type or args.config["outline"][config_key]["primary_outline_type"]
+    )
+    output_name = args.config["outline"][config_key]["output_name"]
+
+    do_sync(paths, parent, primary_outline_type, output_name)
 
 
 def novel_today(args):
@@ -461,8 +470,9 @@ def novel_parser():
     sync_parser.set_defaults(require_book_num=False)
     sync_parser.add_argument("--artifact-dir", help="Defaults to the parent of PATH")
     sync_parser.add_argument(
-        "--outline-name",
-        help="The template string for each outline. Include the `{outline_type}` string.",
+        "--primary-outline-type",
+        choices=("scenes", "povs", "full"),
+        help="The type of outline we're reading from.",
     )
     sync_parser.add_argument(
         "path", nargs="?", help="Defaults to the config or default primary outline path."

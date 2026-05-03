@@ -139,12 +139,7 @@ def get_config(args=None):
         with open(path) as fh:
             user_config = yaml.safe_load(fh)
     book_num = config_args.book_num or user_config.get("book_num", config.get("book_num"))
-    repl_dict = {
-        "book_num": book_num or "",
-    }
-    repl_dict = {}
-    if book_num:
-        repl_dict["book_num"] = book_num
+    repl_dict = {"book_num": book_num or "{book_num}"}
     config = _get_new_config_val(config, user_config, repl_dict=repl_dict)
     config.setdefault("book_num", book_num)
     return config, remaining_args

@@ -15,13 +15,14 @@ DEFAULT_CONFIG = {
         "single": {
             "primary_outline_file": "outline/book{book_num}/book{book_num}-scenes.md",
             "primary_outline_type": "scenes",
-            "output_name": "book{book_num}-{outline_type}.md",
+            "output_dir": "outline/book{book_num}",
+            "output_name": "book{book_num}-{{outline_type}}.md",
         },
         "series": {
             "source_outline_glob": "outline/book*/book*-full.md",
             "primary_outline_type": "full",
-            "series_dir": "outline/series",
-            "output_name": "series-{outline_type}.md",
+            "output_dir": "outline/series",
+            "output_name": "series-{{outline_type}}.md",
         },
     },
     "convert": {
