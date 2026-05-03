@@ -138,7 +138,10 @@ def get_config(args=None):
     if path is not None:
         with open(path) as fh:
             user_config = yaml.safe_load(fh)
-    book_num = config_args.book_num or user_config.get("book_num", config.get("book_num"))
+    if config_args.book_num is not None:
+        book_num = config_args.book_num
+    else:
+        book_num = user_config.get("book_num", config.get("book_num"))
     repl_dict = {"book_num": book_num or "{book_num}"}
     config = _get_new_config_val(config, user_config, repl_dict=repl_dict)
     config.setdefault("book_num", book_num)
