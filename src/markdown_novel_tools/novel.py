@@ -18,7 +18,6 @@ from markdown_novel_tools.config import (
     get_config,
     get_css_path,
     get_markdown_template_choices,
-    single_book_primary_outline_path,
 )
 from markdown_novel_tools.constants import BEATS_REGEX, LINKS_REGEX, QUESTIONS_REGEX
 from markdown_novel_tools.convert import (
@@ -43,8 +42,7 @@ from markdown_novel_tools.utils import find_markdown_files, write_to_file
 
 def novel_beats(args):
     """Print an outline's beats in the desired form."""
-    if not args.path:
-        args.path = single_book_primary_outline_path(args.config)
+    path = Path(args.path or config["outline"]["single"]["primary_outline_file"])
 
     if args.order:
         args.order = args.order.split(",")
@@ -162,7 +160,7 @@ def novel_new(args):
 
 def novel_outline_convert(args):
     """Convert the outline to something shareable."""
-    path = single_book_primary_outline_path(args.config)
+    path = Path(config["outline"]["single"]["primary_outline_file"])
     if "arcs" in path.name:
         print(
             f"WARNING: If {path} is an `arcs` file, you are in danger of scrambling the beat order!",
@@ -370,17 +368,17 @@ def do_sync(paths, parent, primary_outline_type, output_name):
 def novel_sync(args):
     """Sync the various outline files in a given book."""
 
-    if args.path:
-        paths = [Path(args.path)]
-    elif args.config.get("book_num"):
-        paths = [single_book_primary_outline_path(args.config)]
-    else:
-        paths = [Path(p) for p in glob(args.config["outline"]["series"]["source_outline_glob"])]
-
     if args.config["book_num"]:
         config_key = "single"
     else:
         config_key = "series"
+
+    if args.path:
+        paths = [Path(args.path)]
+    elif args.config.get("book_num"):
+        paths = [Path(config["outline"]["single"]["primary_outline_file"])]
+    else:
+        paths = [Path(p) for p in glob(args.config["outline"]["series"]["source_outline_glob"])]
 
     if args.artifact_dir:
         parent = Path(args.artifact_dir)
@@ -469,6 +467,9 @@ def novel_parser():
     sync_parser = subparsers.add_parser("sync", help="Sync the various outline files.")
     sync_parser.set_defaults(require_book_num=False)
     sync_parser.add_argument("--artifact-dir", help="Defaults to the parent of PATH")
+    sync_parser.add_argument(
+        "--all", "-a", action="store_true", help="Sync all the outlines of a series."
+    )
     sync_parser.add_argument(
         "--primary-outline-type",
         choices=("scenes", "povs", "full"),

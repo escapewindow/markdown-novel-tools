@@ -32,11 +32,6 @@ def get_config_path():
             return path
 
 
-def single_book_primary_outline_path(config):
-    """Return the primary outline path."""
-    return Path(config["outline"]["single"]["primary_outline_file"])
-
-
 def get_metadata_path(config, format_="default"):
     """Get the `novel convert` metadata path for a given format."""
     return Path(

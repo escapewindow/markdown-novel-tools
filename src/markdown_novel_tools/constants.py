@@ -19,8 +19,8 @@ DEFAULT_CONFIG = {
             "output_name": "book{book_num}-{{outline_type}}.md",
         },
         "series": {
-            "source_outline_glob": "outline/book*/book*-full.md",
-            "primary_outline_type": "full",
+            "source_outline_glob": "outline/book*/book*-scenes.md",
+            "primary_outline_type": "scenes",
             "output_dir": "outline/series",
             "output_name": "series-{{outline_type}}.md",
         },
