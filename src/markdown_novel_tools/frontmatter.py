@@ -19,7 +19,7 @@ from markdown_novel_tools.mdfile import (
     get_markdown_file,
     write_markdown_file,
 )
-from markdown_novel_tools.outline import build_table_from_file, get_yaml_from_table
+from markdown_novel_tools.outline import build_table_from_files, get_yaml_from_table
 from markdown_novel_tools.utils import (
     diff_yaml,
     find_markdown_files,
@@ -56,7 +56,7 @@ def frontmatter_diff(args):
     if not args.outline:
         args.outline = single_book_primary_outline_path(config)
     files = find_markdown_files(args.path)
-    table = build_table_from_file(args.outline, column="Scene")
+    table = build_table_from_files([args.outline], column="Scene")
 
     # Diff summaries
     for path in files:
@@ -109,7 +109,7 @@ def frontmatter_update(args):
     """Overwrite frontmatter with formatted output after replacing the summary."""
 
     files = find_markdown_files(args.path)
-    table = build_table_from_file(args.outline, column="Scene")
+    table = build_table_from_files([args.outline], column="Scene")
 
     # Update summaries
     for path in files:

@@ -34,7 +34,7 @@ from markdown_novel_tools.mdfile import (
     walk_repo_dir,
     write_markdown_file,
 )
-from markdown_novel_tools.outline import beats_helper, build_table_from_file, get_beats
+from markdown_novel_tools.outline import beats_helper, get_beats
 from markdown_novel_tools.repo import commits_today, replace
 from markdown_novel_tools.shunn import shunn_docx, shunn_md
 from markdown_novel_tools.utils import find_markdown_files, write_to_file
