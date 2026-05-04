@@ -226,7 +226,7 @@ def frontmatter_parser():
 
     # frontmatter update
     update_parser = subparsers.add_parser(
-        "update", help="Update the manuscript frontmatter with the outline beats.t"
+        "update", help="Update the manuscript frontmatter with the outline beats."
     )
     update_parser.set_defaults(require_book_num=True)
     update_parser.add_argument("-f", "--fix", action="store_true")
