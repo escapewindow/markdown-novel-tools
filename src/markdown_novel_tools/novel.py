@@ -412,9 +412,6 @@ def sync_each_book_in_a_series(config, **kwargs):
             single_kwargs["book_num"] = m["book_num"]
             repl_dict = {"book_num": m["book_num"], "outline_type": "{outline_type}"}
             single_config = get_new_config_val(single_config, {}, repl_dict=repl_dict)
-            print(
-                f"book_num {m['book_num']}\n\nrepl_dict {pprint.pformat(repl_dict)}\n\nsingle_config {pprint.pformat(single_config)}"
-            )
             run_single_sync(single_config, **single_kwargs)
 
 
