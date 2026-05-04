@@ -23,7 +23,7 @@ def test_table_get_column(column, expected, throws):
     path = MATRIX_DATA_DIR / "matrix-full.md"
     with open(path) as fh:
         contents = fh.read()
-    table = outline.build_table_from_file(path)
+    table = outline.build_table_from_files(path)
     if throws:
         with pytest.raises(throws):
             table.get_column(column)
@@ -84,7 +84,7 @@ def test_table_markdown_simple():
     path = MATRIX_DATA_DIR / "matrix-full.md"
     with open(path) as fh:
         contents = fh.read()
-    table = outline.build_table_from_file(path)
+    table = outline.build_table_from_files(path)
     mdoutput = outline.get_markdown_from_table(table)
     header = outline.get_outline_file_header("outline")
     assert f"{header}{mdoutput}" == contents
@@ -95,7 +95,7 @@ def test_table_markdown_simple():
 
 def test_table_yaml_simple():
     path = GENERAL_DATA_DIR / "test-simple.md"
-    table = outline.build_table_from_file(path)
+    table = outline.build_table_from_files(path)
     yamloutput = outline.get_yaml_from_table(table)
     beats_stdout, _ = outline.get_beats(table, format_="yaml")
     with open(GENERAL_DATA_DIR / "test-simple.yaml") as fh:
@@ -106,7 +106,7 @@ def test_table_yaml_simple():
 
 def test_table_html_simple():
     path = GENERAL_DATA_DIR / "test-simple.md"
-    table = outline.build_table_from_file(path)
+    table = outline.build_table_from_files(path)
     htmloutput = outline.get_html_from_table(table)
     with open(GENERAL_DATA_DIR / "test-simple.html") as fh:
         expected = fh.read()
@@ -117,7 +117,7 @@ def test_table_html_simple():
 
 def test_beats_bad_format():
     path = GENERAL_DATA_DIR / "test-simple.md"
-    table = outline.build_table_from_file(path)
+    table = outline.build_table_from_files(path)
     with pytest.raises(Exception):
         outline.get_beats(table, format_="invalid format")
 
@@ -126,7 +126,7 @@ def test_table_from_multi():
     """Parse scenes, which is multi-table, and compare against full outline"""
     scenes_path = MATRIX_DATA_DIR / "matrix-scenes.md"
     full_path = MATRIX_DATA_DIR / "matrix-full.md"
-    table = outline.build_table_from_file(scenes_path)
+    table = outline.build_table_from_files(scenes_path)
     with open(full_path) as fh:
         full_contents = fh.read()
     header = outline.get_outline_file_header("outline")
@@ -141,7 +141,7 @@ def test_full_table_to_scenes():
     """Parse full, and compare against scenes, which is multi-table"""
     full_path = MATRIX_DATA_DIR / "matrix-full.md"
     scenes_path = MATRIX_DATA_DIR / "matrix-scenes.md"
-    table = outline.build_table_from_file(full_path, column="Scene")
+    table = outline.build_table_from_files(full_path, column="Scene")
     with open(scenes_path) as fh:
         scenes_contents = fh.read()
     header = outline.get_outline_file_header("scenes")
@@ -168,7 +168,7 @@ Num beats: 49"""
 def test_table_order_invalid():
     path = GENERAL_DATA_DIR / "test-simple.md"
     with pytest.raises(SystemExit):
-        outline.build_table_from_file(path, order=["invalid", "column", "names"])
+        outline.build_table_from_files(path, order=["invalid", "column", "names"])
 
 
 @pytest.mark.parametrize(
@@ -180,7 +180,7 @@ def test_table_order_invalid():
 )
 def test_table_from_multi_invalid_headers(path):
     with pytest.raises(SystemExit):
-        outline.build_table_from_file(path)
+        outline.build_table_from_files(path)
 
 
 def test_filter_order():
@@ -189,7 +189,7 @@ def test_filter_order():
     second_scene_path = GENERAL_DATA_DIR / "test-simple-second-scene-order.md"
     with open(second_scene_path) as fh:
         contents = fh.read()
-    table = outline.build_table_from_file(
+    table = outline.build_table_from_files(
         full_path,
         order=["Description", "POV", "Beat", "Scene", "Arc"],
         column="Scene",
@@ -226,7 +226,7 @@ def test_filter_split_columns_markdown(expected_file, also_split_by_slash, filte
     full_path = GENERAL_DATA_DIR / "test-simple.md"
     with open(expected_file) as fh:
         contents = fh.read()
-    table = outline.build_table_from_file(
+    table = outline.build_table_from_files(
         full_path,
         column="Beat",
         split_columns=["Beat", "Arc"],
@@ -251,7 +251,7 @@ def test_table_num():
     with open(second_scene_path) as fh:
         contents = fh.read()
 
-    table = outline.build_table_from_file(
+    table = outline.build_table_from_files(
         scene_path,
         target_table_num=2,
         column="Scene",

@@ -8,14 +8,14 @@ import sys
 
 import yaml
 
-from markdown_novel_tools.config import add_config_parser_args, get_config, get_primary_outline_path
+from markdown_novel_tools.config import add_config_parser_args, get_config
 from markdown_novel_tools.constants import MANUSCRIPT_REGEX
 from markdown_novel_tools.mdfile import (
     FRONTMATTER_VALIDATOR,
     get_markdown_file,
     write_markdown_file,
 )
-from markdown_novel_tools.outline import build_table_from_file, get_yaml_from_table
+from markdown_novel_tools.outline import build_table_from_files, get_yaml_from_table
 from markdown_novel_tools.utils import (
     diff_yaml,
     find_markdown_files,
@@ -49,10 +49,10 @@ def frontmatter_check(args, strict=None):
 def frontmatter_diff(args):
     """Diff frontmatter."""
 
-    if not args.outline:
-        args.outline = get_primary_outline_path(config)
+    outline = Path(args.outline or config["outline"]["single"]["primary_outline_file"])
+
     files = find_markdown_files(args.path)
-    table = build_table_from_file(args.outline, column="Scene")
+    table = build_table_from_files([outline], column="Scene")
 
     # Diff summaries
     for path in files:
@@ -104,8 +104,10 @@ def fix_frontmatter(old_frontmatter):
 def frontmatter_update(args):
     """Overwrite frontmatter with formatted output after replacing the summary."""
 
+    outline = Path(args.outline or config["outline"]["single"]["primary_outline_file"])
     files = find_markdown_files(args.path)
-    table = build_table_from_file(args.outline, column="Scene")
+
+    table = build_table_from_files([outline], column="Scene")
 
     # Update summaries
     for path in files:
@@ -201,7 +203,7 @@ def frontmatter_parser():
         "diff", help="Show the difference between the frontmatter and the outline."
     )
     diff_parser.set_defaults(require_book_num=True)
-    diff_parser.add_argument("-o", "--outline", default=get_primary_outline_path(config))
+    diff_parser.add_argument("-o", "--outline")
     diff_parser.add_argument("path", nargs="+")
     diff_parser.set_defaults(func=frontmatter_diff)
 
@@ -229,7 +231,7 @@ def frontmatter_parser():
     update_parser.set_defaults(require_book_num=True)
     update_parser.add_argument("-f", "--fix", action="store_true")
     update_parser.add_argument("-n", "--noop", action="store_true")
-    update_parser.add_argument("-o", "--outline", default=get_primary_outline_path(config))
+    update_parser.add_argument("-o", "--outline")
     update_parser.add_argument("path", nargs="+")
     update_parser.set_defaults(func=frontmatter_update)
 
