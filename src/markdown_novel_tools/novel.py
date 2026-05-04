@@ -8,6 +8,7 @@ import pprint
 import re
 import shutil
 import sys
+from copy import deepcopy
 from glob import glob
 from pathlib import Path
 
@@ -18,6 +19,7 @@ from markdown_novel_tools.config import (
     get_config,
     get_css_path,
     get_markdown_template_choices,
+    get_new_config_val,
 )
 from markdown_novel_tools.constants import BEATS_REGEX, LINKS_REGEX, QUESTIONS_REGEX
 from markdown_novel_tools.convert import (
@@ -271,8 +273,8 @@ def arc_grep(beats_contents, regex):
     return parsed_contents
 
 
-def do_sync(paths, parent, primary_outline_type, output_name):
-    """Create the different output_paths outlines, using `paths` as the source."""
+def create_single_sync_set(paths, parent, primary_outline_type, output_name):
+    """Create the different output_paths outlines, using `paths` as the source, for a single book or series."""
     output_paths = {
         "full": parent / output_name.format(outline_type="full"),
         "scenes": parent / output_name.format(outline_type="scenes"),
@@ -365,32 +367,77 @@ def do_sync(paths, parent, primary_outline_type, output_name):
     print(f"{stats}\n", file=sys.stderr)
 
 
+def run_single_sync(config, book_num=None, path=None, artifact_dir=None, primary_outline_type=None):
+    """Sync the outline files for a single book, or combine the existing book outlines into a single series.
+
+    Note, if we're running run_single_sync for a series, we will not pick up new outline changes in each book,
+    unless they're synced to each book's primary outline files. If we want to sync those first, use the
+    `--all` option to call `sync_each_book_in_a_series` first.
+    """
+    if book_num:
+        config_key = "single"
+        print(f"Syncing book {book_num}...")
+    else:
+        config_key = "series"
+        print(f"Syncing the series...")
+
+    if path:
+        paths = [Path(path)]
+    elif book_num:
+        paths = [Path(config["outline"]["single"]["primary_outline_file"])]
+    else:
+        paths = [Path(p) for p in glob(config["outline"]["series"]["source_outline_glob"])]
+
+    if artifact_dir:
+        parent = Path(artifact_dir)
+    else:
+        parent = Path(config["outline"][config_key]["output_dir"])
+
+    primary_outline_type = (
+        primary_outline_type or config["outline"][config_key]["primary_outline_type"]
+    )
+    output_name = config["outline"][config_key]["output_name"]
+
+    create_single_sync_set(paths, parent, primary_outline_type, output_name)
+
+
+def sync_each_book_in_a_series(config, **kwargs):
+    """Sync the outline of each book in a series. This allows us to sync the latest changes into the series outline."""
+    path_names = glob(config["outline"]["series"]["source_outline_glob"])
+    for path_name in path_names:
+        single_kwargs = deepcopy(kwargs)
+        single_config = deepcopy(config)
+        m = re.search(config["outline"]["series"]["source_outline_regex"], path_name)
+        if m:
+            single_kwargs["book_num"] = m["book_num"]
+            repl_dict = {"book_num": m["book_num"], "outline_type": "{outline_type}"}
+            single_config = get_new_config_val(single_config, {}, repl_dict=repl_dict)
+            print(
+                f"book_num {m['book_num']}\n\nrepl_dict {pprint.pformat(repl_dict)}\n\nsingle_config {pprint.pformat(single_config)}"
+            )
+            run_single_sync(single_config, **single_kwargs)
+
+
 def novel_sync(args):
     """Sync the various outline files in a given book."""
 
-    if args.config["book_num"]:
-        config_key = "single"
-    else:
-        config_key = "series"
+    kwargs = {
+        "book_num": args.config["book_num"],
+        "path": args.path,
+        "artifact_dir": args.artifact_dir,
+        "primary_outline_type": args.primary_outline_type,
+    }
 
-    if args.path:
-        paths = [Path(args.path)]
-    elif args.config.get("book_num"):
-        paths = [Path(config["outline"]["single"]["primary_outline_file"])]
-    else:
-        paths = [Path(p) for p in glob(args.config["outline"]["series"]["source_outline_glob"])]
+    if args.all:
+        if args.config["book_num"]:
+            print(f"book_num is {book_num}; --all doesn't work for a single book!")
+            raise SystemExit(1)
+        else:
+            sync_each_book_in_a_series(args.config, **kwargs)
 
-    if args.artifact_dir:
-        parent = Path(args.artifact_dir)
-    else:
-        parent = Path(args.config["outline"][config_key]["output_dir"])
+    print("Finished sync_each_book_in_a_series")
 
-    primary_outline_type = (
-        args.primary_outline_type or args.config["outline"][config_key]["primary_outline_type"]
-    )
-    output_name = args.config["outline"][config_key]["output_name"]
-
-    do_sync(paths, parent, primary_outline_type, output_name)
+    run_single_sync(args.config, **kwargs)
 
 
 def novel_today(args):

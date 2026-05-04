@@ -76,7 +76,7 @@ def _replace_values(var, repl_dict):
     return return_val
 
 
-def _get_new_config_val(
+def get_new_config_val(
     config_val, user_config_val, key_name=None, use_default_keys=True, repl_dict=None
 ):
     """Return the new config val"""
@@ -102,7 +102,7 @@ def _get_new_config_val(
             from_dict = user_config_val
         for key in from_dict:
             if key in user_config_val:
-                config_val[key] = _get_new_config_val(
+                config_val[key] = get_new_config_val(
                     config_val.get(key),
                     user_config_val.get(key),
                     key_name=key,
@@ -138,6 +138,6 @@ def get_config(args=None):
     else:
         book_num = user_config.get("book_num", config.get("book_num"))
     repl_dict = {"book_num": book_num or "{book_num}"}
-    config = _get_new_config_val(config, user_config, repl_dict=repl_dict)
+    config = get_new_config_val(config, user_config, repl_dict=repl_dict)
     config.setdefault("book_num", book_num)
     return config, remaining_args

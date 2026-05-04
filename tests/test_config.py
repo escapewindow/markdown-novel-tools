@@ -208,10 +208,10 @@ def test_get_new_config_val(
 ):
     if raises:
         with pytest.raises(raises):
-            mdconfig._get_new_config_val(config_val, user_config_val, key_name)
+            mdconfig.get_new_config_val(config_val, user_config_val, key_name)
     else:
         assert (
-            mdconfig._get_new_config_val(
+            mdconfig.get_new_config_val(
                 config_val,
                 user_config_val,
                 key_name=key_name,

@@ -20,6 +20,7 @@ DEFAULT_CONFIG = {
         },
         "series": {
             "source_outline_glob": "outline/book*/book*-scenes.md",
+            "source_outline_regex": r"""book(?P<book_num>\d+)""",
             "primary_outline_type": "scenes",
             "output_dir": "outline/series",
             "output_name": "series-{{outline_type}}.md",
