@@ -69,7 +69,7 @@ OUTLINE_HTML_HEADER = """<html><head><style>
 ALPHANUM_REGEX = re.compile(r"""\w""")
 
 BEATS_REGEX = re.compile(
-    r"""[ ,/](Hook|Plot Turn 1|Pinch 1|Midpoint|Pinch 2|Plot Turn 2|Resolution)[ ,/][^|]*|\s+$"""
+    r"""[ ,/](Hook|Plot Turn 1|Pinch 1|Midpoint|Pinch 2|Plot Turn 2|Resolution|Arc)[ ,/][^|]*|\s+$"""
 )
 
 LINKS_REGEX = re.compile(r"""\[\[([^\[\]]+)\]\]""")
