@@ -550,7 +550,7 @@ def novel_parser():
 
     # novel links
     links_parser = subparsers.add_parser("links", help="Show the wiki pages linked from the path.")
-    links_parser.add_argument("path")
+    links_parser.add_argument("path", nargs="+")
     links_parser.set_defaults(func=novel_links)
 
     # novel new
