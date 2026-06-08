@@ -82,7 +82,7 @@ OUTLINE_SCENE_REGEX = re.compile(
     r"""^((?P<book_num>\d*)\.)?(?P<chapter_num>\d+)\.(?P<scene_num>\d+)$"""
 )
 
-QUESTIONS_REGEX = re.compile(r"""[ ,/](Question|Promise|Reveal)[ ,/][^|]*|\s+$""")
+QUESTIONS_REGEX = re.compile(r"""[ ,/](Question|Promise|Reveal|Status)[ ,/][^|]*|\s+$""")
 
 SCENE_SPLIT_REGEX = re.compile(r"""^\s{4,}\* \* \*""")
 
