@@ -5,6 +5,7 @@ import argparse
 import os
 import re
 import sys
+from pathlib import Path
 
 import yaml
 
@@ -49,7 +50,7 @@ def frontmatter_check(args, strict=None):
 def frontmatter_diff(args):
     """Diff frontmatter."""
 
-    outline = Path(args.outline or config["outline"]["single"]["primary_outline_file"])
+    outline = Path(args.outline or args.config["outline"]["single"]["primary_outline_file"])
 
     files = find_markdown_files(args.path)
     table = build_table_from_files([outline], column="Scene")
@@ -61,7 +62,11 @@ def frontmatter_diff(args):
             continue
 
         outline_summary = get_yaml_from_table(
-            table, filter_=[f"{m['chapter_num']}.{m['scene_num']}"]
+            table,
+            filter_=[
+                f"{m['chapter_num']}.{m['scene_num']}",
+                f"{m['book_num']}.{m['chapter_num']}.{m['scene_num']}",
+            ],
         )
 
         markdown_file = get_markdown_file(path)
@@ -104,7 +109,7 @@ def fix_frontmatter(old_frontmatter):
 def frontmatter_update(args):
     """Overwrite frontmatter with formatted output after replacing the summary."""
 
-    outline = Path(args.outline or config["outline"]["single"]["primary_outline_file"])
+    outline = Path(args.outline or args.config["outline"]["single"]["primary_outline_file"])
     files = find_markdown_files(args.path)
 
     table = build_table_from_files([outline], column="Scene")
@@ -116,7 +121,13 @@ def frontmatter_update(args):
             continue
 
         outline_summary = yaml.safe_load(
-            get_yaml_from_table(table, filter_=[f"{m['chapter_num']}.{m['scene_num']}"])
+            get_yaml_from_table(
+                table,
+                filter_=[
+                    f"{m['chapter_num']}.{m['scene_num']}",
+                    f"{m['book_num']}.{m['chapter_num']}.{m['scene_num']}",
+                ],
+            )
         )
 
         markdown_file = get_markdown_file(path)
