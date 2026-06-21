@@ -376,10 +376,10 @@ def run_single_sync(config, book_num=None, path=None, artifact_dir=None, primary
     """
     if book_num:
         config_key = "single"
-        print(f"Syncing book {book_num}...")
+        print(f"Syncing book {book_num}...\n", file=sys.stderr)
     else:
         config_key = "series"
-        print(f"Syncing the series...")
+        print(f"Syncing the series...\n", file=sys.stderr)
 
     if path:
         paths = [Path(path)]
@@ -403,7 +403,7 @@ def run_single_sync(config, book_num=None, path=None, artifact_dir=None, primary
 
 def sync_each_book_in_a_series(config, **kwargs):
     """Sync the outline of each book in a series. This allows us to sync the latest changes into the series outline."""
-    path_names = glob(config["outline"]["series"]["source_outline_glob"])
+    path_names = sorted(glob(config["outline"]["series"]["source_outline_glob"]))
     for path_name in path_names:
         single_kwargs = deepcopy(kwargs)
         single_config = deepcopy(config)
@@ -432,8 +432,18 @@ def novel_sync(args):
         else:
             sync_each_book_in_a_series(args.config, **kwargs)
 
-    print("Finished sync_each_book_in_a_series")
+    run_single_sync(args.config, **kwargs)
 
+
+def novel_sync_all(args):
+    args.config, _ = get_config(args=sys.argv[1:], keep_book_num=False)
+    kwargs = {
+        "path": args.path,
+        "artifact_dir": args.artifact_dir,
+        "primary_outline_type": args.primary_outline_type,
+    }
+
+    sync_each_book_in_a_series(args.config, **kwargs)
     run_single_sync(args.config, **kwargs)
 
 
@@ -523,6 +533,22 @@ def novel_parser():
         "path", nargs="?", help="Defaults to the config or default primary outline path."
     )
     sync_parser.set_defaults(func=novel_sync)
+
+    sync_all_parser = subparsers.add_parser("sync-all", help="Sync the various outline files.")
+    sync_all_parser.set_defaults(require_book_num=None)
+    sync_all_parser.add_argument("--artifact-dir", help="Defaults to the parent of PATH")
+    sync_all_parser.add_argument(
+        "--all", "-a", action="store_true", help="Sync all the outlines of a series."
+    )
+    sync_all_parser.add_argument(
+        "--primary-outline-type",
+        choices=("scenes", "povs", "full"),
+        help="The type of outline we're reading from.",
+    )
+    sync_all_parser.add_argument(
+        "path", nargs="?", help="Defaults to the config or default primary outline path."
+    )
+    sync_all_parser.set_defaults(func=novel_sync_all)
 
     # novel convert
     convert_parser = subparsers.add_parser(
