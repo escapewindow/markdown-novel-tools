@@ -431,10 +431,19 @@ def novel_sync(args):
             raise SystemExit(1)
         else:
             sync_each_book_in_a_series(args.config, **kwargs)
-
-    print("Finished sync_each_book_in_a_series")
+            print("Finished sync_each_book_in_a_series")
 
     run_single_sync(args.config, **kwargs)
+
+
+def novel_sync_all(args):
+    kwargs = {
+        "path": args.path,
+        "artifact_dir": args.artifact_dir,
+        "primary_outline_type": args.primary_outline_type,
+    }
+
+    sync_each_book_in_a_series(args.config, **kwargs)
 
 
 def novel_today(args):
@@ -523,6 +532,22 @@ def novel_parser():
         "path", nargs="?", help="Defaults to the config or default primary outline path."
     )
     sync_parser.set_defaults(func=novel_sync)
+
+    sync_all_parser = subparsers.add_parser("sync-all", help="Sync the various outline files.")
+    sync_all_parser.set_defaults(require_book_num=False)
+    sync_all_parser.add_argument("--artifact-dir", help="Defaults to the parent of PATH")
+    sync_all_parser.add_argument(
+        "--all", "-a", action="store_true", help="Sync all the outlines of a series."
+    )
+    sync_all_parser.add_argument(
+        "--primary-outline-type",
+        choices=("scenes", "povs", "full"),
+        help="The type of outline we're reading from.",
+    )
+    sync_all_parser.add_argument(
+        "path", nargs="?", help="Defaults to the config or default primary outline path."
+    )
+    sync_all_parser.set_defaults(func=novel_sync_all)
 
     # novel convert
     convert_parser = subparsers.add_parser(
