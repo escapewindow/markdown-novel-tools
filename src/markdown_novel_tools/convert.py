@@ -260,12 +260,14 @@ def get_front_back_matter(matter_config, convert_config, toc):
     contents = ""
     toc = ""
     for title, path in matter_config.items():
+        # TODO use glob
         with open(path, encoding="utf-8") as fh:
             simplified_contents = simplify_markdown(
                 fh.read(),
                 **convert_config,
             )
         if convert_config["build_toc"]:
+            # TODO allow for overriding this for appendices
             heading_link = title.replace(" ", "-").lower()
             heading_link = f"heading-{heading_link}"
             title, toc = _get_title_and_toc(title, heading_link, toc)
