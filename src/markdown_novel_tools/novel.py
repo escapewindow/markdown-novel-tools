@@ -376,11 +376,12 @@ def run_single_sync(config, book_num=None, path=None, artifact_dir=None, primary
     """
     if book_num:
         config_key = "single"
-        print(f"Syncing book {book_num}...\n")
+        print(f"Syncing book {book_num}...\n", file=sys.stderr)
     else:
         config_key = "series"
-        print(f"Syncing the series...\n")
+        print(f"Syncing the series...\n", file=sys.stderr)
 
+    pprint.pprint(config, stream=sys.stderr)
     if path:
         paths = [Path(path)]
     elif book_num:
@@ -437,7 +438,6 @@ def novel_sync(args):
 
 def novel_sync_all(args):
     kwargs = {
-        "book_num": None,
         "path": args.path,
         "artifact_dir": args.artifact_dir,
         "primary_outline_type": args.primary_outline_type,
@@ -535,7 +535,7 @@ def novel_parser():
     sync_parser.set_defaults(func=novel_sync)
 
     sync_all_parser = subparsers.add_parser("sync-all", help="Sync the various outline files.")
-    sync_all_parser.set_defaults(require_book_num=False)
+    sync_all_parser.set_defaults(require_book_num=None)
     sync_all_parser.add_argument("--artifact-dir", help="Defaults to the parent of PATH")
     sync_all_parser.add_argument(
         "--all", "-a", action="store_true", help="Sync all the outlines of a series."
