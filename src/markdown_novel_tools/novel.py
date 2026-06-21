@@ -437,6 +437,7 @@ def novel_sync(args):
 
 
 def novel_sync_all(args):
+    args.config, _ = get_config(args=sys.argv[1:], keep_book_num=False)
     kwargs = {
         "path": args.path,
         "artifact_dir": args.artifact_dir,

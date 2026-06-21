@@ -121,7 +121,7 @@ def add_config_parser_args(parser):
     parser.add_argument("-b", "--book-num")
 
 
-def get_config(args=None):
+def get_config(args=None, keep_book_num=True):
     """Read and return the config."""
     config_parser = argparse.ArgumentParser(add_help=False)
     add_config_parser_args(config_parser)
@@ -133,12 +133,13 @@ def get_config(args=None):
     if path is not None:
         with open(path) as fh:
             user_config = yaml.safe_load(fh)
-    if hasattr(config_args, "require_book_num") and config_args.require_book_num is None:
+    if not keep_book_num:
         config["book_num"] = None
+        user_config["book_num"] = None
+        book_num = None
     else:
         book_num = config_args.book_num or user_config.get("book_num", config.get("book_num"))
-        print(f"BOOK NUM {book_num}")
-        repl_dict = {"book_num": book_num or "{book_num}"}
-        config = get_new_config_val(config, user_config, repl_dict=repl_dict)
-        config.setdefault("book_num", book_num)
+    repl_dict = {"book_num": book_num or "{book_num}"}
+    config = get_new_config_val(config, user_config, repl_dict=repl_dict)
+    config.setdefault("book_num", book_num)
     return config, remaining_args
