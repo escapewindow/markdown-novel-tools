@@ -376,10 +376,10 @@ def run_single_sync(config, book_num=None, path=None, artifact_dir=None, primary
     """
     if book_num:
         config_key = "single"
-        print(f"Syncing book {book_num}...")
+        print(f"Syncing book {book_num}...\n")
     else:
         config_key = "series"
-        print(f"Syncing the series...")
+        print(f"Syncing the series...\n")
 
     if path:
         paths = [Path(path)]
@@ -403,7 +403,7 @@ def run_single_sync(config, book_num=None, path=None, artifact_dir=None, primary
 
 def sync_each_book_in_a_series(config, **kwargs):
     """Sync the outline of each book in a series. This allows us to sync the latest changes into the series outline."""
-    path_names = glob(config["outline"]["series"]["source_outline_glob"])
+    path_names = sorted(glob(config["outline"]["series"]["source_outline_glob"]))
     for path_name in path_names:
         single_kwargs = deepcopy(kwargs)
         single_config = deepcopy(config)
@@ -431,19 +431,20 @@ def novel_sync(args):
             raise SystemExit(1)
         else:
             sync_each_book_in_a_series(args.config, **kwargs)
-            print("Finished sync_each_book_in_a_series")
 
     run_single_sync(args.config, **kwargs)
 
 
 def novel_sync_all(args):
     kwargs = {
+        "book_num": None,
         "path": args.path,
         "artifact_dir": args.artifact_dir,
         "primary_outline_type": args.primary_outline_type,
     }
 
     sync_each_book_in_a_series(args.config, **kwargs)
+    run_single_sync(args.config, **kwargs)
 
 
 def novel_today(args):
