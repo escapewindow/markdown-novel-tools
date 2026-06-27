@@ -427,7 +427,7 @@ def novel_sync(args):
 
     if args.all:
         if args.config["book_num"]:
-            print(f"book_num is {book_num}; --all doesn't work for a single book!")
+            print(f"book_num is {args.config['book_num']}; --all doesn't work for a single book!")
             raise SystemExit(1)
         else:
             sync_each_book_in_a_series(args.config, **kwargs)

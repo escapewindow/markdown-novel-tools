@@ -138,7 +138,10 @@ def get_config(args=None, keep_book_num=True):
         user_config["book_num"] = None
         book_num = None
     else:
-        book_num = config_args.book_num or user_config.get("book_num", config.get("book_num"))
+        if config_args.book_num is not None:
+            book_num = config_args.book_num
+        else:
+            book_num = user_config.get("book_num", config.get("book_num"))
     repl_dict = {"book_num": book_num or "{book_num}"}
     config = get_new_config_val(config, user_config, repl_dict=repl_dict)
     config.setdefault("book_num", book_num)
