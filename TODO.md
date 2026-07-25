@@ -32,6 +32,7 @@
   - [ ] this could be specifiable to see the intermediate artifacts if wanted
 - [ ] _write_to_file_helper to preserve headers if exists
 - [ ] Munge epub title with date or subtitle for drafts
+- [ ] epub: indentation? remove justification?
 
 # Enhancements
 - [ ] script(s) to add to outline
