@@ -286,15 +286,14 @@ def create_single_sync_set(paths, parent, primary_outline_type, output_name):
 
     parent.mkdir(parents=True, exist_ok=True)
 
-    match primary_outline_type:
-        case "scenes":
-            contents, stats = beats_helper(paths, column="Scene", file_headers=True, stats=True)
-        case "povs":
-            contents, stats = beats_helper(paths, column="POV", file_headers=True, stats=True)
-        case "full":
-            contents, stats = beats_helper(paths, file_headers=True, stats=True)
-        case _:
-            raise KeyError(f"Invalid primary_outline_type {primary_outline_type}!")
+    if primary_outline_type == "scenes":
+        contents, stats = beats_helper(paths, column="Scene", file_headers=True, stats=True)
+    elif primary_outline_type ==  "povs":
+        contents, stats = beats_helper(paths, column="POV", file_headers=True, stats=True)
+    elif primary_outline_type == "full":
+        contents, stats = beats_helper(paths, file_headers=True, stats=True)
+    else:
+        raise KeyError(f"Invalid primary_outline_type {primary_outline_type}!")
 
     write_to_file(output_paths["full"], contents)
     print(f"{stats}\n", file=sys.stderr)
