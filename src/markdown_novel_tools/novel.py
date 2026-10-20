@@ -288,7 +288,7 @@ def create_single_sync_set(paths, parent, primary_outline_type, output_name):
 
     if primary_outline_type == "scenes":
         contents, stats = beats_helper(paths, column="Scene", file_headers=True, stats=True)
-    elif primary_outline_type ==  "povs":
+    elif primary_outline_type == "povs":
         contents, stats = beats_helper(paths, column="POV", file_headers=True, stats=True)
     elif primary_outline_type == "full":
         contents, stats = beats_helper(paths, file_headers=True, stats=True)
