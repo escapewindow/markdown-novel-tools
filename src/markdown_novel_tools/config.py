@@ -9,7 +9,7 @@ from copy import deepcopy
 from pathlib import Path
 
 import yaml
-from git import InvalidGitRepositoryError, Repo
+from git import GitCommandError, InvalidGitRepositoryError, Repo
 
 from markdown_novel_tools.constants import DEFAULT_CONFIG
 
@@ -22,7 +22,7 @@ def get_config_path():
         git_repo = Repo(Path("."), search_parent_directories=True)
         git_root = Path(git_repo.git.rev_parse("--show-toplevel"))
         search_path.append(git_root / ".config.yaml")
-    except InvalidGitRepositoryError:
+    except (GitCommandError, InvalidGitRepositoryError):
         pass
     if "XDG_CONFIG_HOME" in os.environ:
         search_path.append(Path(os.environ["XDG_CONFIG_HOME"]) / "md-novel" / "novel-config.yaml")
