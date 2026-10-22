@@ -23,8 +23,6 @@ FRONTMATTER_SCHEMA = {
     "pov": {"type": "string"},
     "locations": {"type": "list", "schema": {"type": "string", "empty": False}, "required": True},
     "characters": {"type": "list", "schema": {"type": "string", "empty": False}, "required": True},
-    "hook": {"type": "string"},
-    "cliffhanger": {"type": "string"},
     "summary": {
         "type": "list",
         "schema": {"type": "string", "empty": False, "required": True},
